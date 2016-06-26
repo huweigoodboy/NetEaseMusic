@@ -22,7 +22,7 @@ import com.huwei.neteasemusic.util.Utils;
 
 public class BaseActivity extends AppCompatActivity {
 
-    private Context mContext;
+    protected Context mContext;
 
     protected Toolbar mToolBar;
 

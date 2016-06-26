@@ -79,7 +79,7 @@ public class StatusBarUtil {
     }
 
     /**
-     * 为DrawerLayout 布局设置状态栏变色
+     * 为DrawerLayout 布局设置状态栏变色   drawerLayout一定要在代码设置     android:fitsSystemWindows="true"
      *
      * @param activity     需要设置的activity
      * @param drawerLayout DrawerLayout

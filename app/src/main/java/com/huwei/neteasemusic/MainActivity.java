@@ -1,44 +1,61 @@
 package com.huwei.neteasemusic;
 
-import android.graphics.Color;
-import android.os.Build;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.huwei.neteasemusic.main.MusicFragment;
+import com.huwei.neteasemusic.main.RelationShipFragment;
+import com.huwei.neteasemusic.main.DiscoverFragment;
+import com.huwei.neteasemusic.util.DisplayUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private DrawerLayout mDrawerLayout;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+
+    private List<Fragment> mFragmentList = new ArrayList<>();
+
+    public static final int TAB_DISCOVER = 0;
+    public static final int TAB_MUSIC = 1;
+    public static final int TAB_RELATION = 2;
+
+    public static final int[] TAB_ICON = {R.drawable.actionbar_discover, R.drawable.actionbar_music, R.drawable.actionbar_friends};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mToolBar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
-        if (mToolBar != null) {
-            setSupportActionBar(mToolBar);
-        }
+        initViewPager();
+        initToolBar();
+        initTabLayout();
+        initView();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -79,7 +96,7 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
             return true;
         }
 
@@ -109,5 +126,88 @@ public class MainActivity extends BaseActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void initToolBar() {
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+
+        mToolBar.setNavigationIcon(R.drawable.actionbar_menu);
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    mDrawerLayout.openDrawer(GravityCompat.START);
+                }
+            }
+        });
+        mToolBar.setTitle("");
+
+        if (mToolBar != null) {
+            setSupportActionBar(mToolBar);
+        }
+    }
+
+    private void initViewPager() {
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        mFragmentList.add(new DiscoverFragment());
+        mFragmentList.add(new MusicFragment());
+        mFragmentList.add(new RelationShipFragment());
+
+        mViewPager.setOffscreenPageLimit(mFragmentList.size() - 1);
+        mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return mFragmentList.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return mFragmentList.size();
+            }
+        });
+
+        mViewPager.setCurrentItem(TAB_DISCOVER);
+    }
+
+    private void initTabLayout() {
+        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        mTabLayout.setupWithViewPager(mViewPager);
+
+//        Rect bounds = new Rect(0,0, DisplayUtil.dip2px(this,56),DisplayUtil.dip2px(this,56));
+//        Drawable drawable = getResources().getDrawable(R.drawable.actionbar_discover);
+//        drawable.setBounds(bounds);
+//        mTabLayout.getTabAt(TAB_DISCOVER).setIcon(drawable);
+//
+//        drawable = getResources().getDrawable(R.drawable.actionbar_music);
+//        drawable.setBounds(bounds);
+//        mTabLayout.getTabAt(TAB_MUSIC).setIcon(drawable);
+//
+//        drawable = getResources().getDrawable(R.drawable.actionbar_friends);
+//        drawable.setBounds(bounds);
+//        mTabLayout.getTabAt(TAB_RELATION).setIcon(drawable);
+
+        ImageView tabDiscover = getIconImageView(R.drawable.actionbar_discover);
+        tabDiscover.setSelected(true);
+        mTabLayout.getTabAt(TAB_DISCOVER).setCustomView(tabDiscover);
+        mTabLayout.getTabAt(TAB_MUSIC).setCustomView(getIconImageView(R.drawable.actionbar_music));
+        mTabLayout.getTabAt(TAB_RELATION).setCustomView(getIconImageView(R.drawable.actionbar_friends));
+    }
+
+    private void initView() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+    }
+
+    private ImageView getIconImageView(int resId) {
+        ImageView iv_icon = new ImageView(mContext);
+        int wh = DisplayUtil.dip2px(this, 56);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(wh, wh);
+        iv_icon.setLayoutParams(layoutParams);
+
+        iv_icon.setImageResource(resId);
+
+        return iv_icon;
     }
 }
