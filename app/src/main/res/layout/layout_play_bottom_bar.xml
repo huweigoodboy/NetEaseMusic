@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="49dp"
+    android:background="@drawable/playbar_bg">
+
+    <ImageView
+        android:id="@+id/iv_album"
+        android:layout_width="49dp"
+        android:layout_height="49dp"
+        android:padding="4dp"
+        android:src="@drawable/playbar_albumcontent"/>
+
+    <ImageView
+        android:id="@+id/iv_next"
+        android:layout_width="43dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/playbar_btn_next"/>
+
+    <ImageView
+        android:id="@+id/iv_play"
+        android:layout_width="43dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/iv_next"
+        android:src="@drawable/playbar_play"/>
+
+    <ImageView
+        android:id="@+id/iv_list"
+        android:layout_width="43dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/iv_play"
+        android:src="@drawable/playbar_btn_next"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/iv_album"
+        android:layout_toLeftOf="@id/iv_list"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_333333"
+            android:textSize="16sp"
+            android:text="这个年纪"/>
+
+        <TextView
+            android:id="@+id/tv_artist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_87"
+            android:text="齐一"/>
+
+    </LinearLayout>
+    
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="2dp" />
+
+</RelativeLayout>
