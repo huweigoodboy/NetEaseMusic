@@ -1,5 +1,7 @@
 package com.huwei.neteasemusic.util;
 
+import android.content.res.Resources;
+
 import com.huwei.neteasemusic.NetEaseApplication;
 
 /**
@@ -15,5 +17,9 @@ public class Utils {
             result = NetEaseApplication.CONTEXT.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    public static Resources getResources(){
+        return NetEaseApplication.CONTEXT.getResources();
     }
 }

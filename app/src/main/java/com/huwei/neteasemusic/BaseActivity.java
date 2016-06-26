@@ -6,18 +6,19 @@ package com.huwei.neteasemusic;
  * @date 2016-06-23
  */
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.huwei.neteasemusic.util.StatusBarUtil;
 import com.huwei.neteasemusic.util.Utils;
+
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -25,22 +26,28 @@ public class BaseActivity extends AppCompatActivity {
 
     protected Toolbar mToolBar;
 
+    public static final int STATUS_BAR_COLOR = Utils.getResources().getColor(R.color.CD3D3A);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mContext = this;
         super.onCreate(savedInstanceState);
 
-        // 经测试在代码里直接声明透明状态栏更有效
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
-            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
-        }
 
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        if(isDrawLayout()){
+            ViewGroup rootView = (ViewGroup) ((ViewGroup)findViewById(android.R.id.content)).getChildAt(0);
+            if(rootView instanceof DrawerLayout){
+                StatusBarUtil.setColorForDrawerLayout(this, (DrawerLayout) rootView,STATUS_BAR_COLOR);
+            }
+        }else {
+            StatusBarUtil.setColor(this,STATUS_BAR_COLOR);
+        }
 
         //如果需要actionbar  在布局中加入actionbar
         if (isNeedToolBar()) {
@@ -76,6 +83,13 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * 是否是抽屉布局 如果是 沉浸状态栏需要特殊处理
+     * @return
+     */
+    protected boolean isDrawLayout(){
+        return false;
+    }
 
     /**
      * 自定义actionbar 此方法肯定在onCreate()之后调用
