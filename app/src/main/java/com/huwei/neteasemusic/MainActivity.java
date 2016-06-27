@@ -136,6 +136,12 @@ public class MainActivity extends PlayBarBaseActivity
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
 
         mToolBar.setNavigationIcon(R.drawable.actionbar_menu);
+        mToolBar.setTitle("");
+
+        if (mToolBar != null) {
+            setSupportActionBar(mToolBar);
+        }
+
         mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,11 +152,6 @@ public class MainActivity extends PlayBarBaseActivity
                 }
             }
         });
-        mToolBar.setTitle("");
-
-        if (mToolBar != null) {
-            setSupportActionBar(mToolBar);
-        }
     }
 
     private void initViewPager() {
