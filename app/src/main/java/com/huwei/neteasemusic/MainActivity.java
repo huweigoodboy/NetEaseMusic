@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.huwei.neteasemusic.main.MusicFragment;
@@ -28,7 +29,7 @@ import com.huwei.neteasemusic.util.DisplayUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity
+public class MainActivity extends PlayBarBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
@@ -53,8 +54,6 @@ public class MainActivity extends BaseActivity
         initTabLayout();
         initView();
 
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -69,6 +68,11 @@ public class MainActivity extends BaseActivity
     @Override
     protected boolean isNeedToolBar() {
         return false;
+    }
+
+    @Override
+    protected FrameLayout initPlayBarContainer() {
+        return (FrameLayout) findViewById(R.id.fl_playbar_container);
     }
 
     @Override

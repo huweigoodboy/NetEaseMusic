@@ -3,6 +3,8 @@ package com.huwei.neteasemusic;
 import android.app.Application;
 import android.content.Context;
 
+import com.huwei.neteasemusic.ui.widget.PlayBarView;
+
 /**
  *
  * @author jerry
@@ -10,12 +12,21 @@ import android.content.Context;
  */
 public class NetEaseApplication extends Application{
 
-    public static Context CONTEXT;
+    public static NetEaseApplication CONTEXT;
+
+    private PlayBarView mPlayBarView;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         CONTEXT = this;
+    }
+
+    public PlayBarView getPlayBarView(){
+        if(mPlayBarView == null){
+            mPlayBarView = new PlayBarView(this);
+        }
+        return mPlayBarView;
     }
 }
