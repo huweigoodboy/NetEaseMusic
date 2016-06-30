@@ -1,7 +1,6 @@
 package com.huwei.neteasemusic;
 
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,9 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.huwei.neteasemusic.activity.SearchActivity;
 import com.huwei.neteasemusic.main.MusicFragment;
 import com.huwei.neteasemusic.main.RelationShipFragment;
 import com.huwei.neteasemusic.main.DiscoverFragment;
@@ -99,12 +96,18 @@ public class MainActivity extends PlayBarBaseActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
-            return true;
+        boolean flag = true;
+
+        switch (id){
+            case R.id.action_search:
+                startActivity(SearchActivity.getStartActIntent(mContext));
+                break;
+            default:
+                flag = super.onOptionsItemSelected(item);
+                break;
         }
 
-        return super.onOptionsItemSelected(item);
+        return flag;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

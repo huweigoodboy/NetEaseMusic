@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/et_input"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_weight="1"
+        android:background="@color/transparent"
+        android:ellipsize="end"
+        android:hint="搜索音乐、歌手、歌词、用户、..."
+        android:paddingLeft="8dp"
+        android:singleLine="true"
+        android:textColorHint="@color/DC7775"
+        android:textColor="@color/FCFDFD"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="40dp"
+        android:layout_height="36dp"
+        android:paddingBottom="6dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="6dp"
+        android:src="@drawable/actionbar_delete"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/iv_search_go"
+        android:layout_width="40dp"
+        android:layout_height="36dp"
+        android:paddingBottom="6dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="6dp"
+        android:src="@drawable/actionbar_search"
+        android:visibility="gone" />
+
+</merge>

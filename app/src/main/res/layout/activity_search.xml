@@ -1,36 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <com.huwei.neteasemusic.ui.widget.SearchBar
+            android:id="@+id/search_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/px_8_w750"
+            android:orientation="horizontal">
 
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"/>
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="36dp"
-                android:src="@drawable/actionbar_delete"/>
-
-        </android.support.v7.widget.LinearLayoutCompat>
+        </com.huwei.neteasemusic.ui.widget.SearchBar>
 
     </android.support.v7.widget.Toolbar>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="搜索"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:text="搜索" />
 
 </LinearLayout>

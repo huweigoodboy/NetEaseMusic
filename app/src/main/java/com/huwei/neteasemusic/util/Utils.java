@@ -1,11 +1,15 @@
 package com.huwei.neteasemusic.util;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.huwei.neteasemusic.NetEaseApplication;
 
 /**
- *
  * @author jerry
  * @date 2016-06-23
  */
@@ -19,7 +23,56 @@ public class Utils {
         return result;
     }
 
-    public static Resources getResources(){
+    public static Resources getResources() {
         return NetEaseApplication.CONTEXT.getResources();
     }
+
+    /**
+     * 获取没动画的intent
+     *
+     * @return
+     */
+    public static Intent getActIntent(Context context, Class actClass) {
+        Intent intent = new Intent(context, actClass);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        return intent;
+    }
+
+    /**
+     * 隐藏软键盘
+     *
+     * @param act
+     */
+    public static void hideSoftInput(Activity act) {
+        try {
+            if (act == null) {
+                return;
+            }
+            final View v = act.getWindow().peekDecorView();
+            if (v != null && v.getWindowToken() != null) {
+                InputMethodManager imm = (InputMethodManager) act
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 显示软键盘
+     *
+     * @param context
+     */
+    public static void showSoftInput(Context context) {
+        try {
+            InputMethodManager m = (InputMethodManager) context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
