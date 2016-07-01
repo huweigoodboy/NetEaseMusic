@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 
 import com.huwei.neteasemusic.PlayBarBaseActivity;
 import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.bean.resp.NetEaseAPI;
 import com.huwei.neteasemusic.bean.resp.ServerTip;
+import com.huwei.neteasemusic.ui.popwindow.SuggestPopWindow;
 import com.huwei.neteasemusic.ui.widget.SearchBar;
 import com.huwei.neteasemusic.util.StringUtils;
 import com.huwei.neteasemusic.util.Utils;
@@ -26,6 +28,7 @@ public class SearchActivity extends PlayBarBaseActivity {
     public static final String TAG = "SearchActivity";
 
     private SearchBar mSearchBar;
+    private SuggestPopWindow mSuggestPopWindow;
 
 
     public static Intent getStartActIntent(Context from) {
@@ -96,9 +99,16 @@ public class SearchActivity extends PlayBarBaseActivity {
                     NetEaseAPI.suggest(keyword, 10, new HttpHandler() {
                         @Override
                         public void onSuccess(ServerTip serverTip) {
-
+                            if(mSuggestPopWindow == null){
+                               mSuggestPopWindow = new SuggestPopWindow(mContext);
+                            }
+                            mSuggestPopWindow.showAsDropDown(mToolBar,0,0);
                         }
                     });
+                }else{
+                    if(mSuggestPopWindow != null && mSuggestPopWindow.isShowing()){
+                        mSuggestPopWindow.dismiss();
+                    }
                 }
             }
         });
