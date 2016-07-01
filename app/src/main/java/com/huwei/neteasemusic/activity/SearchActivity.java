@@ -4,12 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
 import com.huwei.neteasemusic.PlayBarBaseActivity;
 import com.huwei.neteasemusic.R;
+import com.huwei.neteasemusic.bean.resp.NetEaseAPI;
+import com.huwei.neteasemusic.bean.resp.ServerTip;
 import com.huwei.neteasemusic.ui.widget.SearchBar;
+import com.huwei.neteasemusic.util.StringUtils;
 import com.huwei.neteasemusic.util.Utils;
+import com.huwei.neteasemusic.util.network.HttpHandler;
 
 /**
  * @author jerry
@@ -20,8 +26,7 @@ public class SearchActivity extends PlayBarBaseActivity {
     public static final String TAG = "SearchActivity";
 
     private SearchBar mSearchBar;
-    private Toolbar mToolbar;
-//    private ReSizeLinearLayout mLlRoot;
+
 
     public static Intent getStartActIntent(Context from) {
         Intent intent = Utils.getActIntent(from, SearchActivity.class);
@@ -69,12 +74,34 @@ public class SearchActivity extends PlayBarBaseActivity {
     }
 
     void initView(){
-//        mLlRoot = (ReSizeLinearLayout) findViewById(R.id.ll_root);
         mSearchBar = (SearchBar) findViewById(R.id.search_bar);
     }
 
     void initListener(){
+        mSearchBar.getEtinput().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String keyword = s.toString();
+                if(StringUtils.isNotEmpty(keyword)){
+                    NetEaseAPI.suggest(keyword, 10, new HttpHandler() {
+                        @Override
+                        public void onSuccess(ServerTip serverTip) {
+
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override

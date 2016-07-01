@@ -133,6 +133,10 @@ public class SearchBar extends LinearLayout implements View.OnClickListener{
         return false;
     }
 
+    public EditText getEtinput(){
+        return mEtInput;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){

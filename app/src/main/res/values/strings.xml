@@ -5,4 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_search">搜索</string>
+
+    <string name="tips_network_error">网络异常: %d</string>
+    <string name="tips_json_parse_error">json解析异常: %s</string>
+
 </resources>
