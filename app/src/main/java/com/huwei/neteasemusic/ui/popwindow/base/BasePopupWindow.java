@@ -36,9 +36,6 @@ public class BasePopupWindow extends PopupWindow {
     public BasePopupWindow(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-
         mContext = context;
 
         setOnDismissListener(new OnDismissListener() {
@@ -86,7 +83,7 @@ public class BasePopupWindow extends PopupWindow {
     }
 
     protected void setContentView(@LayoutRes int layoutRes) {
-        setContentView(LayoutInflater.from(mContext).inflate(layoutRes, null));
+        setContentView(LayoutInflater.from(mContext).inflate(layoutRes, null,true));
     }
 
     protected View findViewById(int resId) {

@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.huwei.neteasemusic.PlayBarBaseActivity;
 import com.huwei.neteasemusic.R;
@@ -15,7 +16,9 @@ import com.huwei.neteasemusic.bean.resp.NetEaseAPI;
 import com.huwei.neteasemusic.bean.resp.ServerTip;
 import com.huwei.neteasemusic.ui.popwindow.SuggestPopWindow;
 import com.huwei.neteasemusic.ui.widget.SearchBar;
+import com.huwei.neteasemusic.util.DisplayUtil;
 import com.huwei.neteasemusic.util.StringUtils;
+import com.huwei.neteasemusic.util.ToastUtils;
 import com.huwei.neteasemusic.util.Utils;
 import com.huwei.neteasemusic.util.network.HttpHandler;
 
@@ -40,7 +43,6 @@ public class SearchActivity extends PlayBarBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
 
         initToolBar();
         initView();
@@ -76,11 +78,11 @@ public class SearchActivity extends PlayBarBaseActivity {
         });
     }
 
-    void initView(){
+    void initView() {
         mSearchBar = (SearchBar) findViewById(R.id.search_bar);
     }
 
-    void initListener(){
+    void initListener() {
         mSearchBar.getEtinput().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -94,22 +96,31 @@ public class SearchActivity extends PlayBarBaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String keyword = s.toString();
-                if(StringUtils.isNotEmpty(keyword)){
+                final String keyword = s.toString();
+                if (StringUtils.isNotEmpty(keyword)) {
                     NetEaseAPI.suggest(keyword, 10, new HttpHandler() {
                         @Override
                         public void onSuccess(ServerTip serverTip) {
-                            if(mSuggestPopWindow == null){
-                               mSuggestPopWindow = new SuggestPopWindow(mContext);
+                            if (mSuggestPopWindow == null) {
+                                mSuggestPopWindow = new SuggestPopWindow(mContext);
                             }
-                            mSuggestPopWindow.showAsDropDown(mToolBar,0,0);
+                            mSuggestPopWindow.setKeyWord(keyword);
+                            if (!mSuggestPopWindow.isShowing()) {
+                                mSuggestPopWindow.showAsDropDown(mToolBar, 0, -DisplayUtil.dip2px(mContext, 4));
+                            }
                         }
                     });
-                }else{
-                    if(mSuggestPopWindow != null && mSuggestPopWindow.isShowing()){
+                } else {
+                    if (mSuggestPopWindow != null && mSuggestPopWindow.isShowing()) {
                         mSuggestPopWindow.dismiss();
                     }
                 }
+            }
+        });
+        mSearchBar.setSearchCallback(new SearchBar.SearchCallback() {
+            @Override
+            public void onSearch(String keyword) {
+                ToastUtils.showShort("search:" + keyword);
             }
         });
     }
@@ -118,7 +129,7 @@ public class SearchActivity extends PlayBarBaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        if(mSearchBar.isFocusedR()){
+        if (mSearchBar.isFocusedR()) {
             mSearchBar.clearFocusR();
         }
     }

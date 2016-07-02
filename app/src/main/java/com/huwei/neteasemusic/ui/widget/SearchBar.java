@@ -5,11 +5,14 @@ import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.util.LogUtils;
@@ -32,6 +35,8 @@ public class SearchBar extends LinearLayout implements View.OnClickListener{
 
     private boolean mSearchGoOn = true;
     private String mHint;
+
+    private SearchCallback mSearchCallback;
 
     public SearchBar(Context context) {
         this(context, null);
@@ -103,7 +108,20 @@ public class SearchBar extends LinearLayout implements View.OnClickListener{
             }
         });
 
+        mEtInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                    onSearch(v.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
+
         mIvDelete.setOnClickListener(this);
+        mIvSearchGo.setOnClickListener(this);
     }
 
     private void changeBg(boolean hasFocus) {
@@ -143,8 +161,25 @@ public class SearchBar extends LinearLayout implements View.OnClickListener{
             case R.id.iv_delete:
                 mEtInput.setText("");
                 break;
+            case R.id.iv_search_go:
+                onSearch(mEtInput.getText().toString());
+                break;
             default:
                 break;
         }
+    }
+
+    public void setSearchCallback(SearchCallback mSearchCallback) {
+        this.mSearchCallback = mSearchCallback;
+    }
+
+    private void onSearch(String keyword){
+        if(mSearchCallback!=null){
+            mSearchCallback.onSearch(keyword);
+        }
+    }
+
+    public interface SearchCallback{
+        void onSearch(String keyword);
     }
 }
