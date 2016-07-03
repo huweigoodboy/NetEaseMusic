@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/suggest_item_height"
     android:paddingLeft="8dp"
+    android:paddingRight="8dp"
     android:gravity="center_vertical"
+    android:singleLine="true"
+    android:ellipsize="end"
     android:text=""
     android:textSize="16dp" />
 

@@ -9,5 +9,5 @@
 
     <dimen name="toolbar_padding_top">0dp</dimen>
 
-    <dimen name="suggest_item_height">40dp</dimen>
+    <dimen name="suggest_item_height">45dp</dimen>
 </resources>

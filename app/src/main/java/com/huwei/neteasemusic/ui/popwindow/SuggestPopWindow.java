@@ -13,10 +13,15 @@ import android.view.WindowManager;
 
 import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.adapter.SuggestAdapter;
+import com.huwei.neteasemusic.bean.SuggestItem;
 import com.huwei.neteasemusic.ui.popwindow.base.BasePopupWindow;
 import com.huwei.neteasemusic.ui.widget.DrawableTextView;
+import com.huwei.neteasemusic.ui.widget.divider.DividerItemDecoration;
+import com.huwei.neteasemusic.util.DividerUtils;
 import com.huwei.neteasemusic.util.StringUtils;
 import com.huwei.neteasemusic.util.Utils;
+
+import java.util.List;
 
 /**
  * @author jerry
@@ -54,6 +59,7 @@ public class SuggestPopWindow extends BasePopupWindow {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(DividerUtils.getHorizontalLine()));
     }
 
     void initListener(){
@@ -85,5 +91,12 @@ public class SuggestPopWindow extends BasePopupWindow {
 
         mTvKeyword.setText(Utils.getResources().getString(R.string.suggest_keyword, keyWord));
         mAdapter.notifyItemChanged(0);
+    }
+
+    public void setDataList(List<SuggestItem> dataList){
+        if(mAdapter != null){
+            mAdapter.setDataList(dataList);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

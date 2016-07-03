@@ -1,6 +1,5 @@
 package com.huwei.neteasemusic;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -17,11 +16,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.huwei.neteasemusic.activity.SearchActivity;
+import com.huwei.neteasemusic.modules.search.SearchActivity;
 import com.huwei.neteasemusic.main.MusicFragment;
 import com.huwei.neteasemusic.main.RelationShipFragment;
 import com.huwei.neteasemusic.main.DiscoverFragment;
-import com.huwei.neteasemusic.util.DisplayUtil;
+import com.huwei.neteasemusic.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,7 +183,7 @@ public class MainActivity extends PlayBarBaseActivity
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mTabLayout.setupWithViewPager(mViewPager);
 
-//        Rect bounds = new Rect(0,0, DisplayUtil.dip2px(this,56),DisplayUtil.dip2px(this,56));
+//        Rect bounds = new Rect(0,0, DensityUtil.dip2px(this,56),DensityUtil.dip2px(this,56));
 //        Drawable drawable = getResources().getDrawable(R.drawable.actionbar_discover);
 //        drawable.setBounds(bounds);
 //        mTabLayout.getTabAt(TAB_DISCOVER).setIcon(drawable);
@@ -210,7 +209,7 @@ public class MainActivity extends PlayBarBaseActivity
 
     private ImageView getIconImageView(int resId) {
         ImageView iv_icon = new ImageView(mContext);
-        int wh = DisplayUtil.dip2px(this, 56);
+        int wh = DensityUtil.dip2px(this, 56);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(wh, wh);
         iv_icon.setLayoutParams(layoutParams);
 

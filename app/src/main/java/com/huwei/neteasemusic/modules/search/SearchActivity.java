@@ -1,4 +1,4 @@
-package com.huwei.neteasemusic.activity;
+package com.huwei.neteasemusic.modules.search;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,17 +6,18 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
+
 
 import com.huwei.neteasemusic.PlayBarBaseActivity;
 import com.huwei.neteasemusic.R;
+import com.huwei.neteasemusic.bean.factory.SuggestFactory;
 import com.huwei.neteasemusic.bean.resp.NetEaseAPI;
+import com.huwei.neteasemusic.bean.resp.SearchSuggestResp;
 import com.huwei.neteasemusic.bean.resp.ServerTip;
 import com.huwei.neteasemusic.ui.popwindow.SuggestPopWindow;
 import com.huwei.neteasemusic.ui.widget.SearchBar;
-import com.huwei.neteasemusic.util.DisplayUtil;
+import com.huwei.neteasemusic.util.DensityUtil;
 import com.huwei.neteasemusic.util.StringUtils;
 import com.huwei.neteasemusic.util.ToastUtils;
 import com.huwei.neteasemusic.util.Utils;
@@ -98,16 +99,23 @@ public class SearchActivity extends PlayBarBaseActivity {
             public void afterTextChanged(Editable s) {
                 final String keyword = s.toString();
                 if (StringUtils.isNotEmpty(keyword)) {
-                    NetEaseAPI.suggest(keyword, 10, new HttpHandler() {
+                    NetEaseAPI.suggest(keyword, 10, new HttpHandler<SearchSuggestResp>() {
+
                         @Override
-                        public void onSuccess(ServerTip serverTip) {
-                            if (mSuggestPopWindow == null) {
-                                mSuggestPopWindow = new SuggestPopWindow(mContext);
+                        public void onSuccess(ServerTip serverTip,SearchSuggestResp suggestResp) {
+
+                            if (suggestResp != null) {
+
+                                if (mSuggestPopWindow == null) {
+                                    mSuggestPopWindow = new SuggestPopWindow(mContext);
+                                }
+                                mSuggestPopWindow.setKeyWord(keyword);
+                                mSuggestPopWindow.setDataList(SuggestFactory.getSuggestList(suggestResp));
+                                if (!mSuggestPopWindow.isShowing()) {
+                                    mSuggestPopWindow.showAsDropDown(mToolBar, 0, -DensityUtil.dip2px(mContext, 4));
+                                }
                             }
-                            mSuggestPopWindow.setKeyWord(keyword);
-                            if (!mSuggestPopWindow.isShowing()) {
-                                mSuggestPopWindow.showAsDropDown(mToolBar, 0, -DisplayUtil.dip2px(mContext, 4));
-                            }
+
                         }
                     });
                 } else {

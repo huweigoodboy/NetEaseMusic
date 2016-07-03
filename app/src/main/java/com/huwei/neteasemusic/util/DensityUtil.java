@@ -6,7 +6,7 @@ import android.content.Context;
  * @author Jayce
  * @date 2015/6/13
  */
-public class DisplayUtil {
+public class DensityUtil {
 
     /* 将px值转换为dip或dp值，保证尺寸大小不变
      *
