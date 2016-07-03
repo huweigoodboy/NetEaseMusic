@@ -3,11 +3,13 @@ package com.huwei.neteasemusic.modules.search;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-
+import android.widget.FrameLayout;
 
 import com.huwei.neteasemusic.PlayBarBaseActivity;
 import com.huwei.neteasemusic.R;
@@ -19,7 +21,6 @@ import com.huwei.neteasemusic.ui.popwindow.SuggestPopWindow;
 import com.huwei.neteasemusic.ui.widget.SearchBar;
 import com.huwei.neteasemusic.util.DensityUtil;
 import com.huwei.neteasemusic.util.StringUtils;
-import com.huwei.neteasemusic.util.ToastUtils;
 import com.huwei.neteasemusic.util.Utils;
 import com.huwei.neteasemusic.util.network.HttpHandler;
 
@@ -27,12 +28,17 @@ import com.huwei.neteasemusic.util.network.HttpHandler;
  * @author jerry
  * @date 2016/06/29
  */
-public class SearchActivity extends PlayBarBaseActivity {
+public class SearchActivity extends PlayBarBaseActivity implements SearchBar.SearchCallback{
 
     public static final String TAG = "SearchActivity";
 
     private SearchBar mSearchBar;
+
     private SuggestPopWindow mSuggestPopWindow;
+
+    private SearchResultFragment mSearchResultFragment;
+
+    private FrameLayout mFlContent;
 
 
     public static Intent getStartActIntent(Context from) {
@@ -81,6 +87,7 @@ public class SearchActivity extends PlayBarBaseActivity {
 
     void initView() {
         mSearchBar = (SearchBar) findViewById(R.id.search_bar);
+        mFlContent = (FrameLayout) findViewById(R.id.fl_content);
     }
 
     void initListener() {
@@ -125,12 +132,7 @@ public class SearchActivity extends PlayBarBaseActivity {
                 }
             }
         });
-        mSearchBar.setSearchCallback(new SearchBar.SearchCallback() {
-            @Override
-            public void onSearch(String keyword) {
-                ToastUtils.showShort("search:" + keyword);
-            }
-        });
+        mSearchBar.setSearchCallback(this);
     }
 
     @Override
@@ -140,5 +142,21 @@ public class SearchActivity extends PlayBarBaseActivity {
         if (mSearchBar.isFocusedR()) {
             mSearchBar.clearFocusR();
         }
+    }
+
+    @Override
+    public void onSearch(String keyword){
+
+        if(mSuggestPopWindow != null){
+            mSuggestPopWindow.dismiss();
+        }
+
+        mFlContent.removeAllViews();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transition = fragmentManager.beginTransaction();
+        mSearchResultFragment = new SearchResultFragment();
+        transition.replace(R.id.fl_content, mSearchResultFragment);
+        transition.commit();
     }
 }
