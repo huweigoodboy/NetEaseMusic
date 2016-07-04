@@ -28,7 +28,7 @@ import com.huwei.neteasemusic.util.network.HttpHandler;
  * @author jerry
  * @date 2016/06/29
  */
-public class SearchActivity extends PlayBarBaseActivity implements SearchBar.SearchCallback{
+public class SearchActivity extends PlayBarBaseActivity implements SearchBar.SearchCallback {
 
     public static final String TAG = "SearchActivity";
 
@@ -39,6 +39,11 @@ public class SearchActivity extends PlayBarBaseActivity implements SearchBar.Sea
     private SearchResultFragment mSearchResultFragment;
 
     private FrameLayout mFlContent;
+    private View mViewPreSearch;
+//    private View mViewResult;
+
+
+    private boolean isResultFragmentShow;
 
 
     public static Intent getStartActIntent(Context from) {
@@ -88,6 +93,11 @@ public class SearchActivity extends PlayBarBaseActivity implements SearchBar.Sea
     void initView() {
         mSearchBar = (SearchBar) findViewById(R.id.search_bar);
         mFlContent = (FrameLayout) findViewById(R.id.fl_content);
+        mViewPreSearch = findViewById(R.id.view_pre_search);
+//        mViewResult = findViewById(R.id.view_result);
+
+//        FragmentManager manager = getSupportFragmentManager();
+//        mSearchResultFragment = (SearchResultFragment) manager.findFragmentById(R.id.fragment_searchresult);
     }
 
     void initListener() {
@@ -105,29 +115,39 @@ public class SearchActivity extends PlayBarBaseActivity implements SearchBar.Sea
             @Override
             public void afterTextChanged(Editable s) {
                 final String keyword = s.toString();
-                if (StringUtils.isNotEmpty(keyword)) {
-                    NetEaseAPI.suggest(keyword, 10, new HttpHandler<SearchSuggestResp>() {
 
-                        @Override
-                        public void onSuccess(ServerTip serverTip,SearchSuggestResp suggestResp) {
+                //如果已经展示过结果页 就直接搜索
+                if (isResultFragmentShow) {
 
-                            if (suggestResp != null) {
-
-                                if (mSuggestPopWindow == null) {
-                                    mSuggestPopWindow = new SuggestPopWindow(mContext);
-                                }
-                                mSuggestPopWindow.setKeyWord(keyword);
-                                mSuggestPopWindow.setDataList(SuggestFactory.getSuggestList(suggestResp));
-                                if (!mSuggestPopWindow.isShowing()) {
-                                    mSuggestPopWindow.showAsDropDown(mToolBar, 0, -DensityUtil.dip2px(mContext, 4));
-                                }
-                            }
-
-                        }
-                    });
+                    onSearch(keyword);
                 } else {
-                    if (mSuggestPopWindow != null && mSuggestPopWindow.isShowing()) {
-                        mSuggestPopWindow.dismiss();
+                    //否则进行搜索建议
+
+                    if (StringUtils.isNotEmpty(keyword)) {
+
+                        NetEaseAPI.suggest(keyword, 10, new HttpHandler<SearchSuggestResp>() {
+
+                            @Override
+                            public void onSuccess(ServerTip serverTip, SearchSuggestResp suggestResp) {
+
+                                if (suggestResp != null) {
+
+                                    if (mSuggestPopWindow == null) {
+                                        mSuggestPopWindow = new SuggestPopWindow(mContext);
+                                    }
+                                    mSuggestPopWindow.setKeyWord(keyword);
+                                    mSuggestPopWindow.setDataList(SuggestFactory.getSuggestList(suggestResp));
+                                    if (!mSuggestPopWindow.isShowing()) {
+                                        mSuggestPopWindow.showAsDropDown(mToolBar, 0, -DensityUtil.dip2px(mContext, 4));
+                                    }
+                                }
+
+                            }
+                        });
+                    } else {
+                        if (mSuggestPopWindow != null && mSuggestPopWindow.isShowing()) {
+                            mSuggestPopWindow.dismiss();
+                        }
                     }
                 }
             }
@@ -145,18 +165,27 @@ public class SearchActivity extends PlayBarBaseActivity implements SearchBar.Sea
     }
 
     @Override
-    public void onSearch(String keyword){
+    public void onSearch(String keyword) {
 
-        if(mSuggestPopWindow != null){
+        if (mSuggestPopWindow != null) {
             mSuggestPopWindow.dismiss();
         }
 
-        mFlContent.removeAllViews();
+//        mFlContent.removeAllViews();
+        mViewPreSearch.setVisibility(View.GONE);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transition = fragmentManager.beginTransaction();
-        mSearchResultFragment = new SearchResultFragment();
-        transition.replace(R.id.fl_content, mSearchResultFragment);
-        transition.commit();
+        if (!isResultFragmentShow) {
+            isResultFragmentShow = true;
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transition = fragmentManager.beginTransaction();
+            mSearchResultFragment = new SearchResultFragment();
+            transition.replace(R.id.fl_content, mSearchResultFragment);
+            transition.commit();
+
+//            mViewResult.setVisibility(View.VISIBLE);
+        }
+
+        mSearchResultFragment.onSearch(keyword);
     }
 }

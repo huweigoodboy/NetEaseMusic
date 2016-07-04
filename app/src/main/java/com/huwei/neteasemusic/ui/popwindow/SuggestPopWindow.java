@@ -46,8 +46,6 @@ public class SuggestPopWindow extends BasePopupWindow {
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setOutsideTouchable(true);
 
-        setSoftInputMode(INPUT_METHOD_NEEDED);
-
         initView();
 //        initListener();
     }

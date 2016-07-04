@@ -30,10 +30,24 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/view_pre_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="搜索" />
+
+        <!--<FrameLayout-->
+            <!--android:id="@+id/view_result"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:visibility="invisible">-->
+
+            <!--<fragment-->
+                <!--android:id="@+id/fragment_searchresult"-->
+                <!--android:name="com.huwei.neteasemusic.modules.search.SearchResultFragment"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent" />-->
+        <!--</FrameLayout>-->
     </FrameLayout>
 
 </LinearLayout>

@@ -1,4 +1,13 @@
 <resources>
+
+    <string-array name="search_result_tab">
+        <item>歌曲</item>
+        <item>歌手</item>
+        <item>专辑</item>
+        <item>歌单</item>
+        <item>MV</item>
+    </string-array>
+
     <string name="app_name">NetEaseMusic</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -10,5 +19,7 @@
     <string name="tips_json_parse_error">json解析异常: %s</string>
 
     <string name="suggest_keyword">搜索\"%s\"</string>
+
+
 
 </resources>
