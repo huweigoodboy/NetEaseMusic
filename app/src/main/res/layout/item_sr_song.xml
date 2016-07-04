@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.huwei.neteasemusic.ui.widget.DrawableTextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="茉莉雨"
+                android:textSize="16sp"/>
+
+            <com.huwei.neteasemusic.ui.widget.DrawableTextView
+                android:id="@+id/tv_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_below="@id/tv_name"
+                android:textSize="12sp"
+                android:text="林俊杰-新地球" />
+
+            <com.huwei.neteasemusic.ui.widget.DrawableTextView
+                android:id="@+id/tv_alias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_below="@id/tv_show"
+                android:text="if only" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/music_icn_more"
+            android:scaleType="centerInside"/>
+
+    </LinearLayout>
+
+    <View style="@style/line_horizontal" />
 
 </LinearLayout>
