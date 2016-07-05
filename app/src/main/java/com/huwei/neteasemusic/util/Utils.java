@@ -9,6 +9,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.huwei.neteasemusic.NetEaseApplication;
 
+import java.util.List;
+
 /**
  * @author jerry
  * @date 2016-06-23
@@ -75,4 +77,13 @@ public class Utils {
         }
     }
 
+    /**
+     * 列表的数据 的第一个 可以被取出 并且 不是null
+     *
+     * @param list
+     * @return
+     */
+    public static boolean canFetchFirst(List list) {
+        return list != null && list.size() > 0 && list.get(0) != null;
+    }
 }

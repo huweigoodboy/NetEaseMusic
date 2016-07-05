@@ -27,6 +27,8 @@ public class DrawableTextView extends TextView {
     private int mDrawbleRes[] = new int[4];
     private boolean mIsDrawableCenter;
 
+    private boolean mHasAdjustBounds;
+
     public DrawableTextView(Context context) {
         this(context, null);
     }
@@ -41,7 +43,6 @@ public class DrawableTextView extends TextView {
         mContext = context;
 
         initAttr(attrs);
-        adjustDrawablesBound();
     }
 
     void initAttr(AttributeSet attrs) {
@@ -70,6 +71,8 @@ public class DrawableTextView extends TextView {
 
                     if (drawable != null) {
 
+                        mHasAdjustBounds = true;
+
                         t[i] = drawable;
 //                        t[i] = (ShapeDrawable) d[i];
 //                    t[i] = BitmapUtil.zoomDrawable(drawable, mDrawbleWidth, mDrawbleHeight);
@@ -80,6 +83,7 @@ public class DrawableTextView extends TextView {
                         LogUtils.i(TAG, "(mDrawbleWidth,mDrawbleWidth):" + mDrawbleWidth + "," + mDrawbleHeight + "   w,h:" + t[i].getIntrinsicWidth() + "," + t[i].getIntrinsicHeight());
 
                         setCompoundDrawables(t[0], t[1], t[2], t[3]);
+
                         return;
 //                    drawable.setBounds(0, 0, mDrawbleWidth, mDrawbleHeight);
                     }
@@ -93,6 +97,11 @@ public class DrawableTextView extends TextView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+
+        if(!mHasAdjustBounds){
+            adjustDrawablesBound();
+        }
+
         if (mIsDrawableCenter) {
             Drawable[] drawables = getCompoundDrawables();
             if (drawables != null) {

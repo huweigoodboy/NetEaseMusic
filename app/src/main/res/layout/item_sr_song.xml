@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -13,31 +14,55 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingBottom="9dp"
+            android:paddingTop="9dp">
 
-            <com.huwei.neteasemusic.ui.widget.DrawableTextView
-                android:id="@+id/tv_name"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/ll_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="茉莉雨"
-                android:textSize="16sp"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <com.huwei.neteasemusic.ui.widget.DrawableTextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:text="茉莉雨"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="14sp"
+                    app:drawableHeight="10dp"
+                    app:drawableWidth="24dp" />
+
+                <ImageView
+                    android:id="@+id/iv_mv"
+                    android:layout_width="29dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="4dp"
+                    android:src="@drawable/selector_btn_mv" />
+            </LinearLayout>
 
             <com.huwei.neteasemusic.ui.widget.DrawableTextView
                 android:id="@+id/tv_show"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/ll_name"
                 android:layout_marginTop="3dp"
-                android:layout_below="@id/tv_name"
-                android:textSize="12sp"
-                android:text="林俊杰-新地球" />
+                android:text="林俊杰-新地球"
+                android:textColor="@color/secondTextColor"
+                android:textSize="12sp" />
 
             <com.huwei.neteasemusic.ui.widget.DrawableTextView
                 android:id="@+id/tv_alias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
                 android:layout_below="@id/tv_show"
-                android:text="if only" />
+                android:layout_marginTop="3dp"
+                android:text="if only"
+                android:textColor="@color/secondTextColor"
+                android:textSize="12sp" />
 
         </RelativeLayout>
 
@@ -45,8 +70,8 @@
             android:id="@+id/iv_more"
             android:layout_width="48dp"
             android:layout_height="match_parent"
-            android:src="@drawable/music_icn_more"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside"
+            android:src="@drawable/music_icn_more" />
 
     </LinearLayout>
 

@@ -59,5 +59,5 @@ public class Song extends SuggestItem{
      */
 
     public List<Artist> artists;
-    public List<?> alias;
+    public List<String> alias;
 }

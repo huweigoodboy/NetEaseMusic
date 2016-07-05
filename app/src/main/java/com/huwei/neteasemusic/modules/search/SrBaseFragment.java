@@ -2,10 +2,13 @@ package com.huwei.neteasemusic.modules.search;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.main.BaseFragment;
 import com.huwei.neteasemusic.ui.widget.SearchBar;
 import com.huwei.neteasemusic.util.LogUtils;
@@ -19,6 +22,12 @@ public abstract class SrBaseFragment extends BaseFragment  implements SearchBar.
 
     protected boolean isFragmentPrepared;
     protected String mKeyword;
+    protected RecyclerView mRecyclerView;
+
+    @Override
+    public int getContentResId() {
+        return R.layout.fragment_sr_list;
+    }
 
     @Nullable
     @Override
@@ -30,6 +39,12 @@ public abstract class SrBaseFragment extends BaseFragment  implements SearchBar.
         onSearch(mKeyword);
 
         return mRootView;
+    }
+
+    @Override
+    public void initView() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycleView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
     }
 
     /**
