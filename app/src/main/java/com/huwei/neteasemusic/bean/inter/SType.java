@@ -8,8 +8,8 @@ package com.huwei.neteasemusic.bean.inter;
  */
 public interface SType {
     public static final int SONG = 1;
-    public static final int ARTIST = 10;
-    public static final int ALBUM = 100;
+    public static final int ARTIST = 100;
+    public static final int ALBUM = 10;
     public static final int MV = 1004;
     public static final int PLAYLIST = 1000;
     public static final int USER = 1002;

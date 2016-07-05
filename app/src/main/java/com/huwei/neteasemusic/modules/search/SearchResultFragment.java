@@ -67,9 +67,27 @@ public class SearchResultFragment extends BaseFragment implements SearchBar.Sear
         mTabLayout.setupWithViewPager(mViewPager);
 
 
-        //
+        //初始化 时搜索一次
         isPrepared = true;
         onSearch(mKeyword);
+
+        //加入tab改变的监听
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                onSearch(mKeyword);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     /**
