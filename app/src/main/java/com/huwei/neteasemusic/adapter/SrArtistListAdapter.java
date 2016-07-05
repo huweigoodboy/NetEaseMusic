@@ -17,7 +17,7 @@ import com.huwei.neteasemusic.util.Utils;
  * @author jerry
  * @date 2016/07/04
  */
-public class SrArtistListAdapter extends HeaderBottomAdapter<Artist, SrArtistListAdapter.SrSongListViewHolder> {
+public class SrArtistListAdapter extends SrBaseAdapter<Artist, SrArtistListAdapter.SrSongListViewHolder> {
 
     public SrArtistListAdapter(Context mContext) {
         super(mContext);
@@ -41,7 +41,7 @@ public class SrArtistListAdapter extends HeaderBottomAdapter<Artist, SrArtistLis
             }
 
             if(StringUtils.isNotEmpty(showText)) {
-                viewHolder.tvArtist.setText(showText);
+                viewHolder.tvArtist.setText(getSpannable(showText));
             }
         }
     }

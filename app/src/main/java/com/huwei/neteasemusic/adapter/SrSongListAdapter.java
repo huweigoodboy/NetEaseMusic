@@ -31,14 +31,14 @@ public class SrSongListAdapter extends SrBaseAdapter<Song, SrSongListAdapter.SrS
     @Override
     protected void bindItemData(SrSongListViewHolder viewHolder, Song song, int position) {
         if (song != null) {
-            viewHolder.tvName.setText(song.name);
+            viewHolder.tvName.setText(getSpannable(song.name));
             if (Utils.canFetchFirst(song.artists) && song.album != null) {
-                viewHolder.tvShow.setText(song.artists.get(0).name + " - " + song.album.name);
+                viewHolder.tvShow.setText(getSpannable(song.artists.get(0).name + " - " + song.album.name));
             }
             if (Utils.canFetchFirst(song.alias)) {
                 viewHolder.tvAlias.setVisibility(View.VISIBLE);
 
-                viewHolder.tvAlias.setText(song.alias.get(0));
+                viewHolder.tvAlias.setText(getSpannable(song.alias.get(0)));
             } else {
                 viewHolder.tvAlias.setVisibility(View.GONE);
             }

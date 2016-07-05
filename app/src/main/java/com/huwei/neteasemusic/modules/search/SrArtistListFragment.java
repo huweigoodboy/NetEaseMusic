@@ -23,13 +23,14 @@ public class SrArtistListFragment extends SrBaseFragment{
     }
 
     @Override
-    public void onSearch(String keyword) {
+    public void onSearch(final String keyword) {
         super.onSearch(keyword);
 
         NetEaseAPI.searchArtist(keyword, 0, 15, new HttpHandler<SrArtistListResp>() {
             @Override
             public void onSuccess(ServerTip serverTip, SrArtistListResp srArtistListResp) {
                 if(srArtistListResp !=null){
+                    mAdapter.setKeyword(keyword);
                     mAdapter.setDataList(srArtistListResp.artists);
                     mAdapter.notifyDataSetChanged();
                 }

@@ -17,7 +17,7 @@ import com.huwei.neteasemusic.util.Utils;
  * @author jerry
  * @date 2016/07/04
  */
-public class SrAlbumListAdapter extends HeaderBottomAdapter<Album, SrAlbumListAdapter.SrAlbumListViewHolder> {
+public class SrAlbumListAdapter extends SrBaseAdapter<Album, SrAlbumListAdapter.SrAlbumListViewHolder> {
 
     public SrAlbumListAdapter(Context mContext) {
         super(mContext);
@@ -39,11 +39,11 @@ public class SrAlbumListAdapter extends HeaderBottomAdapter<Album, SrAlbumListAd
             }
 
             if (StringUtils.isNotEmpty(name)) {
-                viewHolder.tvName.setText(name);
+                viewHolder.tvName.setText(getSpannable(name));
             }
 
             if (Utils.canFetchFirst(album.artists) && StringUtils.isNotEmpty(album.artists.get(0).name)) {
-                viewHolder.tvArtist.setText(album.artists.get(0).name);
+                viewHolder.tvArtist.setText(getSpannable(album.artists.get(0).name));
             }
 
             viewHolder.tvOnsale.setVisibility(album.onSale ? View.VISIBLE : View.GONE);

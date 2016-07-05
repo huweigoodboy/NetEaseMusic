@@ -26,12 +26,13 @@ public class SrAlbumListFragment extends SrBaseFragment{
     }
 
     @Override
-    public void onSearch(String keyword) {
+    public void onSearch(final String keyword) {
         super.onSearch(keyword);
 
         NetEaseAPI.searchAlbum(keyword, 0, 15, new HttpHandler<SrAlbumListResp>() {
             @Override
             public void onSuccess(ServerTip serverTip, SrAlbumListResp srAlbumListResp) {
+                mAdapter.setKeyword(keyword);
                 mAdapter.setDataList(srAlbumListResp.albums);
                 mAdapter.notifyDataSetChanged();
             }

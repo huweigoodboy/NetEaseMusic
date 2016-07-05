@@ -15,12 +15,13 @@ public class SrSongListFragment extends SrBaseFragment{
     private SrSongListAdapter mAdapter;
 
     @Override
-    public void onSearch(String keyword) {
+    public void onSearch(final String keyword) {
         super.onSearch(keyword);
 
         NetEaseAPI.searchSong(keyword, 0, 15, new HttpHandler<SrSongListResp>() {
             @Override
             public void onSuccess(ServerTip serverTip, SrSongListResp srSongListResp) {
+                mAdapter.setKeyword(keyword);
                 mAdapter.setDataList(srSongListResp.songs);
                 mAdapter.notifyDataSetChanged();
             }
