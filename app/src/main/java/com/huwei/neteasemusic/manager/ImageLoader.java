@@ -143,27 +143,6 @@ public class ImageLoader {
         });
     }
 
-    @Deprecated
-    public void load(String url, final ImageLoadCallback imageLoadCallback) {
-        if (StringUtils.isNotEmpty(url)) {
-            load(Uri.parse(url), imageLoadCallback);
-        } else {
-            imageLoadCallback.onFailure();
-        }
-    }
-
-    public void load(Uri uri, final ImageLoadCallback imageLoadCallback) {
-        //默认支持webP
-        //todo 走默认的方法
-        /*if (Build.VERSION.SDK_INT > 16) {
-            commonLoad(uri, imageLoadCallback);
-        } else {
-            //走兼容方法
-           under16Load(uri, imageLoadCallback);
-        }*/
-
-    }
-
     /**
      * 获取构造器
      * API 16以下

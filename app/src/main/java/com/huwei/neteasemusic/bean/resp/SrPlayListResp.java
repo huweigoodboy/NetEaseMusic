@@ -1,5 +1,6 @@
 package com.huwei.neteasemusic.bean.resp;
 
+import com.huwei.neteasemusic.bean.Playlist;
 import com.huwei.neteasemusic.bean.Song;
 
 import java.util.List;
@@ -15,5 +16,5 @@ public class SrPlayListResp {
     public int playlistCount;
 
 
-    public List<Song> playlists;
+    public List<Playlist> playlists;
 }

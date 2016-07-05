@@ -1,5 +1,7 @@
 package com.huwei.neteasemusic.bean;
 
+import java.util.List;
+
 /**
  * @author jerry
  * @date 2016/07/03
@@ -25,4 +27,52 @@ public class Album extends SuggestItem{
     public int copyrightId;
     public int status;
     public long picId;
+    /**
+     * songs : []
+     * paid : false
+     * onSale : false
+     * alias : ["Jay Chou's Bedtime Stories"]
+     * artists : [{"img1v1Id":0,"alias":[],"picId":0,"briefDesc":"","picUrl":"http://p3.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg","albumSize":0,"img1v1Url":"http://p4.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg","trans":"","musicSize":0,"name":"周杰伦","id":6452}]
+     * briefDesc :
+     * picUrl : http://p3.music.126.net/cUTk0ewrQtYGP2YpPZoUng==/3265549553028224.jpg
+     * commentThreadId : R_AL_3_34720827
+     * company : 杰威尔
+     * tags :
+     * blurPicUrl : http://p4.music.126.net/cUTk0ewrQtYGP2YpPZoUng==/3265549553028224.jpg
+     * companyId : 0
+     * pic : 3265549553028224
+     * type : 专辑
+     * description :
+     */
+
+    public boolean paid;
+    public boolean onSale;
+    public String briefDesc;
+    public String picUrl;
+    public String commentThreadId;
+    public String company;
+    public String tags;
+    public String blurPicUrl;
+    public int companyId;
+    public long pic;
+    public String type;
+    public String description;
+    public List<?> songs;
+    public List<String> alias;
+    /**
+     * img1v1Id : 0
+     * alias : []
+     * picId : 0
+     * briefDesc :
+     * picUrl : http://p3.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg
+     * albumSize : 0
+     * img1v1Url : http://p4.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg
+     * trans :
+     * musicSize : 0
+     * name : 周杰伦
+     * id : 6452
+     */
+
+    public List<Artist> artists;
+
 }

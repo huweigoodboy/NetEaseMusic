@@ -8,7 +8,7 @@ import java.util.List;
  * @author jerry
  * @date 2016/07/04
  */
-public class SrSongListResp  {
+public class SrSongListResp {
 
 
     /**

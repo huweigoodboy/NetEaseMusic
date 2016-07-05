@@ -10,7 +10,6 @@ import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.adapter.base.BaseViewHolder;
 import com.huwei.neteasemusic.adapter.base.HeaderBottomAdapter;
 import com.huwei.neteasemusic.bean.Artist;
-import com.huwei.neteasemusic.bean.resp.SrSongListResp;
 import com.huwei.neteasemusic.util.StringUtils;
 import com.huwei.neteasemusic.util.Utils;
 
