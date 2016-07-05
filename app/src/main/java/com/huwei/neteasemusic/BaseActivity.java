@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.huwei.neteasemusic.manager.ImageLoader;
 import com.huwei.neteasemusic.util.StatusBarUtil;
 import com.huwei.neteasemusic.util.Utils;
 
@@ -34,6 +35,11 @@ public class BaseActivity extends AppCompatActivity {
     protected Toolbar mToolBar;
 
     protected Handler mHandler;
+
+    /**
+     * 图片加载器
+     */
+    private ImageLoader mImageLoader;
 
     public static final int STATUS_BAR_COLOR = Utils.getResources().getColor(R.color.CD3D3A);
 
@@ -166,5 +172,12 @@ public class BaseActivity extends AppCompatActivity {
      */
     protected void onInitToolbar(Toolbar toolbar) {
 
+    }
+
+    public ImageLoader getImageLoader(){
+        if(mImageLoader == null){
+            mImageLoader = ImageLoader.get(mContext);
+        }
+        return mImageLoader;
     }
 }

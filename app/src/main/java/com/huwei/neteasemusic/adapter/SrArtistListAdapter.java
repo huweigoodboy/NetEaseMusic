@@ -32,6 +32,10 @@ public class SrArtistListAdapter extends HeaderBottomAdapter<Artist, SrArtistLis
     @Override
     protected void bindItemData(SrSongListViewHolder viewHolder, Artist artist, int position) {
         if (artist != null) {
+
+            //加载图片
+            getImageLoader().loadImage(viewHolder.ivArtist,artist.img1v1Url);
+
             String showText = artist.name;
             if (Utils.canFetchFirst(artist.alias)) {
                 showText += "(" + artist.alias.get(0) + ")";

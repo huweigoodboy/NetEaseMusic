@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+
+import com.huwei.neteasemusic.BaseActivity;
+import com.huwei.neteasemusic.manager.ImageLoader;
 import com.huwei.neteasemusic.util.LogUtils;
 
 import java.util.ArrayList;
@@ -29,7 +32,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends RecyclerView.ViewHolder>
     protected List<T> mDatas = new ArrayList<>();
     protected Context mContext;
     protected LayoutInflater mLayoutInflater;
-//    private ImageLoader mImageLoader;
+    private ImageLoader mImageLoader;
 
     AdapterView.OnItemClickListener mItemClickListener;
 
@@ -199,12 +202,14 @@ public abstract class BaseRecyclerAdapter<T, VH extends RecyclerView.ViewHolder>
         this.mItemClickListener = listener;
     }
 
-//    public ImageLoader getImageLoader() {
-//        if (mImageLoader == null) {
-//            mImageLoader = ImageLoader.get();
-//        }
-//        return mImageLoader;
-//    }
+    public ImageLoader getImageLoader() {
+        if (mImageLoader == null) {
+            if(mContext instanceof BaseActivity){
+                mImageLoader = ((BaseActivity)mContext).getImageLoader();
+            }
+        }
+        return mImageLoader;
+    }
 
 //    /**
 //     * 其他　nodataView视图样式　extends　此类
