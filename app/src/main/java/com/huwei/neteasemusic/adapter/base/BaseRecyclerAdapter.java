@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.huwei.neteasemusic.BaseActivity;
+import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.manager.ImageLoader;
 import com.huwei.neteasemusic.util.LogUtils;
 
@@ -73,6 +74,9 @@ public abstract class BaseRecyclerAdapter<T, VH extends RecyclerView.ViewHolder>
 //                holder.itemView.setVisibility(View.GONE);
 //            }
 //        } else if (type != RecyclerAdapterWithHF.TYPE_HEADER && type != RecyclerAdapterWithHF.TYPE_FOOTER) {
+
+
+
             final T item = getItem(position);
             bindItemData((VH) holder, item, position);
             setupOnItemClick((VH) holder, position);
@@ -80,6 +84,10 @@ public abstract class BaseRecyclerAdapter<T, VH extends RecyclerView.ViewHolder>
     }
 
     protected abstract void bindItemData(VH viewHolder, T data, int position);
+
+    protected boolean isNeedRipple(){
+        return true;
+    }
 
     protected boolean needNoDataView() {
         return false;
@@ -99,6 +107,12 @@ public abstract class BaseRecyclerAdapter<T, VH extends RecyclerView.ViewHolder>
     }
 
     protected void setupOnItemClick(final VH viewHolder, final int position) {
+        if(isNeedRipple()){
+            viewHolder.itemView.setBackgroundResource(R.drawable.common_ripple_light_selector);
+            viewHolder.itemView.setClickable(true);
+            viewHolder.itemView.setFocusableInTouchMode(true);
+        }
+
         if (mItemClickListener != null) {
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

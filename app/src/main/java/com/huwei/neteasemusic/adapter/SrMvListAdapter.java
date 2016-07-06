@@ -10,6 +10,8 @@ import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.adapter.base.BaseViewHolder;
 import com.huwei.neteasemusic.bean.Mv;
 import com.huwei.neteasemusic.bean.resp.SrSongListResp;
+import com.huwei.neteasemusic.util.StringUtils;
+import com.huwei.neteasemusic.util.TimeUtil;
 
 /**
  * @author jerry
@@ -21,6 +23,12 @@ public class SrMvListAdapter extends SrBaseAdapter<Mv, SrMvListAdapter.SrMvViewH
         super(mContext);
     }
 
+
+    @Override
+    protected boolean isNeedRipple() {
+        return false;
+    }
+
     @Override
     public SrMvViewHolder onCreateContentViewHolder(ViewGroup parent, int viewType) {
         return new SrMvViewHolder(mLayoutInflater.inflate(R.layout.item_sr_mv, null, true));
@@ -29,8 +37,18 @@ public class SrMvListAdapter extends SrBaseAdapter<Mv, SrMvListAdapter.SrMvViewH
     @Override
     protected void bindItemData(SrMvViewHolder viewHolder, Mv mv, int position) {
         if (mv != null) {
+            getImageLoader().loadImage(viewHolder.ivCover,mv.cover);
+
             viewHolder.tvPlayCount.setText(mv.getPlayCountStr());
-            viewHolder.tvDuration.setText();
+            viewHolder.tvDuration.setText(getSpannable(TimeUtil.getDuration(mv.duration)));
+
+            if(StringUtils.isNotEmpty(mv.artistName)){
+                viewHolder.tvArtist.setText(getSpannable(mv.artistName));
+            }
+
+            if(StringUtils.isNotEmpty(mv.name)){
+                viewHolder.tvName.setText(getSpannable(mv.name));
+            }
         }
     }
 

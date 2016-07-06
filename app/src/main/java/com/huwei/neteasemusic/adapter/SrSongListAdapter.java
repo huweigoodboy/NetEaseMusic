@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.adapter.base.BaseViewHolder;
 import com.huwei.neteasemusic.bean.Song;
+import com.huwei.neteasemusic.util.ToastUtils;
 import com.huwei.neteasemusic.util.Utils;
 
 
@@ -53,7 +54,7 @@ public class SrSongListAdapter extends SrBaseAdapter<Song, SrSongListAdapter.SrS
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    ToastUtils.showShort("onClick");
                 }
             });
         }

@@ -35,8 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="2dp"
             android:text="04:06"
             android:textColor="@color/FCFDFD"
             android:textSize="12sp" />
@@ -49,6 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="阳光宅男"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:textColor="@color/primaryTextColor"
         android:textSize="16sp" />
 
@@ -56,7 +58,8 @@
         android:id="@+id/tv_artist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="2dp"
         android:text="周杰伦"
         android:textColor="@color/secondTextColor"
         android:textSize="12sp" />
