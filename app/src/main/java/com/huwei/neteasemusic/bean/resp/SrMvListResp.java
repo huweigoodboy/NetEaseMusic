@@ -1,5 +1,6 @@
 package com.huwei.neteasemusic.bean.resp;
 
+import com.huwei.neteasemusic.bean.Mv;
 import com.huwei.neteasemusic.bean.Song;
 
 import java.util.List;
@@ -15,5 +16,5 @@ public class SrMvListResp {
     public int mvCount;
 
 
-    public List<Song> mvs;
+    public List<Mv> mvs;
 }

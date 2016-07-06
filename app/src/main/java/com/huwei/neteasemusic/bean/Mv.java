@@ -6,7 +6,7 @@ import java.util.List;
  * @author jerry
  * @date 2016/07/03
  */
-public class Mv extends SuggestItem{
+public class Mv extends SuggestItem {
 
     /**
      * id : 5308307
@@ -25,7 +25,7 @@ public class Mv extends SuggestItem{
 //
 //    public int id;
     public String cover;
-//    public String name;
+    //    public String name;
     public int playCount;
     public String briefDesc;
     public Object desc;
@@ -40,4 +40,11 @@ public class Mv extends SuggestItem{
      */
 
     public List<Artist> artists;
+
+    public String getPlayCountStr() {
+        if (playCount > 100000) {
+            return playCount / 10000 + "万次";
+        }
+        return playCount + "次";
+    }
 }

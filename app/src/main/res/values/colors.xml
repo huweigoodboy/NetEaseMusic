@@ -14,6 +14,7 @@
     <color name="DC7876">#DC7876</color>
     <color name="DC7775">#DC7775</color>
     <color name="F1F3F4">#F1F3F4</color>
+    <color name="D6D8DA">#d6d8da</color>
 
 
     <color name="color_333333">#333333</color>  <!-- primary textColor-->
@@ -21,7 +22,7 @@
 
     <color name="color_87">#878787</color>
     <color name="color_417BBA">#417BBA</color>
-    <color name="color_3774AF">#3774AF</color>
+
 
     <color name="black">#000000</color>
     <color name="black_6">#0F000000</color>

@@ -10,4 +10,7 @@
     <dimen name="toolbar_padding_top">0dp</dimen>
 
     <dimen name="suggest_item_height">45dp</dimen>
+
+    <dimen name="mv_divider_height">10dp</dimen>
+    <dimen name="mv_divider_width">10dp</dimen>
 </resources>
