@@ -35,7 +35,7 @@ public class TimeUtil {
         }
 
         if (time[3] < 10) {
-            m = "0" + time[3];
+            s = "0" + time[3];
         }
 
         return m + ":" + s;
