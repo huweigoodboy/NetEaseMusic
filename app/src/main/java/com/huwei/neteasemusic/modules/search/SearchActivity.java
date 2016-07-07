@@ -139,6 +139,7 @@ public class SearchActivity extends PlayBarBaseActivity implements SearchBar.Sea
 
                                     if (mSuggestPopWindow == null) {
                                         mSuggestPopWindow = new SuggestPopWindow(mContext);
+                                        mSuggestPopWindow.setSearchCallback(SearchActivity.this);
                                     }
                                     mSuggestPopWindow.setKeyWord(keyword);
                                     mSuggestPopWindow.setDataList(SuggestFactory.getSuggestList(suggestResp));
@@ -178,6 +179,8 @@ public class SearchActivity extends PlayBarBaseActivity implements SearchBar.Sea
 
 //        mFlContent.removeAllViews();
         mViewPreSearch.setVisibility(View.GONE);
+        mSearchBar.setKeyword(keyword);
+
 
         if (!isResultFragmentShow) {
             isResultFragmentShow = true;

@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 
 import com.huwei.neteasemusic.BaseActivity;
 import com.huwei.neteasemusic.R;
+import com.huwei.neteasemusic.inter.OnRecyclerViewItemClickListener;
 import com.huwei.neteasemusic.manager.ImageLoader;
 import com.huwei.neteasemusic.util.LogUtils;
 
@@ -35,7 +36,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends RecyclerView.ViewHolder>
     protected LayoutInflater mLayoutInflater;
     private ImageLoader mImageLoader;
 
-    AdapterView.OnItemClickListener mItemClickListener;
+    OnRecyclerViewItemClickListener mItemClickListener;
 
     protected boolean isDataSet = false; //数据被设置过 无论有没有改变
 
@@ -116,7 +117,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends RecyclerView.ViewHolder>
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mItemClickListener.onItemClick(null, viewHolder.itemView, position, position);
+                    mItemClickListener.onItemClick( viewHolder.itemView, position);
                 }
             });
         }
@@ -211,7 +212,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends RecyclerView.ViewHolder>
         mDatas.clear();
     }
 
-    public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
+    public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
         this.mItemClickListener = listener;
     }
 

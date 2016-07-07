@@ -14,8 +14,10 @@ import android.view.WindowManager;
 import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.adapter.SuggestAdapter;
 import com.huwei.neteasemusic.bean.SuggestItem;
+import com.huwei.neteasemusic.inter.OnRecyclerViewItemClickListener;
 import com.huwei.neteasemusic.ui.popwindow.base.BasePopupWindow;
 import com.huwei.neteasemusic.ui.widget.DrawableTextView;
+import com.huwei.neteasemusic.ui.widget.SearchBar;
 import com.huwei.neteasemusic.ui.widget.divider.DividerItemDecoration;
 import com.huwei.neteasemusic.util.DividerUtils;
 import com.huwei.neteasemusic.util.StringUtils;
@@ -27,13 +29,15 @@ import java.util.List;
  * @author jerry
  * @date 2016/07/01
  */
-public class SuggestPopWindow extends BasePopupWindow {
+public class SuggestPopWindow extends BasePopupWindow{
 
     private RecyclerView mRecyclerView;
     private SuggestAdapter mAdapter;
     private DrawableTextView mTvKeyword;
 
     private View mLlContainer;
+
+    private SearchBar.SearchCallback mSearchCallback;
 
     public SuggestPopWindow(Context context) {
         super(context);
@@ -46,8 +50,11 @@ public class SuggestPopWindow extends BasePopupWindow {
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setOutsideTouchable(true);
 
+        setInputMethodMode(INPUT_METHOD_NEEDED);
+        setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         initView();
-//        initListener();
+        initListener();
     }
 
     void initView() {
@@ -61,11 +68,21 @@ public class SuggestPopWindow extends BasePopupWindow {
     }
 
     void initListener(){
-        mLlContainer.setOnClickListener(new View.OnClickListener() {
+//        mLlContainer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(isShowing()){
+//                    dismiss();
+//                }
+//            }
+//        });
+        mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
             @Override
-            public void onClick(View v) {
-                if(isShowing()){
-                    dismiss();
+            public void onItemClick(View view, int position) {
+                if(mSearchCallback!=null){
+                    if(mAdapter.getItem(position)!=null && StringUtils.isNotEmpty( mAdapter.getItem(position).name)) {
+                        mSearchCallback.onSearch(mAdapter.getItem(position).name);
+                    }
                 }
             }
         });
@@ -96,5 +113,9 @@ public class SuggestPopWindow extends BasePopupWindow {
             mAdapter.setDataList(dataList);
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void setSearchCallback(SearchBar.SearchCallback mSearchCallback) {
+        this.mSearchCallback = mSearchCallback;
     }
 }

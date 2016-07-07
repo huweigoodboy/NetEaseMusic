@@ -1,5 +1,6 @@
 package com.huwei.neteasemusic.ui.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.util.LogUtils;
 import com.huwei.neteasemusic.util.StringUtils;
+import com.huwei.neteasemusic.util.Utils;
 
 /**
  * actionbar 搜索栏
@@ -113,6 +115,9 @@ public class SearchBar extends LinearLayout implements View.OnClickListener{
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
                 if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                    //收起输入法
+                    Utils.hideSoftInput((Activity) mContext);
+
                     onSearch(v.getText().toString());
                     return true;
                 }
@@ -153,6 +158,22 @@ public class SearchBar extends LinearLayout implements View.OnClickListener{
 
     public EditText getEtinput(){
         return mEtInput;
+    }
+
+    public String getKeyword(){
+        return mEtInput.getText().toString();
+    }
+
+    public void setKeyword(String keyword){
+        if(!StringUtils.equals(keyword,getKeyword())){
+            mEtInput.setText(keyword);
+
+            if(StringUtils.isNotEmpty(keyword)){
+                mEtInput.setSelection(keyword.length());
+            }else {
+                mEtInput.setSelection(0);
+            }
+        }
     }
 
     @Override

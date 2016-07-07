@@ -18,7 +18,7 @@ public class HttpParams {
 
     Map<String, String> headers = new HashMap<>();
 
-    Class bases[] = {Integer.class, Long.class, Short.class, Float.class, Double.class, String.class};
+    Class bases[] = {Integer.class, Long.class, Short.class, Float.class, Double.class, String.class,Boolean.class};
 
     private void HttpParams() {
 
