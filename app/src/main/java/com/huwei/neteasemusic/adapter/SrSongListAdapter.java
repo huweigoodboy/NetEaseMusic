@@ -1,5 +1,6 @@
 package com.huwei.neteasemusic.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.adapter.base.BaseViewHolder;
 import com.huwei.neteasemusic.bean.Song;
+import com.huwei.neteasemusic.ui.menu.PlayingListActivity;
 import com.huwei.neteasemusic.util.ToastUtils;
 import com.huwei.neteasemusic.util.Utils;
 
@@ -50,6 +52,15 @@ public class SrSongListAdapter extends SrBaseAdapter<Song, SrSongListAdapter.SrS
             }else{
                 viewHolder.ivMv.setVisibility(View.GONE);
             }
+
+            viewHolder.ivMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mContext instanceof Activity){
+                        ((Activity)mContext).startActivity(PlayingListActivity.getStartActIntent(mContext));
+                    }
+                }
+            });
 
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -29,6 +29,8 @@
         </activity>
 
         <activity android:name=".modules.search.SearchActivity" />
+
+        <activity android:name=".ui.menu.PlayingListActivity"/>
     </application>
 
 </manifest>
