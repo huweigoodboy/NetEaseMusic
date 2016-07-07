@@ -13,4 +13,18 @@
 
     <dimen name="mv_divider_height">10dp</dimen>
     <dimen name="mv_divider_width">10dp</dimen>
+
+    <dimen name="md_action_corner_radius">2.0dip</dimen>
+    <dimen name="md_bg_corner_radius">2.0dip</dimen>
+    <dimen name="md_button_frame_vertical_padding">8.0dip</dimen>
+    <dimen name="md_button_height">48.0dip</dimen>
+    <dimen name="md_button_inset_horizontal">4.0dip</dimen>
+    <dimen name="md_button_inset_vertical">6.0dip</dimen>
+    <dimen name="md_button_min_width">72.0dip</dimen>
+    <dimen name="md_button_padding_frame_side">12.0dip</dimen>
+    <dimen name="md_button_padding_horizontal">8.0dip</dimen>
+    <dimen name="md_button_padding_horizontal_internalexternal">32.0dip</dimen>
+    <dimen name="md_button_padding_vertical">4.0dip</dimen>
+    <dimen name="md_button_textpadding_horizontal">1.0dip</dimen>
+    <dimen name="md_button_textsize">14.0sp</dimen>
 </resources>

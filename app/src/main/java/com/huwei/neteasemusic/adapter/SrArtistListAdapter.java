@@ -11,6 +11,7 @@ import com.huwei.neteasemusic.adapter.base.BaseViewHolder;
 import com.huwei.neteasemusic.adapter.base.HeaderBottomAdapter;
 import com.huwei.neteasemusic.bean.Artist;
 import com.huwei.neteasemusic.util.StringUtils;
+import com.huwei.neteasemusic.util.ToastUtils;
 import com.huwei.neteasemusic.util.Utils;
 
 /**
@@ -43,6 +44,13 @@ public class SrArtistListAdapter extends SrBaseAdapter<Artist, SrArtistListAdapt
             if(StringUtils.isNotEmpty(showText)) {
                 viewHolder.tvArtist.setText(getSpannable(showText));
             }
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtils.showShort("Artist Click");
+                }
+            });
         }
     }
 

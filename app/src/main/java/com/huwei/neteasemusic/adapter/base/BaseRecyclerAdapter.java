@@ -108,9 +108,8 @@ public abstract class BaseRecyclerAdapter<T, VH extends RecyclerView.ViewHolder>
 
     protected void setupOnItemClick(final VH viewHolder, final int position) {
         if(isNeedRipple()){
-            viewHolder.itemView.setBackgroundResource(R.drawable.common_ripple_light_selector);
+            viewHolder.itemView.setBackgroundResource(R.drawable.common_ripple_dark_selector);
             viewHolder.itemView.setClickable(true);
-            viewHolder.itemView.setFocusableInTouchMode(true);
         }
 
         if (mItemClickListener != null) {

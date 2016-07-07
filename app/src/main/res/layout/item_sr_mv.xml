@@ -35,8 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="4dp"
             android:text="04:06"
             android:textColor="@color/FCFDFD"
             android:textSize="12sp" />

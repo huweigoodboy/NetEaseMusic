@@ -1,12 +1,9 @@
 package com.huwei.neteasemusic.modules.search;
 
-import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.adapter.SrAlbumListAdapter;
 import com.huwei.neteasemusic.bean.resp.NetEaseAPI;
 import com.huwei.neteasemusic.bean.resp.ServerTip;
 import com.huwei.neteasemusic.bean.resp.SrAlbumListResp;
-import com.huwei.neteasemusic.main.BaseFragment;
-import com.huwei.neteasemusic.ui.widget.SearchBar;
 import com.huwei.neteasemusic.util.network.HttpHandler;
 
 /**
