@@ -41,6 +41,8 @@ public class BaseActivity extends AppCompatActivity {
      */
     private ImageLoader mImageLoader;
 
+    private boolean mIsDestory;
+
     public static final int STATUS_BAR_COLOR = Utils.getResources().getColor(R.color.CD3D3A);
 
     @Override
@@ -94,6 +96,13 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mIsDestory = true;
+
+        super.onDestroy();
     }
 
     /**
@@ -176,8 +185,13 @@ public class BaseActivity extends AppCompatActivity {
 
     public ImageLoader getImageLoader(){
         if(mImageLoader == null){
-            mImageLoader = ImageLoader.get(mContext);
+            mImageLoader = new ImageLoader(mContext);
         }
         return mImageLoader;
+    }
+
+
+    public boolean isDestroyed() {
+        return mIsDestory;
     }
 }

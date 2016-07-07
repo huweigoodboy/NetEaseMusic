@@ -2,30 +2,33 @@ package com.huwei.neteasemusic.manager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.BitmapRequestBuilder;
+import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.GenericRequestBuilder;
+
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.StreamEncoder;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.load.resource.bitmap.StreamBitmapDecoder;
 import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.huwei.neteasemusic.R;
+import com.huwei.neteasemusic.BaseActivity;
+import com.huwei.neteasemusic.NetEaseApplication;
+import com.huwei.neteasemusic.util.LogUtils;
 import com.huwei.neteasemusic.util.StringUtils;
 import com.huwei.neteasemusic.util.img.WebpDownsampler;
 
 import java.io.InputStream;
+
 
 
 
@@ -37,9 +40,6 @@ import java.io.InputStream;
  *
  * @author jerry
  * @date 2016/03/23
- * 修改 andy
- * 描述 全局单例
- * 时间 20160517
  */
 public class ImageLoader {
 
@@ -49,294 +49,206 @@ public class ImageLoader {
 
     private StreamBitmapDecoder mDecoder;
 
-    private static ImageLoader mImageLoader;
 
-    private ImageLoader(Context context) {
+    public ImageLoader(Context context) {
         mContext = context;
     }
 
     /**
-     * 在Application中调用的初始化方法
+     * 获取imageLoader实例 (最大程度上的保证同一个activity 中view 等 只有同一个imageloader)
+     * 注意：这不是一个单例  很有可能会new一个对象 不要当作单例使用
+     * <p/>
+     * <p/>
+     * 1,如果context是属于baseActivity 直接获取activity中的imageLoader
+     * 2,如果不是，创建一个imageLoader
      *
      * @param context
+     * @return
      */
-    public static void init(Context context) {
-        if (mImageLoader == null) {
-            mImageLoader = new ImageLoader(context);
-        }
-    }
-
     public static ImageLoader get(Context context) {
+        if (context instanceof BaseActivity) {
+            return ((BaseActivity) context).getImageLoader();
+        }
         return new ImageLoader(context);
     }
 
-    private StreamBitmapDecoder getDecoder() {
-        if (mDecoder == null) {
-            mDecoder = new StreamBitmapDecoder(WebpDownsampler.AT_MOST, Glide.get(mContext).getBitmapPool(), DecodeFormat.PREFER_ARGB_8888);
+    private StreamBitmapDecoder getDecoder(){
+        if(mDecoder == null) {
+            mDecoder = new StreamBitmapDecoder(WebpDownsampler.AT_MOST,Glide.get(mContext).getBitmapPool(), DecodeFormat.PREFER_ARGB_8888);
         }
         return mDecoder;
     }
 
+
+
+
+    /**
+     * 载入默认图标
+     *
+     * @param imageView
+     * @param url
+     * @param drawableRes
+     */
+    public void loadImage(final ImageView imageView, String url, int drawableRes) {
+        if (imageView == null) {
+            return;
+        }
+
+        LogUtils.i(TAG, "url:" + url + "     tag:" + imageView.getTag(imageView.getId()));
+        //不为空　相等时　不加载图片
+        if (StringUtils.isNotEmpty(url) && StringUtils.equals(imageView.getTag(imageView.getId()), url)) {
+            return;
+        }
+
+        Drawable drawable = ContextCompat.getDrawable(mContext, drawableRes);
+        imageView.setImageDrawable(drawable);
+        if (!TextUtils.isEmpty(url)) {
+            loadImage(imageView, url);
+        }
+    }
+
+    /**
+     * 支持普通imageView的图片加载
+     *
+     * @param imageView
+     * @param url
+     */
+    public void loadImage(final ImageView imageView, final String url) {
+        if (StringUtils.isNotEmpty(url)) {
+            if (imageView != null) {
+                loadImage(url, new SimpleImageLoadCallback() {
+                    @Override
+                    public void onSuccess(Bitmap bitmap) {
+                        if (bitmap != null) {
+                            //设置TAG 防止图片重新加载
+                            imageView.setTag(imageView.getId(), url);
+
+                            imageView.setImageBitmap(bitmap);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
 //    /**
-//     * 载入头像
+//     * 支持普通imageView的图片加载
 //     *
 //     * @param imageView
-//     * @param url
+//     * @param uri
 //     */
-//    public void loadAvatar(final ImageView imageView, String url, int resWidth, int resHeight) {
-//        if (imageView != null) {
-//            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//            loadImage(imageView, url, resWidth, resHeight, R.drawable.icon_default_avatar);
-//        }
-//    }
-
-    /**
-     * 加载图片
-     * 回调显示
-     * 原尺寸
-     *
-     * @param url
-     * @param imageLoadCallback
-     */
-    public void loadImage(String url, final ImageLoadCallback imageLoadCallback) {
-        loadImage(url, 0, 0, imageLoadCallback);
-    }
-
-    /**
-     * 加载图片
-     * 回调显示
-     * 根据标注尺寸加载
-     *
-     * @param url
-     * @param resWidth          资源ID
-     * @param resHeight         资源ID
-     * @param imageLoadCallback
-     */
-    public void loadImage(String url, int resWidth, int resHeight, final ImageLoadCallback imageLoadCallback) {
-        int width, height;
-        if (resWidth == 0 || resHeight == 0) {
-            width = SimpleTarget.SIZE_ORIGINAL;
-            height = SimpleTarget.SIZE_ORIGINAL;
-        } else {
-            width = mContext.getResources().getDimensionPixelOffset(resWidth);
-            height = mContext.getResources().getDimensionPixelOffset(resHeight);
-        }
-        Glide.with(mContext).load(url).asBitmap().into(new SimpleTarget<Bitmap>(width, height) {
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                if (imageLoadCallback != null) {
-                    if (resource != null) {
-                        imageLoadCallback.onSuccess(resource);
-                    } else {
-                        imageLoadCallback.onFailure();
-                    }
-                }
-            }
-
-            @Override
-            public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                super.onLoadFailed(e, errorDrawable);
-                if (imageLoadCallback != null) {
-                    imageLoadCallback.onFailure();
-                }
-            }
-        });
-    }
-
-    /**
-     * 获取构造器
-     * API 16以下
-     *
-     * @param url
-     * @return
-     */
-    private GenericRequestBuilder<String, InputStream, Bitmap, Bitmap> getWebpBuilder(String url) {
-        GenericRequestBuilder<String, InputStream, Bitmap, Bitmap> requestBuilder = Glide
-                .with(mContext)
-                .using(Glide.buildStreamModelLoader(String.class, mContext), InputStream.class)
-                .load(url)
-                .as(Bitmap.class)
-                .sourceEncoder(new StreamEncoder())
-                .decoder(getDecoder())
-                .cacheDecoder(new FileToStreamDecoder<>(getDecoder()));
-        return requestBuilder;
-    }
-
-    /**
-     * 获取构造器
-     * API 16以上
-     *
-     * @param url
-     * @return
-     */
-    public BitmapRequestBuilder<String,Bitmap> getCommonBuilder(String url) {
-        BitmapRequestBuilder<String,Bitmap> builder = Glide.with(mContext)
-                .load(url)
-                .asBitmap()
-                .dontAnimate();
-        return builder;
-    }
-
-    private GenericRequestBuilder getBuilder(String url) {
-        if (Build.VERSION.SDK_INT >= 16) {
-            return getCommonBuilder(url);
-        } else {
-            return getWebpBuilder(url);
-        }
-    }
-
-    /**
-     * 获取资源尺寸
-     *
-     * @param resSize
-     * @return 默认返回原始尺寸
-     */
-    private int getSize(int resSize) {
-        if (resSize == 0) {
-            return SimpleTarget.SIZE_ORIGINAL;
-        } else {
-            return mContext.getResources().getDimensionPixelOffset(resSize);
-        }
-    }
-
-    /**
-     * 直接加载原图
-     *
-     * @param ivShow
-     * @param url
-     */
-    public void loadImage(ImageView ivShow, String url) {
-        if (ivShow == null || TextUtils.isEmpty(url)) {
-            //提示
-            return;
-        }
-        getBuilder(url).into(ivShow);
-    }
-
-    /**
-     * 加载图片
-     * 根据尺寸加载
-     *
-     * @param ivShow
-     * @param url
-     * @param resWidth
-     * @param resHeight
-     */
-    public void loadImage(ImageView ivShow, String url, int resWidth, int resHeight) {
-        if (ivShow == null || TextUtils.isEmpty(url)) {
-            return;
-        }
-        getBuilder(url).override(getSize(resWidth), getSize(resHeight)).into(ivShow);
-    }
-
-    /**
-     * 加载图片
-     * 根据尺寸加载
-     * 支持自定义占位图
-     *
-     * @param ivShow
-     * @param url
-     * @param resWidth
-     * @param resHeight
-     * @param defaultDrawable
-     */
-    public void loadImage(ImageView ivShow, String url, int resWidth, int resHeight, int defaultDrawable) {
-        if (ivShow == null || TextUtils.isEmpty(url)) {
-            return;
-        }
-        getBuilder(url).override(getSize(resWidth), getSize(resHeight)).placeholder(defaultDrawable).into(ivShow);
-    }
-
-    /**
-     * 加载图片
-     * 回调bitmap
-     *
-     * @param url
-     * @param resWidth
-     * @param resHeight
-     * @param transformation
-     * @param imageLoadCallback
-     */
-    public void loadImage(String url, int resWidth, int resHeight, BitmapTransformation transformation, final ImageLoadCallback imageLoadCallback) {
-        if (TextUtils.isEmpty(url)) {
-            return;
-        }
-        getBuilder(url).override(getSize(resWidth), getSize(resHeight)).transform(transformation).into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                if (imageLoadCallback != null) {
-                    imageLoadCallback.onSuccess(resource);
-                }
-            }
-
-            @Override
-            public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                super.onLoadFailed(e, errorDrawable);
-                if (imageLoadCallback != null) {
-                    imageLoadCallback.onFailure();
-                }
-            }
-        });
-    }
-
-
-//    /**
-//     * 加载图片
-//     * 根据尺寸加载
-//     * 支持自定义占位图
-//     *
-//     * @param ivShow
-//     * @param url
-//     * @param resWidth
-//     * @param resHeight
-//     * @param defaultDrawable
-//     */
-//    public void loadBlurImage(ImageView ivShow, String url, int resWidth, int resHeight, int defaultDrawable) {
-//        if (ivShow == null || TextUtils.isEmpty(url)) {
-//            return;
-//        }
-//        getBuilder(url).override(getSize(resWidth), getSize(resHeight)).placeholder(defaultDrawable).transform(new BlurTransFormation(mContext)).into(ivShow);
-//    }
+//    public void load(final ImageView imageView, final Uri uri) {
 //
-//    /**
-//     * 加载图片
-//     * 根据尺寸加载
-//     * 支持自定义占位图
-//     *
-//     * @param ivShow
-//     * @param url
-//     * @param resWidth
-//     * @param resHeight
-//     */
-//    public void loadBlurImage(ImageView ivShow, String url, int resWidth, int resHeight) {
-//        if (ivShow == null || TextUtils.isEmpty(url)) {
-//            return;
-//        }
-//        getBuilder(url).override(getSize(resWidth), getSize(resHeight)).transform(new BlurTransFormation(mContext)).into(ivShow);
 //    }
 
-    /**
-     * 加载背景
-     *
-     * @param ivShow
-     * @param url
-     * @param resWidth
-     * @param resHeight
-     * @param transformation
-     */
-    public void loadBackgroud(final View ivShow, String url, int resWidth, int resHeight, BitmapTransformation transformation) {
-        if (ivShow == null || TextUtils.isEmpty(url)) {
-            return;
+    public void loadImage(String url, final ImageLoadCallback imageLoadCallback) {
+        if (StringUtils.isNotEmpty(url)) {
+            loadImage(Uri.parse(url), imageLoadCallback);
         }
-        getBuilder(url).override(getSize(resWidth), getSize(resHeight)).transform(transformation).into(new SimpleTarget<Bitmap>() {
+    }
+
+    public void loadImage(Uri uri, final ImageLoadCallback imageLoadCallback) {
+        if (mContext instanceof BaseActivity) {
+            if (((BaseActivity) mContext).isDestroyed()) {
+                //如果activity 已经被销毁 不要再进行 图片加载操作 防止内存泄露
+                return;
+            }
+        }
+
+
+        //默认支持webP
+        //todo 走默认的方法
+        if (Build.VERSION.SDK_INT > 16) {
+
+        }else {
+            //走兼容方法
+        }
+
+        under16Load(uri, imageLoadCallback);
+    }
+
+    /**
+     * 普通的加载  （API > 16 以上android原生对于webP有良好的支持）
+     *
+     * @param uri
+     * @param imageLoadCallback
+     */
+    private void commonLoad(Uri uri, final ImageLoadCallback imageLoadCallback) {
+        DrawableTypeRequest drawableTypeRequest = Glide.with(mContext).load(uri);
+        drawableTypeRequest.asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                final BitmapDrawable bpdrawable = new BitmapDrawable(mContext.getResources(), resource);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    ivShow.setBackground(bpdrawable);
+            public void onResourceReady(final Bitmap bitmap, GlideAnimation glideAnimation) {
+                if (bitmap != null) {
+                    NetEaseApplication.runUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (imageLoadCallback != null) {
+                                imageLoadCallback.onSuccess(bitmap);
+                            }
+                        }
+                    });
                 } else {
-                    ivShow.setBackgroundDrawable(bpdrawable);
+                    onLoadFailed(null, null);
                 }
+            }
+
+            @Override
+            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                super.onLoadFailed(e, errorDrawable);
+                NetEaseApplication.runUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (imageLoadCallback != null) {
+                            imageLoadCallback.onFailure();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 对于API16及以下webP的兼容支持
+     *
+     * @param uri
+     * @param imageLoadCallback
+     */
+    private void under16Load(Uri uri, final ImageLoadCallback imageLoadCallback) {
+        GenericRequestBuilder<Uri, InputStream, Bitmap, Bitmap> requestBuilder  =
+                Glide.with(mContext).using(Glide.buildStreamModelLoader(Uri.class, mContext), InputStream.class).from(Uri.class)
+                        .as(Bitmap.class).
+                        sourceEncoder(new StreamEncoder()).
+                        decoder(getDecoder()).
+                        cacheDecoder(new FileToStreamDecoder<Bitmap>(getDecoder()));
+
+        requestBuilder.load(uri).into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(final Bitmap bitmap, GlideAnimation glideAnimation) {
+                if (bitmap != null) {
+                    NetEaseApplication.runUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (imageLoadCallback != null) {
+                                imageLoadCallback.onSuccess(bitmap);
+                            }
+                        }
+                    });
+                } else {
+                    onLoadFailed(null, null);
+                }
+            }
+
+            @Override
+            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                super.onLoadFailed(e, errorDrawable);
+                NetEaseApplication.runUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (imageLoadCallback != null) {
+                            imageLoadCallback.onFailure();
+                        }
+                    }
+                });
             }
         });
     }
@@ -347,11 +259,23 @@ public class ImageLoader {
      * @param url
      */
     public void cacheTodisk(String url) {
+//        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+//        ImageRequest imageRequest = ImageRequest.fromUri(Uri.parse(url));
+//        imagePipeline.prefetchToDiskCache(imageRequest, CallerThreadExecutor.getInstance());
+
         Glide.with(mContext).load(url).diskCacheStrategy(DiskCacheStrategy.ALL);
     }
 
-    public void clear(View v) {
-        Glide.clear(v);
+
+    public static abstract class SimpleImageLoadCallback implements ImageLoadCallback {
+
+        public SimpleImageLoadCallback() {
+        }
+
+        @Override
+        public void onFailure() {
+
+        }
     }
 
     /**
@@ -359,6 +283,7 @@ public class ImageLoader {
      */
     public interface ImageLoadCallback {
         void onSuccess(Bitmap bitmap);
+
         void onFailure();
     }
 
