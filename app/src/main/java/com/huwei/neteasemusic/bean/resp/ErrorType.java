@@ -22,6 +22,6 @@ public class ErrorType {
      * @return
      */
     public static boolean isNeedTipToUser(int errno) {
-        return errno != 0;
+        return errno > 0;
     }
 }

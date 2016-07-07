@@ -98,7 +98,7 @@ public class SearchResultFragment extends BaseFragment implements SearchBar.Sear
     public void onSearch(String keyword) {
 
         mKeyword = keyword;
-        ToastUtils.showShort(keyword);
+//        ToastUtils.showShort(keyword);
 
         if(isPrepared) {
 
