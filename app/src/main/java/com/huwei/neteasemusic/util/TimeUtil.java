@@ -24,8 +24,20 @@ public class TimeUtil {
         return t;
     }
 
-    public static String getDuration(int duration){
+    public static String getDuration(int duration) {
         int[] time = getTimeArray(duration);
-        return time[2] + ":" +time[3];
+
+        String m = String.valueOf(time[2]);
+        String s = String.valueOf(time[3]);
+
+        if (time[2] < 10) {
+            m = "0" + time[2];
+        }
+
+        if (time[3] < 10) {
+            m = "0" + time[3];
+        }
+
+        return m + ":" + s;
     }
 }
