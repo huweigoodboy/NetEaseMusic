@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.StreamEncoder;
+import com.bumptech.glide.load.resource.bitmap.Downsampler;
 import com.bumptech.glide.load.resource.bitmap.StreamBitmapDecoder;
 import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -25,7 +26,6 @@ import com.huwei.neteasemusic.BaseActivity;
 import com.huwei.neteasemusic.NetEaseApplication;
 import com.huwei.neteasemusic.util.LogUtils;
 import com.huwei.neteasemusic.util.StringUtils;
-import com.huwei.neteasemusic.util.img.WebpDownsampler;
 
 import java.io.InputStream;
 
@@ -74,7 +74,7 @@ public class ImageLoader {
 
     private StreamBitmapDecoder getDecoder(){
         if(mDecoder == null) {
-            mDecoder = new StreamBitmapDecoder(WebpDownsampler.AT_MOST,Glide.get(mContext).getBitmapPool(), DecodeFormat.PREFER_ARGB_8888);
+            mDecoder = new StreamBitmapDecoder(Downsampler.AT_MOST,Glide.get(mContext).getBitmapPool(), DecodeFormat.PREFER_ARGB_8888);
         }
         return mDecoder;
     }
