@@ -130,6 +130,11 @@ public class SearchActivity extends PlayBarBaseActivity implements SearchBar.Sea
                             @Override
                             public void onSuccess(ServerTip serverTip, SearchSuggestResp suggestResp) {
 
+                                //搜索结果页已经显示 不需要 提示窗口
+                                if(isResultFragmentShow){
+                                    return;
+                                }
+
                                 if (suggestResp != null) {
 
                                     if (mSuggestPopWindow == null) {
