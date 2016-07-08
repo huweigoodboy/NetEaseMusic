@@ -1,9 +1,7 @@
 package com.huwei.neteasemusic;
 
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 
@@ -77,5 +75,15 @@ public class SwipeBackBottomActivity extends BaseActivity {
 
         // Delegate everything else to Activity.
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    protected boolean isNeedToolBar() {
+        return false;
+    }
+
+    @Override
+    protected boolean isNeedDrawStatusBar() {
+        return false;
     }
 }

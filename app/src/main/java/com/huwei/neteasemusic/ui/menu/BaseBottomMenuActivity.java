@@ -5,6 +5,8 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.WindowManager;
 
+
+import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.SwipeBackBottomActivity;
 import com.huwei.neteasemusic.util.DensityUtil;
 
@@ -15,6 +17,9 @@ import com.huwei.neteasemusic.util.DensityUtil;
 public class BaseBottomMenuActivity extends SwipeBackBottomActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setTheme(R.style.AppTheme_BottomMenu);
+
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay(); // 为获取屏幕宽、高
         WindowManager.LayoutParams p = getWindow().getAttributes(); // 获取对话框当前的参值
@@ -23,5 +28,12 @@ public class BaseBottomMenuActivity extends SwipeBackBottomActivity{
         getWindow().setGravity(Gravity.BOTTOM);
 
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+
     }
 }

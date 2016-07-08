@@ -9,6 +9,8 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.Toast;
@@ -39,8 +41,8 @@ public class SwipeLayout extends LinearLayout {
     ViewGroup.LayoutParams childParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
     private Context mContext;
-    public static final int DURATION = 1500;   //满屏滑动时间
-    public static final int OPEN_ANIM_DURATION = 1000;
+    public static final int DURATION = 500;   //满屏滑动时间
+    public static final int OPEN_ANIM_DURATION = 120;
     public static int SNAP_VELOCITY = 600;  //最小的滑动速率
 
     private OnFinishListener mOnFinishListener;
@@ -61,7 +63,7 @@ public class SwipeLayout extends LinearLayout {
     }
 
     void init() {
-        mScroller = new Scroller(mContext);
+        mScroller = new Scroller(mContext,new AccelerateDecelerateInterpolator());
         mMaxFlingVelocity = ViewConfiguration.get(mContext).getScaledMaximumFlingVelocity();
 
         mWindowHeight = DisplayUtils.getWindowHeight(mContext) * 2;
@@ -75,7 +77,7 @@ public class SwipeLayout extends LinearLayout {
         mEmptyView = LayoutInflater.from(mContext).inflate(R.layout.view_translate, null);
 
         addView(mEmptyView, childParams);
-         }
+    }
 
     public void setContentView(View contentView) {
         if (mContentView != null) {
@@ -83,6 +85,8 @@ public class SwipeLayout extends LinearLayout {
         }
         mContentView = contentView;
         addView(contentView, childParams);
+
+        contentView.setBackgroundResource(R.drawable.dialog_bottom_bg);
 
         postDelayed(new Runnable() {
             @Override

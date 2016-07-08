@@ -49,4 +49,6 @@
     <color name="theme_ripple_mask_light">@color/theme_color_fff</color>
     <color name="theme_ripple_light">#40000000</color>
 
+    <color name="normalBackground">#fff2f4f5</color>
+
 </resources>

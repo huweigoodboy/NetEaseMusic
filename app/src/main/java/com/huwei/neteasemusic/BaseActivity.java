@@ -58,13 +58,15 @@ public class BaseActivity extends AppCompatActivity {
         //强制竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        if (isDrawLayout()) {
-            ViewGroup rootView = (ViewGroup) ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
-            if (rootView instanceof DrawerLayout) {
-                StatusBarUtil.setColorForDrawerLayout(this, (DrawerLayout) rootView, STATUS_BAR_COLOR);
+        if(isNeedDrawStatusBar()) {
+            if (isDrawLayout()) {
+                ViewGroup rootView = (ViewGroup) ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+                if (rootView instanceof DrawerLayout) {
+                    StatusBarUtil.setColorForDrawerLayout(this, (DrawerLayout) rootView, STATUS_BAR_COLOR);
+                }
+            } else {
+                StatusBarUtil.setColor(this, STATUS_BAR_COLOR);
             }
-        } else {
-            StatusBarUtil.setColor(this, STATUS_BAR_COLOR);
         }
 
         //如果需要actionbar  在布局中加入actionbar
@@ -172,6 +174,14 @@ public class BaseActivity extends AppCompatActivity {
      */
     protected boolean isDrawLayout() {
         return false;
+    }
+
+    /**
+     * 是否需要沉浸状态栏
+     * @return
+     */
+    protected boolean isNeedDrawStatusBar(){
+        return true;
     }
 
     /**

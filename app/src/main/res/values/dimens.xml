@@ -27,4 +27,6 @@
     <dimen name="md_button_padding_vertical">4.0dip</dimen>
     <dimen name="md_button_textpadding_horizontal">1.0dip</dimen>
     <dimen name="md_button_textsize">14.0sp</dimen>
+
+    <dimen name="dialogRadius">2.0dip</dimen>
 </resources>
