@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.huwei.neteasemusic.R;
+import com.huwei.neteasemusic.RecyclerViewBaseFragment;
 import com.huwei.neteasemusic.main.BaseFragment;
 import com.huwei.neteasemusic.ui.widget.SearchBar;
 import com.huwei.neteasemusic.util.LogUtils;
@@ -22,16 +23,11 @@ import com.huwei.neteasemusic.util.Utils;
  * @author jerry
  * @date 2016/07/04
  */
-public abstract class SrBaseFragment extends BaseFragment implements SearchBar.SearchCallback {
+public abstract class SrBaseFragment extends RecyclerViewBaseFragment implements SearchBar.SearchCallback {
 
     protected boolean isFragmentPrepared;
     protected String mKeyword;
-    protected RecyclerView mRecyclerView;
 
-    @Override
-    public int getContentResId() {
-        return R.layout.fragment_sr_list;
-    }
 
     @Nullable
     @Override
@@ -45,11 +41,6 @@ public abstract class SrBaseFragment extends BaseFragment implements SearchBar.S
         return mRootView;
     }
 
-    @Override
-    public void initView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycleView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-    }
 
     /**
      * @param keyword keywora在某种情况下可能是空

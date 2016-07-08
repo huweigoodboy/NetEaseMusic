@@ -1,11 +1,11 @@
 package com.huwei.neteasemusic.bean.resp;
 
 
-
 import com.huwei.neteasemusic.bean.inter.SType;
 import com.huwei.neteasemusic.util.network.HttpHandler;
 import com.huwei.neteasemusic.util.network.HttpParams;
 import com.huwei.neteasemusic.util.network.HttpUtil;
+import com.huwei.neteasemusic.util.network.UHttpHandler;
 
 /**
  * 网易云音乐的若干请求的包装
@@ -33,16 +33,17 @@ public class NetEaseAPI {
 
     /**
      * 搜索建议
+     *
      * @param s
      * @param limit
      * @param handler
      */
-    public static void suggest(String s, int limit, HttpHandler<SearchSuggestResp> handler){
+    public static void suggest(String s, int limit, HttpHandler<SearchSuggestResp> handler) {
         String path = getCompleteUrl("/search/suggest/web");
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
-        httpParams.add("s",s);
-        httpParams.add("limit",limit);
-        HttpUtil.post(path,httpParams,handler);
+        httpParams.add("s", s);
+        httpParams.add("limit", limit);
+        HttpUtil.post(path, httpParams, handler);
     }
 
 
@@ -50,103 +51,128 @@ public class NetEaseAPI {
 
     /**
      * 搜索歌曲
+     *
      * @param s
      * @param offset
      * @param limit
      * @param httpHandler
      */
-    public static void searchSong(String s,int offset,int limit,HttpHandler<SrSongListResp> httpHandler){
+    public static void searchSong(String s, int offset, int limit, HttpHandler<SrSongListResp> httpHandler) {
         String path = getCompleteUrl("/search/get");
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
-        httpParams.add("s",s);
-        httpParams.add("offset",offset);
-        httpParams.add("limit",limit);
-        httpParams.add("total",false);
+        httpParams.add("s", s);
+        httpParams.add("offset", offset);
+        httpParams.add("limit", limit);
+        httpParams.add("total", false);
         httpParams.add("type", SType.SONG);
-        HttpUtil.post(path,httpParams,httpHandler);
+        HttpUtil.post(path, httpParams, httpHandler);
     }
 
     /**
      * 搜索歌手
+     *
      * @param s
      * @param offset
      * @param limit
      * @param httpHandler
      */
-    public static void searchArtist(String s,int offset,int limit,HttpHandler<SrArtistListResp> httpHandler){
+    public static void searchArtist(String s, int offset, int limit, HttpHandler<SrArtistListResp> httpHandler) {
         String path = getCompleteUrl("/search/get");
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
-        httpParams.add("s",s);
-        httpParams.add("offset",offset);
-        httpParams.add("limit",limit);
-        httpParams.add("total",false);
+        httpParams.add("s", s);
+        httpParams.add("offset", offset);
+        httpParams.add("limit", limit);
+        httpParams.add("total", false);
         httpParams.add("type", SType.ARTIST);
-        HttpUtil.post(path,httpParams,httpHandler);
+        HttpUtil.post(path, httpParams, httpHandler);
     }
 
     /**
      * 搜索专辑
+     *
      * @param s
      * @param offset
      * @param limit
      * @param httpHandler
      */
-    public static void searchAlbum(String s,int offset,int limit,HttpHandler<SrAlbumListResp> httpHandler){
+    public static void searchAlbum(String s, int offset, int limit, HttpHandler<SrAlbumListResp> httpHandler) {
         String path = getCompleteUrl("/search/get");
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
-        httpParams.add("s",s);
-        httpParams.add("offset",offset);
-        httpParams.add("limit",limit);
-        httpParams.add("total",false);
+        httpParams.add("s", s);
+        httpParams.add("offset", offset);
+        httpParams.add("limit", limit);
+        httpParams.add("total", false);
         httpParams.add("type", SType.ALBUM);
-        HttpUtil.post(path,httpParams,httpHandler);
+        HttpUtil.post(path, httpParams, httpHandler);
     }
 
     /**
      * 搜索歌单
+     *
      * @param s
      * @param offset
      * @param limit
      * @param httpHandler
      */
-    public static void searchPlaylist(String s,int offset,int limit,HttpHandler<SrPlayListResp> httpHandler){
+    public static void searchPlaylist(String s, int offset, int limit, HttpHandler<SrPlayListResp> httpHandler) {
         String path = getCompleteUrl("/search/get");
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
-        httpParams.add("s",s);
-        httpParams.add("offset",offset);
-        httpParams.add("limit",limit);
-        httpParams.add("total",false);
+        httpParams.add("s", s);
+        httpParams.add("offset", offset);
+        httpParams.add("limit", limit);
+        httpParams.add("total", false);
         httpParams.add("type", SType.PLAYLIST);
-        HttpUtil.post(path,httpParams,httpHandler);
+        HttpUtil.post(path, httpParams, httpHandler);
     }
 
     /**
      * 搜索MV
+     *
      * @param s
      * @param offset
      * @param limit
      * @param httpHandler
      */
-    public static void searchMv(String s,int offset,int limit,HttpHandler<SrMvListResp> httpHandler){
+    public static void searchMv(String s, int offset, int limit, HttpHandler<SrMvListResp> httpHandler) {
         String path = getCompleteUrl("/search/get");
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
-        httpParams.add("s",s);
-        httpParams.add("offset",offset);
-        httpParams.add("limit",limit);
-        httpParams.add("total",false);
+        httpParams.add("s", s);
+        httpParams.add("offset", offset);
+        httpParams.add("limit", limit);
+        httpParams.add("total", false);
         httpParams.add("type", SType.MV);
-        HttpUtil.post(path,httpParams,httpHandler);
+        HttpUtil.post(path, httpParams, httpHandler);
     }
 
     /**
      * 搜索最佳匹配
+     *
      * @param s
      * @param httpHandler
      */
-    public static void multimatch(String s,HttpHandler httpHandler){
+    public static void multimatch(String s, HttpHandler httpHandler) {
         String path = getCompleteUrl("search/suggest/multimatch");
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
-        httpParams.add("s",s);
-        HttpUtil.post(path,httpParams,httpHandler);
+        httpParams.add("s", s);
+        HttpUtil.post(path, httpParams, httpHandler);
+    }
+
+
+    /**
+     * 热门/最新 歌单
+     *
+     * @param category
+     * @param order    hot/new
+     * @param offset
+     * @param limit
+     */
+    public static void playlists(String category, String order, int offset, int limit, UHttpHandler<PlaylistsResp> httpHandler) {
+        String path = getCompleteUrl("/playlist/list");
+        HttpParams httpParams = HttpParams.getNetEaseHttpParams();
+        httpParams.add("cat", category);
+        httpParams.add("order", order);
+        httpParams.add("offset", offset);
+        httpParams.add("limit", limit);
+        HttpUtil.get(path, httpParams, httpHandler);
     }
 }

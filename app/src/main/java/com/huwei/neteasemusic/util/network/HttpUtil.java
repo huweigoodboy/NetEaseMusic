@@ -58,7 +58,7 @@ public class HttpUtil {
      * @param params
      * @param handler
      */
-    public static void post(String url, final HttpParams params, HttpHandler handler) {
+    public static void post(String url, final HttpParams params, AbsHttpHandler handler) {
         url = handleurl(url);
 
         Log.i(TAG, "request post url:" + url + "\n" + JsonUtils.toJSONString(params.getParams()));
@@ -95,7 +95,7 @@ public class HttpUtil {
      * @param params
      * @param handler
      */
-    public static void get(String url, final HttpParams params,final HttpHandler handler) {
+    public static void get(String url, final HttpParams params,final AbsHttpHandler handler) {
         url = handleurl(url);
         url = addParamsToUrl(url, params); //拼接参数
 
@@ -174,13 +174,13 @@ public class HttpUtil {
      *
      * @param handler
      */
-    static void notifyHandlerStart(HttpHandler handler) {
+    static void notifyHandlerStart(AbsHttpHandler handler) {
         if (handler != null) {
             handler.onStart();
         }
     }
 
-    static void notifyHandlerFailure(HttpHandler handler, Call call, IOException e) {
+    static void notifyHandlerFailure(AbsHttpHandler handler, Call call, IOException e) {
         if (handler != null) {
             handler.onFailure(call, e);
 
