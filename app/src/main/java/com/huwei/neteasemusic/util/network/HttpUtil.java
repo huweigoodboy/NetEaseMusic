@@ -3,6 +3,11 @@ package com.huwei.neteasemusic.util.network;
 import android.util.Log;
 
 
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+import com.huwei.neteasemusic.NetEaseApplication;
 import com.huwei.neteasemusic.util.JsonUtils;
 import com.huwei.neteasemusic.util.StringUtils;
 
@@ -33,6 +38,8 @@ public class HttpUtil {
 
     public static final String TAG = "HTTP";
 
+    public static SharedPrefsCookiePersistor persistor = new SharedPrefsCookiePersistor(NetEaseApplication.CONTEXT);
+
     /**
      * OkHttpClient实例
      */
@@ -40,7 +47,9 @@ public class HttpUtil {
 
     private static OkHttpClient getClient() {
         if (client == null) {
-            client = new OkHttpClient();
+            ClearableCookieJar cookieJar =
+                    new PersistentCookieJar(new SetCookieCache(), persistor);
+            client = new OkHttpClient.Builder().cookieJar(cookieJar).build();
 //            client.interceptors().add(new RetryInterceptor());
 //            client.setConnectTimeout(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
 //            client.setReadTimeout(READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);

@@ -39,9 +39,6 @@ public class SecuityRequest {
     public static String[] encrypt_request(Object object) {
         String text = JsonUtils.toJSONString(object);
 
-        //// TODO: 16-7-9
-        text = "{\"br\": 320000, \"ids\": [26117507], \"csrf_token\": null}";
-
         String second_aes_key = create_aes_key(16);
 
         String tempAesText;
@@ -57,15 +54,7 @@ public class SecuityRequest {
 
     public static String create_aes_key(int size) {
         StringBuilder builder = new StringBuilder();
-//        return StringUtils.randomAZ09(size);
-//        String randStr =  StringUtils.randomAZ09(size);
-//                for (int i = 0; i < randStr.length(); i++) {
-//            String b = randStr.substring(i, i + 1);
-//            builder.append(CHexConver.str2HexStr(b).substring(2));
-//        }
-//        return builder.substring(0, 16);
-
-        return "0123456789abcdef";
+        return StringUtils.randomAZ09(size);
     }
 
     public static String aes_encrypt(String text, String key) {
@@ -90,9 +79,6 @@ public class SecuityRequest {
         String n = modulus;
         String revertText = StringUtils.reverse(text);
 
-        try {
-            PublicKey publicKey = RSAUtils.getPublicKey(modulus, e);
-
             BigInteger bigM = new BigInteger(CHexConver.str2HexStr(revertText), 16);
             BigInteger bigN = new BigInteger(n,16);
             BigInteger bigE = new BigInteger(e,16);
@@ -100,13 +86,5 @@ public class SecuityRequest {
             BigInteger bigC = bigM.modPow(bigE,bigN);
 
             return  StringUtils.flushRight('0',256,bigC.toString(16).toLowerCase());
-
-        } catch (NoSuchAlgorithmException e1) {
-            e1.printStackTrace();
-        } catch (InvalidKeySpecException e1) {
-            e1.printStackTrace();
-        }
-
-        return "";
     }
 }

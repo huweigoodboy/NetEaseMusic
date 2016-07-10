@@ -1,13 +1,13 @@
 package com.huwei.neteasemusic.util;
 
-
-import android.graphics.Paint;
-
-
-import java.math.BigDecimal;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class StringUtils {
     final static String TAG = "StringUtils";
+
+    public static final String AZ09 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public static final int LEN_AZ09 = AZ09.length();
 
     public static String truncateZero(String s) {
         try {
@@ -25,88 +25,77 @@ public class StringUtils {
         return null == s || "".equals(s);
     }
 
-    public static boolean isNotEmpty(String s){
+    public static boolean isNotEmpty(String s) {
         return !isEmpty(s);
     }
 
-    public static boolean equals(Object a, Object b){
-        if(a == null){
+    public static boolean equals(Object a, Object b) {
+        if (a == null) {
             return false;
         }
         return a.equals(b);
     }
 
-
     /**
-     * @return 返回指定笔和指定字符串的长度
+     * 产生一个随机的字符串，适用于JDK 1.7
      */
-    public static float getFontlength(Paint paint, String str) {
-        return paint.measureText(str);
+    public static String random(int length) {
+        StringBuilder builder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            builder.append((char) (ThreadLocalRandom.current().nextInt(33, 128)));
+        }
+        return builder.toString();
     }
 
     /**
-     * @return 返回指定笔的文字高度
+     * 产生一个随机的字符串，适用于JDK 1.7
      */
-    public static float getFontHeight(Paint paint) {
-        Paint.FontMetrics fm = paint.getFontMetrics();
-        return (float) Math.ceil(fm.descent - fm.ascent);
+    public static String randomAZ09(int length) {
+        Random random = new Random();
+        StringBuilder builder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            builder.append(AZ09.charAt(random.nextInt(LEN_AZ09)));
+        }
+        return builder.toString();
     }
 
     /**
-     * @return 返回指定笔离文字顶部的基准距离
-     */
-    public static float getFontLeading(Paint paint) {
-        Paint.FontMetrics fm = paint.getFontMetrics();
-        return fm.leading - fm.ascent;
-    }
-
-    /**
-     * 获取top到baseline的距离
+     * 原理是使用异或交换字符串
+     * a=a^b;
+     * b=b^a;
+     * a=b^a;
      *
-     * @param paint
+     * @param s
      * @return
      */
-    public static float getDistanceTopToBase(Paint paint) {
-        Paint.FontMetrics fm = paint.getFontMetrics();
-        return -fm.top;
-    }
+    public static String reverse(String s) {
+        char[] array = s.toCharArray();
 
-    /**
-     * 获取汉字的高度  从top到bottom
-     * @param paint
-     * @return
-     */
-    public static float getTextHeight(Paint paint) {
-        Paint.FontMetrics fm = paint.getFontMetrics();
-        return fm.bottom - fm.top;
-    }
+        int begin = 0;
+        int end = s.length() - 1;
 
-
-    /**
-     * 截掉小数点后面的0
-     * @param d
-     * @return
-     */
-    public static String getFloatString(double d){
-        String str = String.format("%.2f", d);
-        if(str.endsWith(".00") || str.endsWith(".0")){
-            return String.format("%.0f", d);
-        } else if(str.contains(".") && str.endsWith("0")){
-            return String.format("%.1f", d);
-        } else {
-            return str;
+        while (begin < end) {
+            array[begin] = (char) (array[begin] ^ array[end]);
+            array[end] = (char) (array[end] ^ array[begin]);
+            array[begin] = (char) (array[end] ^ array[begin]);
+            begin++;
+            end--;
         }
+
+        return new String(array);
     }
 
-    public static String formatWithTimes(int times){
-        if (times >= 10000){
-            if (times < 1000000) {
-                return new StringBuilder(String.format("%.1f", (float) times / 10000f)).append("万").toString();
-            }else {
-                return new StringBuilder(String.valueOf(new BigDecimal(times / 10000.0).setScale(0, BigDecimal.ROUND_HALF_UP))).append("万").toString();
-            }
-        }else {
-            return String.valueOf(times);
+    /* c 要填充的字符
+   *  length 填充后字符串的总长度
+   *  content 要格式化的字符串
+   *  格式化字符串，右对齐
+   * */
+    public static String flushRight(char c, long length, String content) {
+        StringBuilder builder = new StringBuilder(content);
+        while (builder.length() < length) {
+            builder.insert(0,c);
         }
+
+        return builder.toString();
     }
 }

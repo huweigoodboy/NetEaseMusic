@@ -27,7 +27,7 @@ public class HttpParams {
     public static HttpParams getNetEaseHttpParams() {
         HttpParams httpParams = new HttpParams();
         httpParams.addHeader("Host", "music.163.com");
-        httpParams.addHeader("Referer", "http://music.163.com/");
+        httpParams.addHeader("Referer", "http://music.163.com");
         httpParams.addHeader("Connection", "keep-alive");
         httpParams.addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36");
 

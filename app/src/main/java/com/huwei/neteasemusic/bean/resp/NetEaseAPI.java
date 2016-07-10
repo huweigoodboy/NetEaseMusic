@@ -1,11 +1,32 @@
 package com.huwei.neteasemusic.bean.resp;
 
 
+import android.util.Base64;
+
 import com.huwei.neteasemusic.bean.inter.SType;
+import com.huwei.neteasemusic.bean.req.EncryptUrlReq;
+import com.huwei.neteasemusic.util.ToastUtils;
+import com.huwei.neteasemusic.util.security.AESUtils;
+import com.huwei.neteasemusic.util.security.CHexConver;
+import com.huwei.neteasemusic.util.JsonUtils;
+import com.huwei.neteasemusic.util.StringUtils;
 import com.huwei.neteasemusic.util.network.HttpHandler;
 import com.huwei.neteasemusic.util.network.HttpParams;
 import com.huwei.neteasemusic.util.network.HttpUtil;
 import com.huwei.neteasemusic.util.network.UHttpHandler;
+import com.huwei.neteasemusic.util.security.RSAUtils;
+import com.huwei.neteasemusic.util.security.SecuityRequest;
+
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.KeyFactory;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAKeyGenParameterSpec;
+import java.security.spec.RSAPublicKeySpec;
+import java.util.List;
 
 /**
  * 网易云音乐的若干请求的包装
@@ -19,6 +40,10 @@ public class NetEaseAPI {
     public static final String URL_WE = "http://music.163.com/weapi";
     public static final String URL_V1 = "http://music.163.com/weapi/v1";
 
+    public static final String FIRST_AES_KEY = "0CoJUm6Qyw8W8jud";
+    public static final String UTF8 = "utf-8";
+
+
     public static String getCompleteUrl(String subPath) {
         return URL + subPath;
     }
@@ -30,6 +55,7 @@ public class NetEaseAPI {
     public static String getCompleteUrl_V1(String subPath) {
         return URL_V1 + subPath;
     }
+
 
     /**
      * 搜索建议
@@ -174,5 +200,23 @@ public class NetEaseAPI {
         httpParams.add("offset", offset);
         httpParams.add("limit", limit);
         HttpUtil.get(path, httpParams, httpHandler);
+    }
+
+    public static void getSongUrls(List<Integer> ids, int bitrate) {
+        String path = getCompleteUrl_WE("/song/enhance/player/url");
+        HttpParams httpParams = HttpParams.getNetEaseHttpParams();
+
+        EncryptUrlReq encryptUrlReq = new EncryptUrlReq(ids, bitrate);
+        String params[] = SecuityRequest.encrypt_request(encryptUrlReq);
+
+        httpParams.add("params", params[0]);
+        httpParams.add("encSecKey", params[1]);
+
+        HttpUtil.post(path, httpParams, new HttpHandler() {
+            @Override
+            public void onSuccess(ServerTip serverTip, Object o) {
+                ToastUtils.showShort("success");
+            }
+        });
     }
 }
