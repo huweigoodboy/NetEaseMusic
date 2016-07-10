@@ -23,6 +23,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.huwei.neteasemusic.inter.IMusicUpdate;
+import com.huwei.neteasemusic.manager.IMusicUpdateBoradCastManager;
 import com.huwei.neteasemusic.manager.ImageLoader;
 import com.huwei.neteasemusic.util.StatusBarUtil;
 import com.huwei.neteasemusic.util.Utils;
@@ -43,6 +45,8 @@ public class BaseActivity extends AppCompatActivity {
      */
     private ImageLoader mImageLoader;
 
+    private IMusicUpdateBoradCastManager mMpManager;
+
     private boolean mIsDestory;
 
     public static final int STATUS_BAR_COLOR = Utils.getResources().getColor(R.color.CD3D3A);
@@ -62,7 +66,7 @@ public class BaseActivity extends AppCompatActivity {
         //强制竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        if(isNeedDrawStatusBar()) {
+        if (isNeedDrawStatusBar()) {
             if (isDrawLayout()) {
                 ViewGroup rootView = (ViewGroup) ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
                 if (rootView instanceof DrawerLayout) {
@@ -109,6 +113,10 @@ public class BaseActivity extends AppCompatActivity {
         mIsDestory = true;
 
         super.onDestroy();
+
+        if (mMpManager != null) {
+            mMpManager.unbind();
+        }
     }
 
     /**
@@ -151,7 +159,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public Handler getHandler() {
-        if(mHandler == null){
+        if (mHandler == null) {
             mHandler = new Handler();
         }
         return mHandler;
@@ -182,9 +190,10 @@ public class BaseActivity extends AppCompatActivity {
 
     /**
      * 是否需要沉浸状态栏
+     *
      * @return
      */
-    protected boolean isNeedDrawStatusBar(){
+    protected boolean isNeedDrawStatusBar() {
         return true;
     }
 
@@ -197,8 +206,22 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    public ImageLoader getImageLoader(){
-        if(mImageLoader == null){
+    /**
+     * 绑定 音乐服务 更新的监听
+     *
+     * @param iMusicUpdate
+     */
+    public void addMpUpdateListener(IMusicUpdate iMusicUpdate) {
+        //初始化  音乐广播  管理类
+        if(mMpManager == null) {
+            mMpManager = new IMusicUpdateBoradCastManager();
+            mMpManager.bind(this);
+        }
+        mMpManager.addListener(iMusicUpdate);
+    }
+
+    public ImageLoader getImageLoader() {
+        if (mImageLoader == null) {
             mImageLoader = new ImageLoader(mContext);
         }
         return mImageLoader;

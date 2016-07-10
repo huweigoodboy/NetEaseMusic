@@ -50,6 +50,8 @@ public abstract class AbstractMusic implements Parcelable, Parcelable.Creator<Ab
      */
     public abstract String getArtist();
 
+    public abstract String getAlbumPic();
+
     public enum MusicType {
         Local, Online
     }

@@ -18,7 +18,7 @@
         android:layout_alignParentRight="true"
         android:src="@drawable/playbar_btn_next"/>
 
-    <ImageView
+    <com.huwei.neteasemusic.ui.widget.CheckableImageView
         android:id="@+id/iv_play"
         android:layout_width="43dp"
         android:layout_height="match_parent"
@@ -58,7 +58,13 @@
     </LinearLayout>
     
     <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="match_parent"
-        android:layout_height="2dp" />
+        android:layout_height="2dp"
+        android:maxHeight="2dp"
+        android:minHeight="2dp"
+        android:progressDrawable="@drawable/bg_seekbar"
+        android:layout_alignParentBottom="true"
+        style="?android:attr/progressBarStyleHorizontal"/>
 
 </RelativeLayout>

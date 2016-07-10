@@ -1,8 +1,6 @@
 package com.huwei.neteasemusic.service;
 
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,6 +26,9 @@ import com.huwei.neteasemusic.bean.resp.MusicFileResp;
 import com.huwei.neteasemusic.bean.resp.NetEaseAPI;
 import com.huwei.neteasemusic.bean.resp.ServerTip;
 import com.huwei.neteasemusic.constant.IContain;
+import com.huwei.neteasemusic.constant.IntentExtra;
+import com.huwei.neteasemusic.inter.IPlayStatus;
+import com.huwei.neteasemusic.manager.IMusicUpdateBoradCastManager;
 import com.huwei.neteasemusic.util.StringUtils;
 import com.huwei.neteasemusic.util.Utils;
 import com.huwei.neteasemusic.util.network.UHttpHandler;
@@ -49,6 +50,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
     private List<AbstractMusic> musicList;
 
     private MediaPlayer mp;
+    private AbstractMusic mLastPlayMusic;
 
 //    NotificationManager mNoticationManager;
 //    Notification mNotification;
@@ -76,17 +78,18 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_CURRENT:
-                    Intent intent = new Intent(CURRENT_UPDATE);
-                    int currentTime = mp.getCurrentPosition();
+                    Intent intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_PROGRESS);
+                    int currentTime = mp.getCurrentPosition()/1000;
                     Log.i("currentTime", currentTime + "");
-                    intent.putExtra("currentTime", currentTime);
+                    intent.putExtra(IntentExtra.MP_CURRENT_TIME, currentTime);
+                    intent.putExtra(IntentExtra.MP_DURATION, mp.getDuration()/1000);
                     sendBroadcast(intent);
 
                     handler.sendEmptyMessageDelayed(MSG_CURRENT, 500);
                     break;
                 case MSG_BUFFER_UPDATE:
 
-                    intent = new Intent(BUFFER_UPDATE);
+                    intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_PROGRESS);
                     int bufferTime = msg.arg1;
                     Log.i("bufferTime", bufferTime + "");
                     intent.putExtra("bufferTime", bufferTime);
@@ -165,8 +168,6 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 //            reViews.setViewVisibility(R.id.button_pause_notification_play, View.VISIBLE);
 
 //            mNoticationManager.notify(NT_PLAYBAR_ID, mNotification);
-
-
             //准备播放源，准备后播放
             AbstractMusic music = mBinder.getNowPlayingSong();
 
@@ -184,6 +185,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 //            reViews.setViewVisibility(R.id.button_pause_notification_play, View.GONE);
 
 //            mNoticationManager.notify(NT_PLAYBAR_ID, mNotification);
+            updatePlayStatus(IPlayStatus.PAUSE);
 
             mp.pause();
             handler.removeMessages(MSG_CURRENT);
@@ -193,6 +195,8 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
         @Override
         public void stop() throws RemoteException {
+            updatePlayStatus(IPlayStatus.STOP);
+
             stopForeground(true);
         }
 
@@ -320,6 +324,24 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
         super.onDestroy();
     }
 
+    private void updateMusicInfo(AbstractMusic music) {
+        if (mLastPlayMusic != music) {
+            Intent intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_MUSICINFO);
+            intent.putExtra(IntentExtra.MP_MUSICINFO, music);
+
+            sendBroadcast(intent);
+        }
+        mLastPlayMusic = music;
+    }
+
+    private void updatePlayStatus(int playStatus) {
+        Intent intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_STATUS);
+        intent.putExtra(IntentExtra.MP_PLAY_STATUS, playStatus);
+
+        sendBroadcast(intent);
+    }
+
+
     /**
      * 和上一次操作的歌曲不同，代表新播放的歌曲
      *
@@ -345,6 +367,9 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
      * @param music
      */
     private void prepareSong(final AbstractMusic music) {
+        updateMusicInfo(music);
+        updatePlayStatus(IPlayStatus.PLAYING);
+
         showMusicPlayerNotification(music);
         updatePlayBar(true);
 
@@ -354,12 +379,12 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
             if (!song.preParePlayUrl()) {
 
                 //同步请求到歌曲信息
-                NetEaseAPI.getSongUrls(Arrays.asList(song.id), Bitrate.KBS_320,new UHttpHandler<MusicFileResp>() {
+                NetEaseAPI.getSongUrls(Arrays.asList(song.id), Bitrate.KBS_320, new UHttpHandler<MusicFileResp>() {
                             @Override
                             public void onSuccess(ServerTip serverTip, MusicFileResp musicFileResp) {
-                                if(musicFileResp!=null && Utils.canFetchFirst(musicFileResp.data)){
+                                if (musicFileResp != null && Utils.canFetchFirst(musicFileResp.data)) {
                                     MusicFile musicFile = musicFileResp.data.get(0);
-                                    if(StringUtils.isNotEmpty(musicFile.url)){
+                                    if (StringUtils.isNotEmpty(musicFile.url)) {
                                         song.musicFile = musicFile;
 
                                         play(music);

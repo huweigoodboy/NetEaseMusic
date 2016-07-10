@@ -109,6 +109,14 @@ public class Song extends AbstractMusic implements SuggestItem  {
         return null;
     }
 
+    @Override
+    public String getAlbumPic() {
+        if(album!=null){
+            return album.picUrl;
+        }
+        return null;
+    }
+
     /*******************************
      * 自构建 字段
      ******************************/

@@ -9,6 +9,8 @@
     <color name="primaryTextColor">@color/color_333333</color>
     <color name="secondTextColor">@color/color_989898</color>
 
+    <color name="lightgray">#D3D3D3</color>
+
     <color name="CD3D3A">#CD3D3A</color>
     <color name="FCFDFD">#FCFDFD</color>
     <color name="DC7876">#DC7876</color>
