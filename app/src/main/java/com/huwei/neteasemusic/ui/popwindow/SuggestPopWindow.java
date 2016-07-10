@@ -80,8 +80,8 @@ public class SuggestPopWindow extends BasePopupWindow{
             @Override
             public void onItemClick(View view, int position) {
                 if(mSearchCallback!=null){
-                    if(mAdapter.getItem(position)!=null && StringUtils.isNotEmpty( mAdapter.getItem(position).name)) {
-                        mSearchCallback.onSearch(mAdapter.getItem(position).name);
+                    if(mAdapter.getItem(position)!=null && StringUtils.isNotEmpty( mAdapter.getItem(position).getName())) {
+                        mSearchCallback.onSearch(mAdapter.getItem(position).getName());
                     }
                 }
             }

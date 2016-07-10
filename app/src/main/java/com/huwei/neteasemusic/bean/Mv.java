@@ -6,7 +6,7 @@ import java.util.List;
  * @author jerry
  * @date 2016/07/03
  */
-public class Mv extends SuggestItem {
+public class Mv implements SuggestItem {
 
     /**
      * id : 5308307
@@ -23,9 +23,9 @@ public class Mv extends SuggestItem {
      * artists : [{"id":126312,"name":"AOA"},{"id":15557,"name":"西川貴教"}]
      */
 //
-//    public int id;
+    public int id;
     public String cover;
-    //    public String name;
+    public String name;
     public int playCount;
     public String briefDesc;
     public Object desc;
@@ -46,5 +46,10 @@ public class Mv extends SuggestItem {
             return playCount / 10000 + "万次";
         }
         return playCount + "次";
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

@@ -7,10 +7,7 @@ import com.huwei.neteasemusic.util.StringUtils;
  * @date 2016/03/09
  */
 public class CommonResp extends ServerTip {
-    //    "errno":xxx, //错误码
-//            "desc":"xxxx", //错误信息
-//            "data":{
-//    }
+
 
     public String result;
     public String data;

@@ -24,7 +24,7 @@ public class MusicFragment extends BaseFragment {
         mRootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NetEaseAPI.getSongUrls(Arrays.asList(26117507),32000);
+
             }
         });
     }

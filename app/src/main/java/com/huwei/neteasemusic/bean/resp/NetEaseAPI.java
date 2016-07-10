@@ -202,7 +202,7 @@ public class NetEaseAPI {
         HttpUtil.get(path, httpParams, httpHandler);
     }
 
-    public static void getSongUrls(List<Integer> ids, int bitrate) {
+    public static void getSongUrls(List<Integer> ids, int bitrate,UHttpHandler<MusicFileResp> httpHandler) {
         String path = getCompleteUrl_WE("/song/enhance/player/url");
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
 
@@ -212,11 +212,6 @@ public class NetEaseAPI {
         httpParams.add("params", params[0]);
         httpParams.add("encSecKey", params[1]);
 
-        HttpUtil.post(path, httpParams, new HttpHandler() {
-            @Override
-            public void onSuccess(ServerTip serverTip, Object o) {
-                ToastUtils.showShort("success");
-            }
-        });
+        HttpUtil.post(path, httpParams,httpHandler);
     }
 }

@@ -30,8 +30,8 @@ public class SuggestAdapter extends HeaderBottomAdapter<SuggestItem, SuggestAdap
     @Override
     protected void bindItemData(SuggesetViewHolder viewHolder, SuggestItem data, int position) {
         if (data != null) {
-            if(StringUtils.isNotEmpty(data.name)) {
-                viewHolder.tv_suggest.setText(data.name);
+            if(StringUtils.isNotEmpty(data.getName())) {
+                viewHolder.tv_suggest.setText(data.getName());
             }
         }
     }

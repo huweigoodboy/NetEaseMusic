@@ -30,6 +30,8 @@ import com.huwei.neteasemusic.util.Utils;
 
 public class BaseActivity extends AppCompatActivity {
 
+    protected String TAG;
+
     protected Context mContext;
 
     protected Toolbar mToolBar;
@@ -47,6 +49,8 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        TAG = getClass().getSimpleName();
+
         mContext = this;
         super.onCreate(savedInstanceState);
     }

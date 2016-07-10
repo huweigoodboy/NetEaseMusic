@@ -6,7 +6,7 @@ import java.util.List;
  * @author jerry
  * @date 2016/07/03
  */
-public class Playlist extends SuggestItem {
+public class Playlist implements SuggestItem {
 
     /**
      * id : 8418150
@@ -21,8 +21,8 @@ public class Playlist extends SuggestItem {
      * highQuality : false
      */
 
-//    public int id;
-//    public String name;
+    public int id;
+    public String name;
     public String coverImgUrl;
     public Creator creator;
     public boolean subscribed;
@@ -74,6 +74,11 @@ public class Playlist extends SuggestItem {
     public int commentCount;
     public List<?> subscribers;
     public List<String> tags;
+
+    @Override
+    public String getName() {
+        return name;
+    }
 
 
     public String getPlayCountStr() {

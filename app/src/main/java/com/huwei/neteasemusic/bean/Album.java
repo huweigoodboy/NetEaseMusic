@@ -1,12 +1,16 @@
 package com.huwei.neteasemusic.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author jerry
  * @date 2016/07/03
  */
-public class Album extends SuggestItem{
+public class Album implements SuggestItem, Parcelable {
 
     /**
      * id : 2646285
@@ -19,8 +23,8 @@ public class Album extends SuggestItem{
      * picId : 1984618488161733
      */
 
-//    public int id;
-//    public String name;
+    public int id;
+    public String name;
     public Artist artist;
     public long publishTime;
     public int size;
@@ -57,7 +61,7 @@ public class Album extends SuggestItem{
     public long pic;
     public String type;
     public String description;
-    public List<?> songs;
+    public List<Song> songs;
     public List<String> alias;
     /**
      * img1v1Id : 0
@@ -75,4 +79,89 @@ public class Album extends SuggestItem{
 
     public List<Artist> artists;
 
+
+
+
+
+
+
+
+    public Album() {
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+        dest.writeParcelable(this.artist, flags);
+        dest.writeLong(this.publishTime);
+        dest.writeInt(this.size);
+        dest.writeInt(this.copyrightId);
+        dest.writeInt(this.status);
+        dest.writeLong(this.picId);
+        dest.writeByte(this.paid ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.onSale ? (byte) 1 : (byte) 0);
+        dest.writeString(this.briefDesc);
+        dest.writeString(this.picUrl);
+        dest.writeString(this.commentThreadId);
+        dest.writeString(this.company);
+        dest.writeString(this.tags);
+        dest.writeString(this.blurPicUrl);
+        dest.writeInt(this.companyId);
+        dest.writeLong(this.pic);
+        dest.writeString(this.type);
+        dest.writeString(this.description);
+        dest.writeList(this.songs);
+        dest.writeStringList(this.alias);
+        dest.writeTypedList(this.artists);
+    }
+
+    protected Album(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.artist = in.readParcelable(Artist.class.getClassLoader());
+        this.publishTime = in.readLong();
+        this.size = in.readInt();
+        this.copyrightId = in.readInt();
+        this.status = in.readInt();
+        this.picId = in.readLong();
+        this.paid = in.readByte() != 0;
+        this.onSale = in.readByte() != 0;
+        this.briefDesc = in.readString();
+        this.picUrl = in.readString();
+        this.commentThreadId = in.readString();
+        this.company = in.readString();
+        this.tags = in.readString();
+        this.blurPicUrl = in.readString();
+        this.companyId = in.readInt();
+        this.pic = in.readLong();
+        this.type = in.readString();
+        this.description = in.readString();
+        this.songs = new ArrayList<Song>();
+        in.readList(this.songs, Song.class.getClassLoader());
+        this.alias = in.createStringArrayList();
+        this.artists = in.createTypedArrayList(Artist.CREATOR);
+    }
+
+    public static final Creator<Album> CREATOR = new Creator<Album>() {
+        @Override
+        public Album createFromParcel(Parcel source) {
+            return new Album(source);
+        }
+
+        @Override
+        public Album[] newArray(int size) {
+            return new Album[size];
+        }
+    };
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

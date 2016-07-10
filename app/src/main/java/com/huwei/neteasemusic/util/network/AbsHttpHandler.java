@@ -173,11 +173,4 @@ public abstract class AbsHttpHandler<T> implements Callback {
     public void onFinish() {
 
     }
-
-//    /**
-//     * data 解析类型
-//     */
-//    public enum ParseType {
-//        object, array
-//    }
 }

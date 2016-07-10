@@ -1,14 +1,13 @@
 package com.huwei.neteasemusic.util.network;
 
 
-import com.huwei.neteasemusic.NetEaseApplication;
 import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.bean.resp.CommonResp;
 import com.huwei.neteasemusic.bean.resp.ErrorType;
 import com.huwei.neteasemusic.bean.resp.ServerTip;
 import com.huwei.neteasemusic.util.JsonUtils;
 
-import java.lang.reflect.ParameterizedType;
+
 
 
 /**

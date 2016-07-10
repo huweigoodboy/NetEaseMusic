@@ -31,6 +31,14 @@
         <activity android:name=".modules.search.SearchActivity" />
 
         <activity android:name=".ui.menu.PlayingListActivity"/>
+
+        <service
+            android:name="com.huwei.neteasemusic.service.MusicControlerService">
+            <intent-filter>
+                <action android:name="com.huwei.neteasemusic.service.MusicControlerService"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

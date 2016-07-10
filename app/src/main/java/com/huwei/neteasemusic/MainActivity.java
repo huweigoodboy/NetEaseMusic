@@ -1,6 +1,10 @@
 package com.huwei.neteasemusic;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -9,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +21,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.huwei.neteasemusic.manager.MusicManager;
 import com.huwei.neteasemusic.modules.search.SearchActivity;
 import com.huwei.neteasemusic.main.MusicFragment;
 import com.huwei.neteasemusic.main.RelationShipFragment;
 import com.huwei.neteasemusic.main.DiscoverFragment;
+import com.huwei.neteasemusic.service.MusicControlerService;
 import com.huwei.neteasemusic.util.DensityUtil;
 
 import java.util.ArrayList;
@@ -38,12 +45,33 @@ public class MainActivity extends PlayBarBaseActivity
     public static final int TAB_MUSIC = 1;
     public static final int TAB_RELATION = 2;
 
-    public static final int[] TAB_ICON = {R.drawable.actionbar_discover, R.drawable.actionbar_music, R.drawable.actionbar_friends};
+    private boolean isServiceBinding;
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            Log.i(TAG, "onServiceConnected");
+            isServiceBinding = true;
+            MusicManager.get().bindStub(IMusicControlerService.Stub.asInterface(iBinder));
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            isServiceBinding = false;
+//            musicControler = null;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(!isServiceBinding){
+            Intent intent = new Intent(this,MusicControlerService.class);
+            bindService(intent, mConnection,BIND_AUTO_CREATE);
+        }
 
         initViewPager();
         initToolBar();
@@ -54,6 +82,13 @@ public class MainActivity extends PlayBarBaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unbindService(mConnection);
     }
 
     @Override
@@ -97,7 +132,7 @@ public class MainActivity extends PlayBarBaseActivity
 
         boolean flag = true;
 
-        switch (id){
+        switch (id) {
             case R.id.action_search:
                 startActivity(SearchActivity.getStartActIntent(mContext));
                 break;

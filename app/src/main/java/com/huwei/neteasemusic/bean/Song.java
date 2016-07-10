@@ -1,12 +1,19 @@
 package com.huwei.neteasemusic.bean;
 
+import android.net.Uri;
+import android.os.Parcel;
+
+import com.huwei.neteasemusic.util.StringUtils;
+import com.huwei.neteasemusic.util.Utils;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author jerry
  * @date 2016/07/03
  */
-public class Song extends SuggestItem{
+public class Song extends AbstractMusic implements SuggestItem  {
 
     /**
      * id : 29947420
@@ -24,8 +31,8 @@ public class Song extends SuggestItem{
      * rUrl : null
      */
 
-//    public int id;
-//    public String name;
+    public int id;
+    public String name;
     /**
      * id : 3087270
      * name : Fade
@@ -45,7 +52,7 @@ public class Song extends SuggestItem{
     public int ftype;
     public int mvid;
     public int fee;
-    public Object rUrl;
+    public String  rUrl;
     /**
      * id : 1045123
      * name : Alan Walker
@@ -60,4 +67,124 @@ public class Song extends SuggestItem{
 
     public List<Artist> artists;
     public List<String> alias;
+
+    @Override
+    public AbstractMusic createFromParcel(Parcel source) {
+        return null;
+    }
+
+    @Override
+    public AbstractMusic[] newArray(int size) {
+        return new AbstractMusic[0];
+    }
+
+    @Override
+    public Uri getDataSoure() {
+        if (preParePlayUrl()) {
+            return Uri.parse(musicFile.url);
+        }
+        return null;
+    }
+
+    @Override
+    public Integer getDuration() {
+        return duration;
+    }
+
+    @Override
+    public MusicType getType() {
+        return MusicType.Online;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getArtist() {
+        if (Utils.canFetchFirst(artists)) {
+            return artists.get(0).name;
+        }
+        return null;
+    }
+
+    /*******************************
+     * 自构建 字段
+     ******************************/
+    public MusicFile musicFile;
+
+    public boolean preParePlayUrl() {
+        if (musicFile != null && StringUtils.isNotEmpty(musicFile.url)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static List<AbstractMusic> getMusicSourceList(List<Song> songList) {
+        List<AbstractMusic> musicSourceList = new ArrayList<>();
+        for (Song song : songList) {
+            musicSourceList.add(song);
+        }
+        return musicSourceList;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+        dest.writeParcelable(this.album, flags);
+        dest.writeInt(this.duration);
+        dest.writeInt(this.copyrightId);
+        dest.writeInt(this.status);
+        dest.writeInt(this.rtype);
+        dest.writeInt(this.ftype);
+        dest.writeInt(this.mvid);
+        dest.writeInt(this.fee);
+        dest.writeString(this.rUrl);
+        dest.writeList(this.artists);
+        dest.writeStringList(this.alias);
+        dest.writeParcelable(this.musicFile, flags);
+    }
+
+    public Song() {
+    }
+
+    protected Song(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.album = in.readParcelable(Album.class.getClassLoader());
+        this.duration = in.readInt();
+        this.copyrightId = in.readInt();
+        this.status = in.readInt();
+        this.rtype = in.readInt();
+        this.ftype = in.readInt();
+        this.mvid = in.readInt();
+        this.fee = in.readInt();
+        this.rUrl = in.readParcelable(Object.class.getClassLoader());
+        this.artists = new ArrayList<Artist>();
+        in.readList(this.artists, Artist.class.getClassLoader());
+        this.alias = in.createStringArrayList();
+        this.musicFile = in.readParcelable(MusicFile.class.getClassLoader());
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel source) {
+            return new Song(source);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
+
+
+
 }

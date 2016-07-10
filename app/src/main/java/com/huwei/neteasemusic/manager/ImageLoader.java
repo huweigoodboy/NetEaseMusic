@@ -261,7 +261,7 @@ public class ImageLoader {
     public void cacheTodisk(String url) {
 //        ImagePipeline imagePipeline = Fresco.getImagePipeline();
 //        ImageRequest imageRequest = ImageRequest.fromUri(Uri.parse(url));
-//        imagePipeline.prefetchToDiskCache(imageRequest, CallerThreadExecutor.getInstance());
+//        imagePipeline.prefetchToDiskCache(imageRequest, CallerThreadExecutor.get());
 
         Glide.with(mContext).load(url).diskCacheStrategy(DiskCacheStrategy.ALL);
     }

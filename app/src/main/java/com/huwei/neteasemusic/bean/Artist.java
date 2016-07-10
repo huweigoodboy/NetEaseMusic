@@ -1,12 +1,15 @@
 package com.huwei.neteasemusic.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * @author jerry
  * @date 2016/07/03
  */
-public class Artist extends SuggestItem{
+public class Artist implements SuggestItem, Parcelable {
 
 
     /**
@@ -22,8 +25,8 @@ public class Artist extends SuggestItem{
      * trans : 阿黛尔
      */
 
-//    public int id;
-//    public String name;
+    public int id;
+    public String name;
     public String picUrl;
     public int albumSize;
     public long picId;
@@ -32,4 +35,58 @@ public class Artist extends SuggestItem{
     public String trans;
     public List<String> alias;
     public List<String> transNames;
+
+
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.picUrl);
+        dest.writeInt(this.albumSize);
+        dest.writeLong(this.picId);
+        dest.writeString(this.img1v1Url);
+        dest.writeLong(this.img1v1);
+        dest.writeString(this.trans);
+        dest.writeStringList(this.alias);
+        dest.writeStringList(this.transNames);
+    }
+
+    public Artist() {
+    }
+
+    protected Artist(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.picUrl = in.readString();
+        this.albumSize = in.readInt();
+        this.picId = in.readLong();
+        this.img1v1Url = in.readString();
+        this.img1v1 = in.readLong();
+        this.trans = in.readString();
+        this.alias = in.createStringArrayList();
+        this.transNames = in.createStringArrayList();
+    }
+
+    public static final Parcelable.Creator<Artist> CREATOR = new Parcelable.Creator<Artist>() {
+        @Override
+        public Artist createFromParcel(Parcel source) {
+            return new Artist(source);
+        }
+
+        @Override
+        public Artist[] newArray(int size) {
+            return new Artist[size];
+        }
+    };
 }
