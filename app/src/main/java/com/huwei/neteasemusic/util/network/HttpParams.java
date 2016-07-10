@@ -86,7 +86,7 @@ public class HttpParams {
         StringBuilder cookieHeader = new StringBuilder();
         boolean isFirst = true;
         for (String name : cookies.keySet()) {
-            if (isFirst) {
+            if (!isFirst) {
                 cookieHeader.append("; ");
             }
 
