@@ -68,6 +68,10 @@ public class Song extends AbstractMusic implements SuggestItem  {
     public List<Artist> artists;
     public List<String> alias;
 
+    //add by search/pc
+
+    public String mp3Url;       //优先播放这个字段的地址   没有就播放通过 接口获取具体码率的地址
+
     @Override
     public AbstractMusic createFromParcel(Parcel source) {
         return null;
@@ -81,6 +85,9 @@ public class Song extends AbstractMusic implements SuggestItem  {
     @Override
     public Uri getDataSoure() {
         if (preParePlayUrl()) {
+            if(StringUtils.isNotEmpty(mp3Url)){
+                return Uri.parse(mp3Url);
+            }
             return Uri.parse(musicFile.url);
         }
         return null;
@@ -123,7 +130,7 @@ public class Song extends AbstractMusic implements SuggestItem  {
     public MusicFile musicFile;
 
     public boolean preParePlayUrl() {
-        if (musicFile != null && StringUtils.isNotEmpty(musicFile.url)) {
+        if (musicFile != null && StringUtils.isNotEmpty(musicFile.url)  || StringUtils.isNotEmpty(mp3Url)) {
             return true;
         }
         return false;

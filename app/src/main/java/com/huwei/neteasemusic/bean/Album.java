@@ -80,12 +80,6 @@ public class Album implements SuggestItem, Parcelable {
     public List<Artist> artists;
 
 
-
-
-
-
-
-
     public Album() {
     }
 

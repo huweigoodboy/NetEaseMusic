@@ -24,7 +24,7 @@ import com.huwei.neteasemusic.util.StringUtils;
  * @author jerry
  * @date 2016-06-27
  */
-public class PlayBarView extends RelativeLayout implements IMusicUpdate ,View.OnClickListener{
+public class PlayBarView extends RelativeLayout implements IMusicUpdate, View.OnClickListener {
 
     private Context mContext;
     private ImageView mIvPic;
@@ -58,8 +58,8 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate ,View.On
 
         if (mContext instanceof BaseActivity) {
             ((BaseActivity) mContext).addMpUpdateListener(this);
-            mImageLoader = ((BaseActivity)mContext).getImageLoader();
-        }else{
+            mImageLoader = ((BaseActivity) mContext).getImageLoader();
+        } else {
             mImageLoader = ImageLoader.get(mContext);
         }
 
@@ -68,11 +68,11 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate ,View.On
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_play:
-                if(mMusicManager.isPlaying()){
+                if (mMusicManager.isPlaying()) {
                     mMusicManager.pause();
-                }else{
+                } else {
                     mMusicManager.play();
                 }
                 break;
@@ -82,7 +82,7 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate ,View.On
         }
     }
 
-    void initView(){
+    void initView() {
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mTvArtist = (TextView) findViewById(R.id.tv_artist);
         mTvTitle = (TextView) findViewById(R.id.tv_title);
@@ -92,14 +92,16 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate ,View.On
         mIvPic = (ImageView) findViewById(R.id.iv_album);
     }
 
-    void initListener(){
+    void initListener() {
         mIvPlay.setOnClickListener(this);
         mIvNext.setOnClickListener(this);
     }
 
     @Override
     public void updateProgress(int currentTime, int bufferTime, int duration) {
-        mProgressBar.setMax(duration);
+        if (mProgressBar.getMax() == 0) {
+            mProgressBar.setMax(duration);
+        }
         mProgressBar.setProgress(currentTime);
     }
 
@@ -110,12 +112,12 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate ,View.On
 
     @Override
     public void updateMusicInfo(AbstractMusic music) {
-        mImageLoader.loadImage(mIvPic,music.getAlbumPic());
-        if(StringUtils.isNotEmpty(music.getName())){
+        mImageLoader.loadImage(mIvPic, music.getAlbumPic());
+        if (StringUtils.isNotEmpty(music.getName())) {
             mTvTitle.setText(music.getName());
         }
 
-        if(StringUtils.isNotEmpty(music.getArtist())){
+        if (StringUtils.isNotEmpty(music.getArtist())) {
             mTvArtist.setText(music.getArtist());
         }
     }

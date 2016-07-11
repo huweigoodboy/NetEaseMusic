@@ -80,10 +80,15 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
                 case MSG_CURRENT:
                     Intent intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_PROGRESS);
                     int currentTime = mp.getCurrentPosition()/1000;
-                    Log.i("currentTime", currentTime + "");
-                    intent.putExtra(IntentExtra.MP_CURRENT_TIME, currentTime);
-                    intent.putExtra(IntentExtra.MP_DURATION, mp.getDuration()/1000);
-                    sendBroadcast(intent);
+                    int duration = mp.getDuration()/1000;
+
+                    if(duration !=0 ) {
+
+                        Log.i("currentTime", currentTime + "");
+                        intent.putExtra(IntentExtra.MP_CURRENT_TIME, currentTime);
+                        intent.putExtra(IntentExtra.MP_DURATION, duration);
+                        sendBroadcast(intent);
+                    }
 
                     handler.sendEmptyMessageDelayed(MSG_CURRENT, 500);
                     break;
@@ -170,6 +175,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 //            mNoticationManager.notify(NT_PLAYBAR_ID, mNotification);
             //准备播放源，准备后播放
             AbstractMusic music = mBinder.getNowPlayingSong();
+            updatePlayStatus(IPlayStatus.PLAYING);
 
             Log.i(TAG, "play()->" + music.getName());
             if (!mp.isPlaying()) {

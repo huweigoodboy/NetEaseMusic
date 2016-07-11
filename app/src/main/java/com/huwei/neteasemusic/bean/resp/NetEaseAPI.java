@@ -40,6 +40,8 @@ public class NetEaseAPI {
     public static final String URL_WE = "http://music.163.com/weapi";
     public static final String URL_V1 = "http://music.163.com/weapi/v1";
 
+    public static final String SEARCH_SUB = "/search/pc";  ///search/pc 比 /search/get 返回的 信息要全面
+
     public static final String FIRST_AES_KEY = "0CoJUm6Qyw8W8jud";
     public static final String UTF8 = "utf-8";
 
@@ -84,7 +86,7 @@ public class NetEaseAPI {
      * @param httpHandler
      */
     public static void searchSong(String s, int offset, int limit, HttpHandler<SrSongListResp> httpHandler) {
-        String path = getCompleteUrl("/search/get");
+        String path = getCompleteUrl(SEARCH_SUB);
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
         httpParams.add("s", s);
         httpParams.add("offset", offset);
@@ -103,7 +105,7 @@ public class NetEaseAPI {
      * @param httpHandler
      */
     public static void searchArtist(String s, int offset, int limit, HttpHandler<SrArtistListResp> httpHandler) {
-        String path = getCompleteUrl("/search/get");
+        String path = getCompleteUrl(SEARCH_SUB);
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
         httpParams.add("s", s);
         httpParams.add("offset", offset);
@@ -122,7 +124,7 @@ public class NetEaseAPI {
      * @param httpHandler
      */
     public static void searchAlbum(String s, int offset, int limit, HttpHandler<SrAlbumListResp> httpHandler) {
-        String path = getCompleteUrl("/search/get");
+        String path = getCompleteUrl(SEARCH_SUB);
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
         httpParams.add("s", s);
         httpParams.add("offset", offset);
@@ -141,7 +143,7 @@ public class NetEaseAPI {
      * @param httpHandler
      */
     public static void searchPlaylist(String s, int offset, int limit, HttpHandler<SrPlayListResp> httpHandler) {
-        String path = getCompleteUrl("/search/get");
+        String path = getCompleteUrl(SEARCH_SUB);
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
         httpParams.add("s", s);
         httpParams.add("offset", offset);
@@ -160,7 +162,7 @@ public class NetEaseAPI {
      * @param httpHandler
      */
     public static void searchMv(String s, int offset, int limit, HttpHandler<SrMvListResp> httpHandler) {
-        String path = getCompleteUrl("/search/get");
+        String path = getCompleteUrl(SEARCH_SUB);
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
         httpParams.add("s", s);
         httpParams.add("offset", offset);

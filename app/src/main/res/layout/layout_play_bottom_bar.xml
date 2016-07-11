@@ -30,7 +30,7 @@
         android:layout_width="43dp"
         android:layout_height="match_parent"
         android:layout_toLeftOf="@id/iv_play"
-        android:src="@drawable/playbar_btn_next"/>
+        android:src="@drawable/playbar_btn_playlist"/>
 
     <LinearLayout
         android:layout_width="match_parent"
