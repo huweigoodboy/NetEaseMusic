@@ -99,9 +99,7 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate, View.On
 
     @Override
     public void updateProgress(int currentTime, int bufferTime, int duration) {
-        if (mProgressBar.getMax() == 0) {
-            mProgressBar.setMax(duration);
-        }
+        mProgressBar.setMax(duration);
         mProgressBar.setProgress(currentTime);
     }
 
