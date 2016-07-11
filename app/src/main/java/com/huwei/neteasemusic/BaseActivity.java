@@ -84,9 +84,12 @@ public class BaseActivity extends AppCompatActivity {
             ViewGroup decor = (ViewGroup) getWindow().getDecorView();
             LinearLayout linearLayout = (LinearLayout) decor.getChildAt(0);
 
-            View statuebarSpaceView = new View(mContext);
-            LinearLayout.LayoutParams spacelayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.getStatusBarHeight());
-            linearLayout.addView(statuebarSpaceView, 0, spacelayoutParams);
+            //需要绘制沉浸状态栏的时候才需要这个方块
+            if(isNeedDrawStatusBar()) {
+                View statuebarSpaceView = new View(mContext);
+                LinearLayout.LayoutParams spacelayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.getStatusBarHeight());
+                linearLayout.addView(statuebarSpaceView, 0, spacelayoutParams);
+            }
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 

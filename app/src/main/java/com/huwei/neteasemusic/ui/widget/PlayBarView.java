@@ -1,5 +1,6 @@
 package com.huwei.neteasemusic.ui.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.huwei.neteasemusic.inter.IMusicUpdate;
 import com.huwei.neteasemusic.inter.IPlayStatus;
 import com.huwei.neteasemusic.manager.ImageLoader;
 import com.huwei.neteasemusic.manager.MusicManager;
+import com.huwei.neteasemusic.modules.play.PlayActivity;
 import com.huwei.neteasemusic.util.StringUtils;
 
 /**
@@ -34,6 +36,8 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate, View.On
     private TextView mTvTitle;
     private TextView mTvArtist;
     private ProgressBar mProgressBar;
+
+    private View mViewContainer;
 
     private ImageLoader mImageLoader;
 
@@ -69,6 +73,11 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate, View.On
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.rl_container:
+                if(mContext instanceof Activity){
+                    ((Activity)mContext).startActivity(PlayActivity.getStartActIntent(mContext));
+                }
+                break;
             case R.id.iv_play:
                 if (mMusicManager.isPlaying()) {
                     mMusicManager.pause();
@@ -90,9 +99,12 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate, View.On
         mIvPlay = (CheckableImageView) findViewById(R.id.iv_play);
         mIvNext = (ImageView) findViewById(R.id.iv_next);
         mIvPic = (ImageView) findViewById(R.id.iv_album);
+
+        mViewContainer = findViewById(R.id.rl_container);
     }
 
     void initListener() {
+        mViewContainer.setOnClickListener(this);
         mIvPlay.setOnClickListener(this);
         mIvNext.setOnClickListener(this);
     }

@@ -24,8 +24,31 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <!--app:titleTextColor="@color/primary_text"-->
+    <!--app:subtitleTextColor="@color/secondary_text"-->
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark" >
+    </style>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!--<style name="AppTheme.ToolBar" parent="ThemeOverlay.AppCompat.Light">-->
+        <!--<item name="titleTextColor">@color/FCFDFD</item>-->
+        <!--<item name="subtitleTextColor">@color/A7A6A6</item>-->
+    <!--</style>-->
+
+    <style name="ToolBarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextAppearance">@style/AppTheme.TitleTextStyle</item>
+        <item name="subtitleTextAppearance">@style/AppTheme.SubTitleTextStyle</item>
+    </style>
+
+    <style name="AppTheme.TitleTextStyle"  parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/FCFDFD</item>
+    </style>
+
+    <style name="AppTheme.SubTitleTextStyle"  parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/A7A6A6</item>
+    </style>
 
     <style name="tabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>

@@ -79,10 +79,10 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
             switch (msg.what) {
                 case MSG_CURRENT:
                     Intent intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_PROGRESS);
-                    int currentTime = mp.getCurrentPosition()/1000;
-                    int duration = mp.getDuration()/1000;
+                    int currentTime = mp.getCurrentPosition() / 1000;
+                    int duration = mp.getDuration() / 1000;
 
-                    if(duration !=0 ) {
+                    if (duration != 0) {
 
                         Log.i("currentTime", currentTime + "");
                         intent.putExtra(IntentExtra.MP_CURRENT_TIME, currentTime);
@@ -244,7 +244,10 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
         @Override
         public AbstractMusic getNowPlayingSong() throws RemoteException {
-            return musicList.get(musicIndex);
+            if (Utils.canFetchFirst(musicList) && musicIndex < musicList.size()) {
+                return musicList.get(musicIndex);
+            }
+            return null;
         }
 
         @Override
