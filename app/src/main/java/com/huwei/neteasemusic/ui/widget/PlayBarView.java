@@ -68,6 +68,11 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate, View.On
         }
 
         mMusicManager = MusicManager.get();
+
+
+        //自动调用一下更新状态信息
+        updateMusicInfo(mMusicManager.getNowPlayingSong());
+        updatePlayStatus(mMusicManager.getPlayStatus());
     }
 
     @Override
@@ -122,13 +127,19 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate, View.On
 
     @Override
     public void updateMusicInfo(AbstractMusic music) {
-        mImageLoader.loadImage(mIvPic, music.getAlbumPic());
-        if (StringUtils.isNotEmpty(music.getName())) {
-            mTvTitle.setText(music.getName());
-        }
 
-        if (StringUtils.isNotEmpty(music.getArtist())) {
-            mTvArtist.setText(music.getArtist());
+        if(music != null) {
+            setVisibility(VISIBLE);
+            mImageLoader.loadImage(mIvPic, music.getAlbumPic());
+            if (StringUtils.isNotEmpty(music.getName())) {
+                mTvTitle.setText(music.getName());
+            }
+
+            if (StringUtils.isNotEmpty(music.getArtist())) {
+                mTvArtist.setText(music.getArtist());
+            }
+        }else{
+            setVisibility(GONE);
         }
     }
 }

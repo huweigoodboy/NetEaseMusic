@@ -21,7 +21,7 @@ public class BlurTransFormation extends BitmapTransformation {
 
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-        return BitmapUtils.fastBlur(mContext, toTransform, 200);
+        return BitmapUtils.fastBlur(mContext, toTransform, 60);
     }
 
     @Override

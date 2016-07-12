@@ -43,7 +43,7 @@ public class LrcView extends ScrollView implements OnScrollChangedListener, OnTo
     private float textHeight;    //文本高度
     private int index;    //歌词list集合下标
 
-    private int lrcState = -1;
+    private int lrcState = QUERY_ONLINE;
     private LrcTextView lrcTextView;
     private List<LrcContent> lrcLists;
 

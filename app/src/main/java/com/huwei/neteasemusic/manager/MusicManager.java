@@ -145,10 +145,12 @@ public class MusicManager implements IMusicControl {
 
     @Override
     public AbstractMusic getNowPlayingSong() {
-        try {
-            return mMusicControlService.getNowPlayingSong();
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if (mMusicControlService != null) {
+            try {
+                return mMusicControlService.getNowPlayingSong();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
