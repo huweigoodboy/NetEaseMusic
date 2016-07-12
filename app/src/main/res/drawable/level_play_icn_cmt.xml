@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:maxLevel="0">
+        <selector>
+            <item android:drawable="@drawable/play_icn_cmt_dis" android:state_enabled="false"/>
+            <item android:drawable="@drawable/play_icn_cmt_prs" android:state_pressed="true"/>
+            <item android:drawable="@drawable/play_icn_cmt"/>
+        </selector>
+    </item>
+    <item android:maxLevel="1">
+        <selector>
+            <item android:drawable="@drawable/play_icn_cmt_number_dis" android:state_enabled="false"/>
+            <item android:drawable="@drawable/play_icn_cmt_number_prs" android:state_pressed="true"/>
+            <item android:drawable="@drawable/play_icn_cmt_number"/>
+        </selector>
+    </item>
+</level-list>

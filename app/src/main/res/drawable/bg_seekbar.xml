@@ -6,7 +6,7 @@
             <shape>
                 <solid android:color="@color/lightgray" />
 
-                <size android:height="8dp" />
+                <size android:height="2dp" />
 
             </shape>
 
@@ -18,7 +18,7 @@
             <shape>
                 <solid android:color="@color/white" />
 
-                <size android:height="8dp" />
+                <size android:height="2dp" />
 
             </shape>
 
@@ -29,14 +29,11 @@
             <shape>
                 <solid android:color="@color/colorPrimary" />
 
-                <size android:height="8dp" />
+                <size android:height="2dp" />
 
             </shape>
 
         </clip>
     </item>
-
-    <!--&lt;!&ndash;进度颜色&ndash;&gt;-->
-    <!--<item android:id="@android:id/progress" android:drawable="@color/holo_purple_light"/>-->
 
 </layer-list>

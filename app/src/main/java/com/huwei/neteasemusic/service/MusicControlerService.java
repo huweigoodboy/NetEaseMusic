@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.session.PlaybackState;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -51,6 +52,8 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
     private MediaPlayer mp;
     private AbstractMusic mLastPlayMusic;
+
+    private int mPlayStatus;
 
 //    NotificationManager mNoticationManager;
 //    Notification mNotification;
@@ -233,6 +236,14 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
         }
 
         @Override
+        public int getPlayStatus() throws RemoteException {
+            if (isPlaying()) {
+                return IPlayStatus.PLAYING;
+            }
+            return mPlayStatus;
+        }
+
+        @Override
         public boolean isPlaying() {
             return mp != null && mp.isPlaying();
         }
@@ -263,7 +274,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
         @Override
         public void preSong() throws RemoteException {
-            musicIndex = (musicIndex - 1) % musicList.size();
+            musicIndex = (musicIndex + musicList.size()) % musicList.size();
             prepareSong(musicList.get(musicIndex));
         }
 
@@ -344,6 +355,8 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
     }
 
     private void updatePlayStatus(int playStatus) {
+        mPlayStatus = playStatus;
+
         Intent intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_STATUS);
         intent.putExtra(IntentExtra.MP_PLAY_STATUS, playStatus);
 

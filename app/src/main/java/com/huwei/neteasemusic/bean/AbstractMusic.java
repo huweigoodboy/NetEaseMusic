@@ -2,6 +2,7 @@ package com.huwei.neteasemusic.bean;
 
 import android.net.Uri;
 import android.os.Parcelable;
+import android.widget.ImageView;
 
 
 /**
@@ -51,6 +52,8 @@ public abstract class AbstractMusic implements Parcelable, Parcelable.Creator<Ab
     public abstract String getArtist();
 
     public abstract String getAlbumPic();
+
+    public abstract void loadBlurPic(ImageView imageView);
 
     public enum MusicType {
         Local, Online

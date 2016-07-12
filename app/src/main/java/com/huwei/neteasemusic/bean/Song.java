@@ -2,7 +2,10 @@ package com.huwei.neteasemusic.bean;
 
 import android.net.Uri;
 import android.os.Parcel;
+import android.widget.ImageView;
 
+import com.huwei.neteasemusic.NetEaseApplication;
+import com.huwei.neteasemusic.manager.ImageLoader;
 import com.huwei.neteasemusic.util.StringUtils;
 import com.huwei.neteasemusic.util.Utils;
 
@@ -13,7 +16,7 @@ import java.util.List;
  * @author jerry
  * @date 2016/07/03
  */
-public class Song extends AbstractMusic implements SuggestItem  {
+public class Song extends AbstractMusic implements SuggestItem {
 
     /**
      * id : 29947420
@@ -52,7 +55,7 @@ public class Song extends AbstractMusic implements SuggestItem  {
     public int ftype;
     public int mvid;
     public int fee;
-    public String  rUrl;
+    public String rUrl;
     /**
      * id : 1045123
      * name : Alan Walker
@@ -85,7 +88,7 @@ public class Song extends AbstractMusic implements SuggestItem  {
     @Override
     public Uri getDataSoure() {
         if (preParePlayUrl()) {
-            if(StringUtils.isNotEmpty(mp3Url)){
+            if (StringUtils.isNotEmpty(mp3Url)) {
                 return Uri.parse(mp3Url);
             }
             return Uri.parse(musicFile.url);
@@ -118,10 +121,17 @@ public class Song extends AbstractMusic implements SuggestItem  {
 
     @Override
     public String getAlbumPic() {
-        if(album!=null){
+        if (album != null) {
             return album.picUrl;
         }
         return null;
+    }
+
+    @Override
+    public void loadBlurPic(ImageView imageView) {
+        if (album != null && StringUtils.isNotEmpty(album.blurPicUrl)) {
+            ImageLoader.get(NetEaseApplication.CONTEXT).loadBlurImage(imageView, album.blurPicUrl);
+        }
     }
 
     /*******************************
@@ -130,7 +140,7 @@ public class Song extends AbstractMusic implements SuggestItem  {
     public MusicFile musicFile;
 
     public boolean preParePlayUrl() {
-        if (musicFile != null && StringUtils.isNotEmpty(musicFile.url)  || StringUtils.isNotEmpty(mp3Url)) {
+        if (musicFile != null && StringUtils.isNotEmpty(musicFile.url) || StringUtils.isNotEmpty(mp3Url)) {
             return true;
         }
         return false;
@@ -199,7 +209,6 @@ public class Song extends AbstractMusic implements SuggestItem  {
             return new Song[size];
         }
     };
-
 
 
 }

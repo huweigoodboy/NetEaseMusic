@@ -32,7 +32,7 @@
 
         <activity android:name=".ui.menu.PlayingListActivity"/>
 
-        <activity android:name=".modules.play.PlayActivity"/>
+        <activity android:name=".modules.play.PlayActivity" android:theme="@style/AppTheme.withAnimation"/>
 
         <service
             android:name="com.huwei.neteasemusic.service.MusicControlerService">

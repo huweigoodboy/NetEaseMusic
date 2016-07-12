@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--列表循环-->
+    <item android:maxLevel="0">
+        <selector>
+            <item android:drawable="@drawable/play_icn_loop_prs" android:state_pressed="true"/>
+            <item android:drawable="@drawable/play_icn_loop"/>
+        </selector>
+    </item>
+
+    <!--随机播放-->
+    <item android:maxLevel="1">
+        <selector>
+            <item android:drawable="@drawable/play_icn_shuffle_prs" android:state_pressed="true"/>
+            <item android:drawable="@drawable/play_icn_shuffle"/>
+        </selector>
+    </item>
+
+    <!--单曲循环-->
+    <item android:maxLevel="2">
+        <selector>
+            <item android:drawable="@drawable/play_icn_one_prs" android:state_pressed="true"/>
+            <item android:drawable="@drawable/play_icn_one"/>
+        </selector>
+    </item>
+
+</level-list>

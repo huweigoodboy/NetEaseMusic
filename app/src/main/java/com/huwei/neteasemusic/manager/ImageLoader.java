@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.bumptech.glide.BitmapRequestBuilder;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.GenericRequestBuilder;
 
@@ -26,6 +27,7 @@ import com.huwei.neteasemusic.BaseActivity;
 import com.huwei.neteasemusic.NetEaseApplication;
 import com.huwei.neteasemusic.util.LogUtils;
 import com.huwei.neteasemusic.util.StringUtils;
+import com.huwei.neteasemusic.util.img.BlurTransFormation;
 
 import java.io.InputStream;
 
@@ -165,6 +167,87 @@ public class ImageLoader {
         }
 
         under16Load(uri, imageLoadCallback);
+    }
+
+
+    /**
+     * 加载图片
+     * 根据尺寸加载
+     * 支持自定义占位图
+     *
+     * @param ivShow
+     * @param url
+     */
+    public void loadBlurImage(ImageView ivShow, String url) {
+        if (ivShow == null || TextUtils.isEmpty(url)) {
+            return;
+        }
+        getBuilder(url).transform(new BlurTransFormation(mContext)).into(ivShow);
+    }
+
+    /**
+     * 加载图片
+     * 根据尺寸加载
+     * 支持自定义占位图
+     *
+     * @param ivShow
+     * @param url
+     * @param resWidth
+     * @param resHeight
+     * @param defaultDrawable
+     */
+    public void loadBlurImage(ImageView ivShow, String url, int resWidth, int resHeight, int defaultDrawable) {
+        if (ivShow == null || TextUtils.isEmpty(url)) {
+            return;
+        }
+        getBuilder(url).override(getSize(resWidth), getSize(resHeight)).placeholder(defaultDrawable).transform(new BlurTransFormation(mContext)).into(ivShow);
+    }
+
+    /**
+     * 加载图片
+     * 根据尺寸加载
+     * 支持自定义占位图
+     *
+     * @param ivShow
+     * @param url
+     * @param resWidth
+     * @param resHeight
+     */
+    public void loadBlurImage(ImageView ivShow, String url, int resWidth, int resHeight) {
+        if (ivShow == null || TextUtils.isEmpty(url)) {
+            return;
+        }
+        getBuilder(url).override(getSize(resWidth), getSize(resHeight)).transform(new BlurTransFormation(mContext)).into(ivShow);
+    }
+
+    /**
+     * 获取构造器
+     * API 16以上
+     *
+     * @param url
+     * @return
+     */
+    public BitmapRequestBuilder<String,Bitmap> getBuilder(String url) {
+        BitmapRequestBuilder<String,Bitmap> builder = Glide.with(mContext)
+                .load(url)
+                .asBitmap()
+                .dontAnimate();
+        return builder;
+    }
+
+
+    /**
+     * 获取资源尺寸
+     *
+     * @param resSize
+     * @return 默认返回原始尺寸
+     */
+    private int getSize(int resSize) {
+        if (resSize == 0) {
+            return SimpleTarget.SIZE_ORIGINAL;
+        } else {
+            return mContext.getResources().getDimensionPixelOffset(resSize);
+        }
     }
 
     /**

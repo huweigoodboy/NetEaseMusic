@@ -30,6 +30,8 @@ interface IMusicControlerService {
 
     boolean isPlaying();
 
+    int getPlayStatus();    //获取播放状态
+
     int getPlayingSongIndex();
 
     AbstractMusic getNowPlayingSong();

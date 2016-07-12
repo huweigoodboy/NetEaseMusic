@@ -5,6 +5,7 @@ import android.os.RemoteException;
 import com.huwei.neteasemusic.IMusicControlerService;
 import com.huwei.neteasemusic.bean.AbstractMusic;
 import com.huwei.neteasemusic.inter.IMusicControl;
+import com.huwei.neteasemusic.inter.IPlayStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,14 @@ public class MusicManager implements IMusicControl {
         }
     }
 
+    public void toggle(){
+        if(isPlaying()){
+            pause();
+        }else{
+            play();
+        }
+    }
+
     @Override
     public void stop() {
         if (mMusicControlService != null) {
@@ -96,6 +105,17 @@ public class MusicManager implements IMusicControl {
                 e.printStackTrace();
             }
         }
+    }
+
+    public int getPlayStatus(){
+        if (mMusicControlService != null) {
+            try {
+                return mMusicControlService.getPlayStatus();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+        return IPlayStatus.STOP;
     }
 
 
