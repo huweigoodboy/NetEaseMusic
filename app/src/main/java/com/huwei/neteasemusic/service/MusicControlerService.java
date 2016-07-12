@@ -82,8 +82,8 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
             switch (msg.what) {
                 case MSG_CURRENT:
                     Intent intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_PROGRESS);
-                    int currentTime = mp.getCurrentPosition() / 1000;
-                    int duration = mp.getDuration() / 1000;
+                    int currentTime = mp.getCurrentPosition() ;
+                    int duration = mp.getDuration() ;
 
                     if (duration != 0) {
 
@@ -197,7 +197,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
             updatePlayStatus(IPlayStatus.PAUSE);
 
             mp.pause();
-            handler.removeMessages(MSG_CURRENT);
+//            handler.removeMessages(MSG_CURRENT);
 
             updatePlayStaute(false);
         }

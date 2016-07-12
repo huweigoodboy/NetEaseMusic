@@ -8,6 +8,7 @@ import com.huwei.neteasemusic.util.network.HttpParams;
 import com.huwei.neteasemusic.util.network.HttpUtil;
 import com.huwei.neteasemusic.util.network.UHttpHandler;
 import com.huwei.neteasemusic.util.security.SecuityRequest;
+
 import java.util.List;
 
 /**
@@ -186,7 +187,7 @@ public class NetEaseAPI {
         HttpUtil.get(path, httpParams, httpHandler);
     }
 
-    public static void getSongUrls(List<Integer> ids, int bitrate,UHttpHandler<MusicFileResp> httpHandler) {
+    public static void getSongUrls(List<Integer> ids, int bitrate, UHttpHandler<MusicFileResp> httpHandler) {
         String path = getCompleteUrl_WE("/song/enhance/player/url");
         HttpParams httpParams = HttpParams.getNetEaseHttpParams();
 
@@ -196,6 +197,21 @@ public class NetEaseAPI {
         httpParams.add("params", params[0]);
         httpParams.add("encSecKey", params[1]);
 
-        HttpUtil.post(path, httpParams,httpHandler);
+        HttpUtil.post(path, httpParams, httpHandler);
+    }
+
+    /**
+     * 获取歌词         # tv 表示翻译。-1：表示要翻译，1：不要
+     *
+     * @return
+     */
+    public static void getLrc(int mid, UHttpHandler<LrcResp> httpHandler) {
+        String path = getCompleteUrl("/song/lyric");
+        HttpParams httpParams = HttpParams.getNetEaseHttpParams();
+        httpParams.add("id", mid);
+        httpParams.add("lv", 1);
+        httpParams.add("kv", 1);
+        httpParams.add("tv", 1);
+        HttpUtil.get(path, httpParams, httpHandler);
     }
 }

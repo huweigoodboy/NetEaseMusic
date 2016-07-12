@@ -15,7 +15,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black_60"/>
+        android:background="@color/black_60" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -30,6 +30,7 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -78,8 +79,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
@@ -95,30 +96,30 @@
                 android:id="@+id/seekbar"
                 android:layout_width="0dp"
                 android:layout_height="18dp"
-                android:layout_weight="1"
-                android:minHeight="2dp"
-                android:maxHeight="2dp"
-                android:progressDrawable="@drawable/bg_seekbar"
-
                 android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp" />
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:maxHeight="2dp"
+
+                android:minHeight="2dp"
+                android:progressDrawable="@drawable/bg_seekbar" />
 
             <TextView
                 android:id="@+id/tv_time_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="00:00"
                 android:textColor="@color/A7A6A6"
-                android:textSize="12sp"
-                android:text="00:00"/>
+                android:textSize="12sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="84dp"
-            android:orientation="horizontal"
-            android:gravity="center"
             android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
             android:paddingLeft="2dp"
             android:paddingRight="2dp">
 
@@ -126,36 +127,43 @@
                 android:id="@+id/iv_loop_mode"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
-                android:src="@drawable/level_play_mode"
-                android:layout_marginRight="11dp"/>
+                android:layout_marginRight="11dp"
+                android:src="@drawable/level_play_mode" />
 
             <ImageView
                 android:id="@+id/iv_play_prev"
                 android:layout_width="71dp"
                 android:layout_height="71dp"
-                android:src="@drawable/selector_play_btn_prev"/>
+                android:src="@drawable/selector_play_btn_prev" />
 
             <com.huwei.neteasemusic.ui.widget.CheckableImageView
                 android:id="@+id/iv_play"
                 android:layout_width="84dp"
                 android:layout_height="84dp"
-                android:src="@drawable/selector_rdi_play_btn"/>
+                android:src="@drawable/selector_rdi_play_btn" />
 
             <ImageView
                 android:id="@+id/iv_play_next"
                 android:layout_width="71dp"
                 android:layout_height="71dp"
-                android:src="@drawable/selector_play_btn_next"/>
+                android:src="@drawable/selector_play_btn_next" />
 
             <ImageView
                 android:id="@+id/iv_play_src"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
                 android:layout_marginLeft="11dp"
-                android:src="@drawable/selector_play_icn_src"/>
+                android:src="@drawable/selector_play_icn_src" />
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <com.huwei.neteasemusic.ui.widget.LrcView
+        android:id="@+id/playpage_lrcview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ll_bottom"
+        android:layout_below="@id/toolbar" />
 
 </RelativeLayout>
