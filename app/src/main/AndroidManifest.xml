@@ -36,7 +36,7 @@
 
         <service
             android:name="com.huwei.neteasemusic.service.MusicControlerService"
-            android:process=":remote">
+            >
             <intent-filter>
                 <action android:name="com.huwei.neteasemusic.service.MusicControlerService"/>
                 <category android:name="android.intent.category.DEFAULT" />
