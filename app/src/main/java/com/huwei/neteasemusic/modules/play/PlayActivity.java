@@ -55,6 +55,8 @@ public class PlayActivity extends BaseActivity implements IMusicUpdate, View.OnC
 
     private LrcView playpage_lrcview;
 
+    private AbstractMusic mNowMusic;
+
     public static Intent getStartActIntent(Context from) {
         Intent intent = new Intent(from, PlayActivity.class);
         return intent;
@@ -78,7 +80,6 @@ public class PlayActivity extends BaseActivity implements IMusicUpdate, View.OnC
 
         initToolBar();
         initView();
-        loadLrcView();
         initListener();
 
         addMpUpdateListener(this);
@@ -190,6 +191,11 @@ public class PlayActivity extends BaseActivity implements IMusicUpdate, View.OnC
         mToolBar.setSubtitle(music.getArtist());
 
         mTvTimeDuration.setText(TimeUtil.getDuration(music.getDuration()));
+
+        if (mNowMusic != music) {
+            mNowMusic = music;
+            loadLrcView();
+        }
     }
 
     void loadLrcView() {
@@ -199,8 +205,8 @@ public class PlayActivity extends BaseActivity implements IMusicUpdate, View.OnC
             loadLrcBySongId((Song) song);
         }
         lrcLists = LrcUtil.loadLrc(song);
-//        playpage_lrcview.setLrcLists(lrcLists);
-//        playpage_lrcview.setLrcState(lrcLists.size() == 0 ? READ_LOC_FAIL : READ_LOC_OK);
+        playpage_lrcview.setLrcLists(lrcLists);
+        playpage_lrcview.setLrcState(lrcLists.size() == 0 ? READ_LOC_FAIL : READ_LOC_OK);
     }
 
     void updateLrcView(int currentTime) {
@@ -224,7 +230,7 @@ public class PlayActivity extends BaseActivity implements IMusicUpdate, View.OnC
                         playpage_lrcview.setLrcLists(lrcLists);
                         playpage_lrcview.setLrcState(lrcLists.size() == 0 ? QUERY_ONLINE_NULL : QUERY_ONLINE_OK);
 
-                        LrcUtil.writeLrcToLoc(song.getName(),song.getArtist(),lrcResp.lrc.lyric);
+                        LrcUtil.writeLrcToLoc(song.getName(), song.getArtist(), lrcResp.lrc.lyric);
                     }
                 }
             });

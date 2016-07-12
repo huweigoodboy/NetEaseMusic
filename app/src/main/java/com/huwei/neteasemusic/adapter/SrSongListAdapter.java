@@ -31,7 +31,7 @@ public class SrSongListAdapter extends SrBaseAdapter<Song, SrSongListAdapter.SrS
     }
 
     @Override
-    protected void bindItemData(SrSongListViewHolder viewHolder, Song song, int position) {
+    protected void bindItemData(SrSongListViewHolder viewHolder, Song song, final int position) {
         if (song != null) {
             viewHolder.tvName.setText(getSpannable(song.name));
             if (Utils.canFetchFirst(song.artists) && song.album != null) {
@@ -64,7 +64,7 @@ public class SrSongListAdapter extends SrBaseAdapter<Song, SrSongListAdapter.SrS
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MusicManager.get().preparePlayingListAndPlay(0,Song.getMusicSourceList(getDataList()));
+                    MusicManager.get().preparePlayingListAndPlay(position,Song.getMusicSourceList(getDataList()));
                 }
             });
         }

@@ -35,7 +35,8 @@
         <activity android:name=".modules.play.PlayActivity" android:theme="@style/AppTheme.withAnimation"/>
 
         <service
-            android:name="com.huwei.neteasemusic.service.MusicControlerService">
+            android:name="com.huwei.neteasemusic.service.MusicControlerService"
+            android:process=":remote">
             <intent-filter>
                 <action android:name="com.huwei.neteasemusic.service.MusicControlerService"/>
                 <category android:name="android.intent.category.DEFAULT" />

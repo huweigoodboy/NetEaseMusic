@@ -60,6 +60,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 //    RemoteViews reViews;
 
     private boolean isForeground;
+    private boolean isPrepared;
 
     public static final int MSG_CURRENT = 0;
     public static final int MSG_BUFFER_UPDATE = 1;
@@ -79,11 +80,24 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+
+            Intent intent;
+
             switch (msg.what) {
                 case MSG_CURRENT:
-                    Intent intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_PROGRESS);
-                    int currentTime = mp.getCurrentPosition() ;
-                    int duration = mp.getDuration() ;
+
+                    intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_PROGRESS);
+                    int currentTime = 0;
+                    int duration = 0;
+                    if (isPrepared) {
+                        currentTime = mp.getCurrentPosition();
+                        duration = mp.getDuration();
+                    } else {
+                        currentTime = 0;
+                        if (musicList.size() > musicIndex && musicIndex != -1) {
+                            duration = musicList.get(musicIndex).getDuration();
+                        }
+                    }
 
                     if (duration != 0) {
 
@@ -94,6 +108,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
                     }
 
                     handler.sendEmptyMessageDelayed(MSG_CURRENT, 500);
+
                     break;
                 case MSG_BUFFER_UPDATE:
 
@@ -268,13 +283,13 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
         @Override
         public void nextSong() throws RemoteException {
-            musicIndex = (musicIndex + 1) % musicList.size();
+            musicIndex = (musicIndex + 1 + musicList.size()) % musicList.size();
             prepareSong(musicList.get(musicIndex));
         }
 
         @Override
         public void preSong() throws RemoteException {
-            musicIndex = (musicIndex + musicList.size()) % musicList.size();
+            musicIndex = (musicIndex + musicList.size() - 1) % musicList.size();
             prepareSong(musicList.get(musicIndex));
         }
 
@@ -304,6 +319,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
             @Override
             public void onPrepared(MediaPlayer mp) {
                 Log.i(TAG, "onPrepared");
+                isPrepared = true;
 
                 handler.sendEmptyMessage(MSG_CURRENT);
 
@@ -425,6 +441,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
     private void play(AbstractMusic music) {
         if (mp != null) {
+            isPrepared = false;
             mp.reset();
         }
 
@@ -459,6 +476,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
     public void onCompletion(MediaPlayer mp) {
         try {
             Log.i(TAG, "onCompletion");
+
             mBinder.nextSong();
         } catch (RemoteException e) {
             e.printStackTrace();

@@ -53,9 +53,11 @@ public class IMusicUpdateBoradCastManager {
 
                     AbstractMusic music = intent.getParcelableExtra(IntentExtra.MP_MUSICINFO);
 
-                    for (IMusicUpdate up : updateSet) {
-                        if (up != null) {
-                            up.updateMusicInfo(music);
+                    if(music!=null) {
+                        for (IMusicUpdate up : updateSet) {
+                            if (up != null) {
+                                up.updateMusicInfo(music);
+                            }
                         }
                     }
 
