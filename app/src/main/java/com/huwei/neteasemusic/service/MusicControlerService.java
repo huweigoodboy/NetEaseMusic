@@ -458,18 +458,18 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
-        AbstractMusic music = null;
-        try {
-            music = mBinder.getNowPlayingSong();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
-        Message msg = Message.obtain();
-        msg.what = MSG_BUFFER_UPDATE;
-        msg.arg1 = percent * music.getDuration() / 100;
-
-        handler.sendMessage(msg);
+//        AbstractMusic music = null;
+//        try {
+//            music = mBinder.getNowPlayingSong();
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Message msg = Message.obtain();
+//        msg.what = MSG_BUFFER_UPDATE;
+//        msg.arg1 = percent * music.getDuration() / 100;
+//
+//        handler.sendMessage(msg);
     }
 
     @Override

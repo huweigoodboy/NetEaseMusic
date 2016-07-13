@@ -22,5 +22,6 @@
 
     <string name="playlist_info">%1$d首 by %2$s，播放%3$s</string>
 
+    <string name="title_playing_count">播放列表(%d)</string>
 
 </resources>

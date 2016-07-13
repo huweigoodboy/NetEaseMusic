@@ -89,6 +89,7 @@ public class MusicManager implements IMusicControl {
         if (mMusicControlService != null) {
             try {
                 mMusicControlService.preparePlayingList( list);
+                mSourceList = list;
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -101,6 +102,7 @@ public class MusicManager implements IMusicControl {
         if (mMusicControlService != null) {
             try {
                 mMusicControlService.preparePlayingListAndPlay(index, list);
+                mSourceList = list;
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

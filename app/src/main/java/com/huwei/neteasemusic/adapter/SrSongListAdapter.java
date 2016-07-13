@@ -55,9 +55,9 @@ public class SrSongListAdapter extends SrBaseAdapter<Song, SrSongListAdapter.SrS
             viewHolder.ivMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mContext instanceof Activity){
-                        ((Activity)mContext).startActivity(PlayingListActivity.getStartActIntent(mContext));
-                    }
+//                    if(mContext instanceof Activity){
+//                        ((Activity)mContext).startActivity(PlayingListActivity.getStartActIntent(mContext));
+//                    }
                 }
             });
 

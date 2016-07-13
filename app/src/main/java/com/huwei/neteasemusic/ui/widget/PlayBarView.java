@@ -18,6 +18,7 @@ import com.huwei.neteasemusic.inter.IPlayStatus;
 import com.huwei.neteasemusic.manager.ImageLoader;
 import com.huwei.neteasemusic.manager.MusicManager;
 import com.huwei.neteasemusic.modules.play.PlayActivity;
+import com.huwei.neteasemusic.ui.menu.PlayingListActivity;
 import com.huwei.neteasemusic.util.StringUtils;
 
 /**
@@ -93,6 +94,11 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate, View.On
             case R.id.iv_next:
                 mMusicManager.nextSong();
                 break;
+            case R.id.iv_list:
+                if(mContext instanceof Activity){
+                    ((Activity)mContext).startActivity(PlayingListActivity.getStartActIntent(mContext));
+                }
+                break;
         }
     }
 
@@ -112,6 +118,7 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate, View.On
         mViewContainer.setOnClickListener(this);
         mIvPlay.setOnClickListener(this);
         mIvNext.setOnClickListener(this);
+        mIvList.setOnClickListener(this);
     }
 
     @Override

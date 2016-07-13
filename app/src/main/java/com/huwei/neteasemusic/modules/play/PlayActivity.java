@@ -184,17 +184,19 @@ public class PlayActivity extends BaseActivity implements IMusicUpdate, View.OnC
 
     @Override
     public void updateMusicInfo(AbstractMusic music) {
-        //加载模糊图片
-        music.loadBlurPic(mIvBlur);
+        if(music!=null) {
+            //加载模糊图片
+            music.loadBlurPic(mIvBlur);
 
-        mToolBar.setTitle(music.getName());
-        mToolBar.setSubtitle(music.getArtist());
+            mToolBar.setTitle(music.getName());
+            mToolBar.setSubtitle(music.getArtist());
 
-        mTvTimeDuration.setText(TimeUtil.getDuration(music.getDuration()));
+            mTvTimeDuration.setText(TimeUtil.getDuration(music.getDuration()));
 
-        if (mNowMusic != music) {
-            mNowMusic = music;
-            loadLrcView();
+            if (mNowMusic != music) {
+                mNowMusic = music;
+                loadLrcView();
+            }
         }
     }
 
