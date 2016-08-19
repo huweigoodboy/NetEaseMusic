@@ -17,6 +17,8 @@ import com.huwei.neteasemusic.util.network.UHttpHandler;
 
 
 /**
+ * 全部歌单
+ *
  * @author jerry
  * @date 2016/07/08
  */

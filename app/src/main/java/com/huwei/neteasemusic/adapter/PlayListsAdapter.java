@@ -37,7 +37,7 @@ public class PlayListsAdapter extends HeaderBottomAdapter<Playlist, PlayListsAda
     @Override
     protected void bindItemData(PlaylistsViewHolder viewHolder, Playlist playlist, int position) {
         if (playlist != null) {
-            getImageLoader().loadImage(viewHolder.ivCover, playlist.coverImgUrl);
+            getImageLoader().loadImage(viewHolder.ivCover, playlist.coverImgUrl,R.drawable.cover_border_mask_full);
 
             if (StringUtils.isNotEmpty(playlist.name)) {
                 viewHolder.tvName.setText(playlist.name);
