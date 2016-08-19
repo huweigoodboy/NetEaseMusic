@@ -9,16 +9,18 @@
 
         <item name="android:windowBackground">@color/F1F3F4</item>
 
-        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:windowIsTranslucent">true</item>-->
 
         <item name="android:windowAnimationStyle">@style/noAnimation</item>
     </style>
 
-    <style name="fade" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/in_from_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/out_to_left</item>
-        <item name="android:activityCloseEnterAnimation">@anim/in_from_left</item>
-        <item name="android:activityCloseExitAnimation">@anim/out_to_right</item>
+    <style name="fade" parent="@android:style/Animation.Translucent">
+        <item name="android:activityOpenEnterAnimation">@anim/player_slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/player_slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/player_slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/player_slide_out_right</item>
+        <!--<item name="android:windowEnterAnimation">@anim/player_slide_in_left</item>-->
+        <!--<item name="android:windowExitAnimation">@anim/player_slide_out_right</item>-->
     </style>
 
     <style name="AppTheme.withAnimation" parent="AppTheme">

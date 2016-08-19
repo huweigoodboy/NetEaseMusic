@@ -8,6 +8,7 @@ package com.huwei.neteasemusic;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -51,12 +52,28 @@ public class BaseActivity extends AppCompatActivity {
 
     public static final int STATUS_BAR_COLOR = Utils.getResources().getColor(R.color.CD3D3A);
 
+    protected int activityCloseEnterAnimation;
+    protected int activityCloseExitAnimation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         TAG = getClass().getSimpleName();
 
         mContext = this;
         super.onCreate(savedInstanceState);
+
+        // Retrieve the animations set in the theme applied to this activity in the
+// manifest..
+        TypedArray activityStyle = getTheme().obtainStyledAttributes(new int[] {android.R.attr.windowAnimationStyle});
+        int windowAnimationStyleResId = activityStyle.getResourceId(0, 0);
+        activityStyle.recycle();
+
+// Now retrieve the resource ids of the actual animations used in the animation style pointed to by
+// the window animation resource id.
+        activityStyle = getTheme().obtainStyledAttributes(windowAnimationStyleResId, new int[] {android.R.attr.activityCloseEnterAnimation, android.R.attr.activityCloseExitAnimation});
+        activityCloseEnterAnimation = activityStyle.getResourceId(0, 0);
+        activityCloseExitAnimation = activityStyle.getResourceId(1, 0);
+        activityStyle.recycle();
     }
 
     @Override
@@ -120,6 +137,13 @@ public class BaseActivity extends AppCompatActivity {
         if (mMpManager != null) {
             mMpManager.unbind();
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+
+        overridePendingTransition(activityCloseEnterAnimation, activityCloseExitAnimation);
     }
 
     /**

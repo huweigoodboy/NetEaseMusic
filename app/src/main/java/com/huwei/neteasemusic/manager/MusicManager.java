@@ -1,11 +1,14 @@
 package com.huwei.neteasemusic.manager;
 
+import android.app.Activity;
 import android.os.RemoteException;
 
 import com.huwei.neteasemusic.IMusicControlerService;
+import com.huwei.neteasemusic.R;
 import com.huwei.neteasemusic.bean.AbstractMusic;
 import com.huwei.neteasemusic.inter.IMusicControl;
 import com.huwei.neteasemusic.inter.IPlayStatus;
+import com.huwei.neteasemusic.modules.play.PlayActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -237,5 +240,10 @@ public class MusicManager implements IMusicControl {
      */
     public static boolean isIndexNowPLayng(List list, int pos) {
         return isListEqual(list) && get().getNowPlayingIndex() == pos;
+    }
+
+    public void launchPlayerAct(Activity act){
+
+        act.startActivity(PlayActivity.getStartActIntent(act));
     }
 }

@@ -81,7 +81,7 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate, View.On
         switch (v.getId()) {
             case R.id.rl_container:
                 if(mContext instanceof Activity){
-                    ((Activity)mContext).startActivity(PlayActivity.getStartActIntent(mContext));
+                    mMusicManager.launchPlayerAct((Activity)mContext);
                 }
                 break;
             case R.id.iv_play:
