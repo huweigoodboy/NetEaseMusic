@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.session.PlaybackState;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -27,9 +26,11 @@ import com.huwei.neteasemusic.bean.resp.MusicFileResp;
 import com.huwei.neteasemusic.bean.resp.NetEaseAPI;
 import com.huwei.neteasemusic.bean.resp.ServerTip;
 import com.huwei.neteasemusic.constant.IContain;
+import com.huwei.neteasemusic.constant.IMusicAction;
 import com.huwei.neteasemusic.constant.IntentExtra;
 import com.huwei.neteasemusic.inter.IPlayStatus;
 import com.huwei.neteasemusic.manager.IMusicUpdateBoradCastManager;
+import com.huwei.neteasemusic.ui.notify.MusicNotifiControler;
 import com.huwei.neteasemusic.util.StringUtils;
 import com.huwei.neteasemusic.util.Utils;
 import com.huwei.neteasemusic.util.network.UHttpHandler;
@@ -44,23 +45,8 @@ import java.util.Random;
 /**
  * 后台控制播放音乐的service
  */
-public class MusicControlerService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, IContain {
+public class MusicControlerService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, IContain,IMusicAction {
     private String TAG = "MusicControlerService";
-    private int musicIndex = -1;
-    private long lastSongID = -1;
-    private List<AbstractMusic> musicList;
-
-    private MediaPlayer mp;
-    private AbstractMusic mLastPlayMusic;
-
-    private int mPlayStatus;
-
-//    NotificationManager mNoticationManager;
-//    Notification mNotification;
-//    RemoteViews reViews;
-
-    private boolean isForeground;
-    private boolean isPrepared;
 
     public static final int MSG_CURRENT = 0;
     public static final int MSG_BUFFER_UPDATE = 1;
@@ -69,11 +55,19 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
     public static final int MSG_PLAY = 101;
 
-    public static final String PLAYPRO_EXIT = "com.huwei.intent.PLAYPRO_EXIT_ACTION";
-    public static final String NEXTSONG = "com.intent.action.NEXTSONG";
-    public static final String PRESONG = "com.intent.action.PRESONG";
-    public static final String PLAY_OR_PASUE = "com.intent.action.PLAY_OR_PASUE";
 
+    private int musicIndex = -1;
+    private long lastSongID = -1;
+    private List<AbstractMusic> musicList;
+
+    private MediaPlayer mp;
+    private AbstractMusic mLastPlayMusic;
+    private MusicNotifiControler mNotifiControler;
+
+    private int mPlayStatus;
+
+    private boolean isForeground;
+    private boolean isPrepared;
 
     private Handler handler = new Handler() {
 
@@ -135,7 +129,8 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
             switch (intent.getAction()) {
                 case PLAYPRO_EXIT:
                     stopSelf();
-//                    mNoticationManager.cancel(NT_PLAYBAR_ID);
+
+                    mNotifiControler.cancel();
 
                     Process.killProcess(Process.myPid());
                     break;
@@ -187,10 +182,8 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
         @Override
         public void play() throws RemoteException {
-//            reViews.setViewVisibility(R.id.button_play_notification_play, View.GONE);
-//            reViews.setViewVisibility(R.id.button_pause_notification_play, View.VISIBLE);
+            mNotifiControler.setIsPlay(true);
 
-//            mNoticationManager.notify(NT_PLAYBAR_ID, mNotification);
             //准备播放源，准备后播放
             AbstractMusic music = mBinder.getNowPlayingSong();
             updatePlayStatus(IPlayStatus.PLAYING);
@@ -205,10 +198,8 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
         @Override
         public void pause() throws RemoteException {
-//            reViews.setViewVisibility(R.id.button_play_notification_play, View.VISIBLE);
-//            reViews.setViewVisibility(R.id.button_pause_notification_play, View.GONE);
+            mNotifiControler.setIsPlay(false);
 
-//            mNoticationManager.notify(NT_PLAYBAR_ID, mNotification);
             updatePlayStatus(IPlayStatus.PAUSE);
 
             mp.pause();
@@ -304,8 +295,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
     public void onCreate() {
         super.onCreate();
 
-//        mNoticationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//        mNotification = new Notification();
+        mNotifiControler = new MusicNotifiControler(getBaseContext());
 
         if (mp != null) {
             mp.release();
@@ -408,7 +398,7 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
         updateMusicInfo(music);
         updatePlayStatus(IPlayStatus.PLAYING);
 
-        showMusicPlayerNotification(music);
+        mNotifiControler.show(music);
         updatePlayBar(true);
 
         //如果是网络歌曲,而且未从网络获取详细信息，则需要获取歌曲的详细信息
@@ -489,66 +479,10 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
      * @param music
      */
     void showMusicPlayerNotification(AbstractMusic music) {
-        String title = music.getName();
-        String artist = music.getArtist();
-//        if (reViews == null) {
-//            reViews = new RemoteViews(getPackageName(), R.layout.notification_play);
-//        }
-//
-//        mNotification.icon = R.drawable.sweet;
-//        mNotification.tickerText = title + "-" +artist;
-//        mNotification.when = System.currentTimeMillis();
-//        mNotification.flags  = Notification.FLAG_NO_CLEAR;
-//        mNotification.contentView = reViews;
-//
-//        reViews.setTextViewText(R.id.title, title);
-//        reViews.setTextViewText(R.id.text, artist);
-//
-//        reViews.setImageViewResource(R.id.img_album, R.drawable.img_album_background);
-//
-//        Intent intent = new Intent(getBaseContext(), MainActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(), 0, intent, 0);
-//        reViews.setOnClickPendingIntent(R.id.nt_container, pendingIntent);
-//
-//        Intent exitIntent = new Intent(PLAYPRO_EXIT);
-//        PendingIntent exitPendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, exitIntent, 0);
-//        reViews.setOnClickPendingIntent(R.id.button_exit_notification_play, exitPendingIntent);
-//
-//        Intent nextInent = new Intent(NEXTSONG);
-//        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, nextInent, 0);
-//        reViews.setOnClickPendingIntent(R.id.button_next_notification_play, nextPendingIntent);
-//
-//        Intent preInent = new Intent(PRESONG);
-//        PendingIntent prePendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, preInent, 0);
-//        reViews.setOnClickPendingIntent(R.id.button_previous_notification_play, prePendingIntent);
-//
-//        Intent playInent = new Intent(PLAY_OR_PASUE);
-//        PendingIntent playPendingIntent = PendingIntent.getBroadcast(getBaseContext(), 0, playInent, 0);
-//        reViews.setOnClickPendingIntent(R.id.button_play_notification_play, playPendingIntent);
-//        reViews.setOnClickPendingIntent(R.id.button_pause_notification_play, playPendingIntent);
-//
-//
-//        final NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext());
-//        builder.setContent(reViews).setSmallIcon(NT_PLAYBAR_ID).setTicker(title).setOngoing(true);
-//
-//        updateArtistView(music);
-//
-//        mNoticationManager.notify(NT_PLAYBAR_ID,mNotification);
+
     }
 
-    void updateArtistView(AbstractMusic music) {
-//        music.loadArtPic(new AbstractMusic.OnLoadListener() {
-//            @Override
-//            public void onSuccessLoad(Bitmap bitmap) {
-//                Log.i(TAG,"onSuccessLoad bitmap:"+bitmap);
-//
-//                if(reViews!=null) {
-//                    reViews.setImageViewBitmap(R.id.img_album, bitmap);
-//                    mNoticationManager.notify(NT_PLAYBAR_ID,mNotification);
-//                }
-//            }
-//        });
-    }
+
 
     static MediaPlayer getMediaPlayer(Context context) {
 

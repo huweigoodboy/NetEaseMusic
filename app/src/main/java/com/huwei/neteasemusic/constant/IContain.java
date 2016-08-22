@@ -24,7 +24,6 @@ public interface IContain {
     /**
      * Define ACIOTN*
      */
-    public static String PLAYPRO_EXIT = "com.huwei.intent.PLAYPRO_EXIT_ACTION";
     public static final String PLAYBAR_UPDATE = "com.huwei.intent.PLAYBAR_UPDATE";        //关于歌曲信息控件的更新
     public static final String PLAY_STATUS_UPDATE = "com.huwei.intent.PLAY_STATUS_UPDATE";
     public static final String CURRENT_UPDATE = "com.huwei.intent.DURATION_UPDATE";       //当前状态 有关时间控件的更新
