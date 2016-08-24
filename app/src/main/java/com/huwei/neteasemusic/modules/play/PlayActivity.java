@@ -24,9 +24,11 @@ import com.huwei.neteasemusic.manager.MusicManager;
 import com.huwei.neteasemusic.ui.widget.CheckableImageView;
 import com.huwei.neteasemusic.ui.widget.LrcView;
 import com.huwei.neteasemusic.util.LrcUtil;
+import com.huwei.neteasemusic.util.StatusBarUtil;
 import com.huwei.neteasemusic.util.StringUtils;
 import com.huwei.neteasemusic.util.TimeUtil;
 import com.huwei.neteasemusic.util.ToolBarUtil;
+import com.huwei.neteasemusic.util.Utils;
 import com.huwei.neteasemusic.util.network.UHttpHandler;
 
 import java.util.Collections;
@@ -76,7 +78,11 @@ public class PlayActivity extends BaseActivity implements IMusicUpdate, View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         setContentView(R.layout.activity_play);
+        //设置activity 状态栏透明
+        StatusBarUtil.setTranslucent(this);
 
         initToolBar();
         initView();

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true"
     android:background="@color/color_111111"
     android:orientation="vertical">
 
@@ -22,6 +23,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="@*android:dimen/status_bar_height"
         android:background="@color/transparent"
         app:navigationIcon="@drawable/actionbar_back"
         app:popupTheme="@style/AppTheme.PopupOverlay"
