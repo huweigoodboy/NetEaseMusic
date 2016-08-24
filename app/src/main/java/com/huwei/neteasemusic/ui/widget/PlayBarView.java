@@ -122,7 +122,13 @@ public class PlayBarView extends RelativeLayout implements IMusicUpdate, View.On
     }
 
     @Override
-    public void updateProgress(int currentTime, int bufferTime, int duration) {
+    public void updateBufferProgress(int bufferTime, int duration) {
+        mProgressBar.setMax(duration);
+        mProgressBar.setSecondaryProgress(bufferTime);
+    }
+
+    @Override
+    public void updateProgress(int currentTime, int duration) {
         mProgressBar.setMax(duration);
         mProgressBar.setProgress(currentTime);
     }

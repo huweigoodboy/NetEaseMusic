@@ -30,8 +30,8 @@ public class IMusicUpdateBoradCastManager {
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case UpdateAction.UPDATE_PROGRESS:
-                    int currentTime = intent.getIntExtra(IntentExtra.MP_CURRENT_TIME, 0);
+                case UpdateAction.UPDATE_BUFFER_PROGRESS:
+
                     int bufferTime = intent.getIntExtra(IntentExtra.MP_BUFFER_TIME, 0);
                     int duration = intent.getIntExtra(IntentExtra.MP_DURATION, 0);
 
@@ -42,11 +42,29 @@ public class IMusicUpdateBoradCastManager {
 
                     for (IMusicUpdate up : updateSet) {
                         if (up != null) {
-                            up.updateProgress(currentTime, bufferTime, duration);
+                            up.updateBufferProgress(bufferTime, duration);
                         }
                     }
 
-                    LogUtils.i(TAG, "UPDATE_PROGRESS --》 currentTime:" + currentTime + " bufferTime:" + bufferTime + "   duration:" + duration);
+                    LogUtils.i(TAG, "UPDATE_PROGRESS --》 bufferTime:" + bufferTime + "   duration:" + duration);
+
+                    break;
+                case UpdateAction.UPDATE_PROGRESS:
+                    int currentTime = intent.getIntExtra(IntentExtra.MP_CURRENT_TIME, 0);
+                    duration = intent.getIntExtra(IntentExtra.MP_DURATION, 0);
+
+                    //过滤掉 duration 为0的情况
+                    if(duration == 0){
+                        return;
+                    }
+
+                    for (IMusicUpdate up : updateSet) {
+                        if (up != null) {
+                            up.updateProgress(currentTime, duration);
+                        }
+                    }
+
+                    LogUtils.i(TAG, "UPDATE_BUFFER_PROGRESS --》 currentTime:" + currentTime + "   duration:" + duration);
 
                     break;
                 case UpdateAction.UPDATE_MUSICINFO:
@@ -85,6 +103,7 @@ public class IMusicUpdateBoradCastManager {
         this.mAct = activity;
 
         IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(UpdateAction.UPDATE_BUFFER_PROGRESS);
         intentFilter.addAction(UpdateAction.UPDATE_PROGRESS);
         intentFilter.addAction(UpdateAction.UPDATE_STATUS);
         intentFilter.addAction(UpdateAction.UPDATE_MUSICINFO);
@@ -102,6 +121,7 @@ public class IMusicUpdateBoradCastManager {
     }
 
     public interface UpdateAction {
+        public static final String UPDATE_BUFFER_PROGRESS = "UPDATE_BUFFER_PROGRESS";
         public static final String UPDATE_PROGRESS = "UPDATE_PROGRESS";
         public static final String UPDATE_STATUS = "UPDATE_STATUS";
         public static final String UPDATE_MUSICINFO = "UPDATE_MUSICINFO";

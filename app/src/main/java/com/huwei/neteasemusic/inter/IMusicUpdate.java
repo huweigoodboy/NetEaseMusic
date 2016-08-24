@@ -7,13 +7,19 @@ import com.huwei.neteasemusic.bean.AbstractMusic;
  * @date 2016/07/10
  */
 public interface IMusicUpdate {
+
+    /**
+     * 缓冲进度更新
+     * @param bufferTime
+     * @param duration
+     */
+    void updateBufferProgress(int bufferTime,int duration);
     /**
      * 进度更新
      * @param currentTime
-     * @param bufferTime   //todo 暂时没有传值
      * @param duration
      */
-    void updateProgress(int currentTime,int bufferTime,int duration);
+    void updateProgress(int currentTime,int duration);
 
     /**
      * 播放状态更新

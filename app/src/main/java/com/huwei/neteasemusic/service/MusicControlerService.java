@@ -82,19 +82,10 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
                     intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_PROGRESS);
                     int currentTime = 0;
-                    int duration = 0;
-                    if (isPrepared) {
-                        currentTime = mp.getCurrentPosition();
-                        duration = mp.getDuration();
-                    } else {
-                        currentTime = 0;
-                        if (musicList.size() > musicIndex && musicIndex != -1) {
-                            duration = musicList.get(musicIndex).getDuration();
-                        }
-                    }
+                    int duration = getDuration();
+                    currentTime = mp.getCurrentPosition();
 
                     if (duration != 0) {
-
                         Log.i("currentTime", currentTime + "");
                         intent.putExtra(IntentExtra.MP_CURRENT_TIME, currentTime);
                         intent.putExtra(IntentExtra.MP_DURATION, duration);
@@ -106,10 +97,11 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
                     break;
                 case MSG_BUFFER_UPDATE:
 
-                    intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_PROGRESS);
+                    intent = new Intent(IMusicUpdateBoradCastManager.UpdateAction.UPDATE_BUFFER_PROGRESS);
                     int bufferTime = msg.arg1;
                     Log.i("bufferTime", bufferTime + "");
-                    intent.putExtra("bufferTime", bufferTime);
+                    intent.putExtra(IntentExtra.MP_BUFFER_TIME, bufferTime);
+                    intent.putExtra(IntentExtra.MP_DURATION, getDuration());
                     sendBroadcast(intent);
                     break;
                 case MSG_NOTICATION_UPDATE:
@@ -369,6 +361,20 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
         sendBroadcast(intent);
     }
 
+    private int  getDuration(){
+        int duration = 0;
+        if (isPrepared) {
+
+            duration = mp.getDuration();
+        } else {
+
+            if (musicList.size() > musicIndex && musicIndex != -1) {
+                duration = musicList.get(musicIndex).getDuration();
+            }
+        }
+        return duration;
+    }
+
 
     /**
      * 和上一次操作的歌曲不同，代表新播放的歌曲
@@ -448,18 +454,22 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
 
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
-//        AbstractMusic music = null;
-//        try {
-//            music = mBinder.getNowPlayingSong();
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Message msg = Message.obtain();
-//        msg.what = MSG_BUFFER_UPDATE;
-//        msg.arg1 = percent * music.getDuration() / 100;
-//
-//        handler.sendMessage(msg);
+        AbstractMusic music = null;
+        try {
+            music = mBinder.getNowPlayingSong();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        Message msg = Message.obtain();
+        msg.what = MSG_BUFFER_UPDATE;
+        if(percent == 100) {
+            msg.arg1 = music.getDuration();
+        }else {
+            msg.arg1 = percent * music.getDuration() / 100;
+        }
+
+        handler.sendMessage(msg);
     }
 
     @Override
@@ -472,17 +482,6 @@ public class MusicControlerService extends Service implements MediaPlayer.OnComp
             e.printStackTrace();
         }
     }
-
-    /**
-     * 在通知栏显示音乐播放信息
-     *
-     * @param music
-     */
-    void showMusicPlayerNotification(AbstractMusic music) {
-
-    }
-
-
 
     static MediaPlayer getMediaPlayer(Context context) {
 

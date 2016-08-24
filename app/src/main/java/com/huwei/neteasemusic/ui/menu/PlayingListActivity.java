@@ -80,7 +80,12 @@ public class PlayingListActivity extends BaseBottomMenuActivity implements IMusi
     }
 
     @Override
-    public void updateProgress(int currentTime, int bufferTime, int duration) {
+    public void updateBufferProgress(int bufferTime, int duration) {
+
+    }
+
+    @Override
+    public void updateProgress(int currentTime, int duration) {
 
     }
 

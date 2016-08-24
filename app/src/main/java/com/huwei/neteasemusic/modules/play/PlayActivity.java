@@ -171,10 +171,16 @@ public class PlayActivity extends BaseActivity implements IMusicUpdate, View.OnC
     }
 
     @Override
-    public void updateProgress(int currentTime, int bufferTime, int duration) {
+    public void updateBufferProgress(int bufferTime, int duration) {
+        mSeekbar.setMax(duration);
+        mSeekbar.setSecondaryProgress(bufferTime);
+    }
+
+    @Override
+    public void updateProgress(int currentTime, int duration) {
         mSeekbar.setMax(duration);
         mSeekbar.setProgress(currentTime);
-        mSeekbar.setSecondaryProgress(bufferTime);
+
 
         //时间处理
         mTvTimeCurrent.setText(TimeUtil.getDuration(currentTime / 1000));
