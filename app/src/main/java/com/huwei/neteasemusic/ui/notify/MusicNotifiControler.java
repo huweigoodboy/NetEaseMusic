@@ -21,7 +21,7 @@ import com.huwei.neteasemusic.util.LogUtils;
 /**
  *
  * @author jerry
- * @date 2016-06-23
+ * @date 2016-08-23
  */
 public class MusicNotifiControler implements IMusicAction {
 
